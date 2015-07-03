@@ -1,0 +1,31 @@
+.list-view:focused .list-cell:selected #peers, .list-view:focused .list-cell:selected #file {
+    -fx-text-fill: lightgray;
+}
+
+.icons {
+    -fx-font-family: FontAwesome;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+}
+
+.reflect {
+    -fx-scale-x: -1;
+}
+
+.custom-font {
+    -fx-font-size: 11px;
+}
+
+#descLabel {
+    -fx-text-fill: gray;
+}
+
+#nameLabel {
+    -fx-font-size: 14pt;
+    -fx-font-family: "SansSerif";
+    -fx-font-weight: bold;
+}
+
+.hyperlink {
+    -fx-border-width: 0;
+}

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
+<?import com.sergeybochkov.transmissionremote.helpers.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import com.sergeybochkov.transmissionremote.ui.cell.TorrentListCell?>
+<?import javafx.stage.Stage?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.image.Image?>
+<Stage xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.controller.AppController" fx:id="primaryStage">
+    <title>
+        <Settings fx:constant="appName" />
+    </title>
+    <icons>
+        <Image url="/style/transmission-remote.png" />
+    </icons>
+    <scene>
+        <Scene>
+            <VBox>
+                <MenuBar fx:id="menuBar">
+                    <Menu text="File">
+                        <MenuItem text="Change session" fx:id="sessionItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_GLOBE"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <MenuItem text="Add torrent" fx:id="addItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_FOLDER_OPEN_O"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Exit" fx:id="exitItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_SIGN_OUT"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                    </Menu>
+
+                    <Menu text="Edit">
+                        <MenuItem text="Start all torrents" fx:id="startAllItem">
+                            <graphic>
+                                <Label styleClass="icons, reflect">
+                                    <Settings fx:constant="ICON_REPLY_ALL"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <MenuItem text="Stop all torrents" fx:id="stopAllItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_SQUARE"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Start torrent" fx:id="startItem">
+                            <graphic>
+                                <Label styleClass="icons, reflect">
+                                    <Settings fx:constant="ICON_REPLY"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <MenuItem text="Stop torrent" fx:id="stopItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_SQUARE_O"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Info" fx:id="infoItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_INFO_CIRCLE"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <MenuItem text="Reannounce all torrents" fx:id="reannounceItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_REFRESH"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Delete torrent" fx:id="trashItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_TRASH"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                        <MenuItem text="Delete torrent with files" fx:id="deleteItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_BAN"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                    </Menu>
+
+                    <Menu text="Help">
+                        <MenuItem text="About" fx:id="aboutItem">
+                            <graphic>
+                                <Label styleClass="icons">
+                                    <Settings fx:constant="ICON_FLASK"/>
+                                </Label>
+                            </graphic>
+                        </MenuItem>
+                    </Menu>
+                </MenuBar>
+
+                <HBox alignment="center" spacing="10">
+
+                    <padding>
+                        <Insets top="10" bottom="10" left="10" right="10"/>
+                    </padding>
+
+                    <Button text="Start all" fx:id="startAllButton">
+                        <tooltip>
+                            <Tooltip text="Start all torrents"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons, reflect">
+                                <Settings fx:constant="ICON_REPLY_ALL"/>
+                            </Label>
+                        </graphic>
+                    </Button>
+
+                    <Button text="Stop all" fx:id="stopAllButton">
+                        <tooltip>
+                            <Tooltip text="Stop all torrents"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_SQUARE"/>
+                            </Label>
+                        </graphic>
+                    </Button>
+
+                    <ToggleButton fx:id="speedLimitButton" text="Speed limit" onAction="clicked()">
+                        <tooltip>
+                            <Tooltip text="Now speed limit is OFF"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_ROCKET"/>
+                            </Label>
+                        </graphic>
+                    </ToggleButton>
+
+                    <Button text="Delete" fx:id="trashButton">
+                        <tooltip>
+                            <Tooltip text="Remove selected torrents"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_TRASH"/>
+                            </Label>
+                        </graphic>
+                    </Button>
+
+                    <Button text="Info" fx:id="infoButton">
+                        <tooltip>
+                            <Tooltip text="Show info about selected torrent"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_INFO_CIRCLE"/>
+                            </Label>
+                        </graphic>
+                    </Button>
+
+                </HBox>
+
+                <ListView VBox.vgrow="ALWAYS" fx:id="torrentList">
+                    <cellFactory>
+                        <TorrentListCell/>
+                    </cellFactory>
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Start" fx:id="startContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_REPLY"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="Stop" fx:id="stopContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_SQUARE_O"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                                <SeparatorMenuItem/>
+                                <MenuItem text="Reannounce" fx:id="reannounceContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_REFRESH"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="Info" fx:id="infoContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_INFO_CIRCLE"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem mnemonicParsing="false" text="Delete" fx:id="trashContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_TRASH"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="Delete torrent and files" fx:id="deleteContextItem">
+                                    <graphic>
+                                        <Label styleClass="icons, reflect">
+                                            <Settings fx:constant="ICON_BAN"/>
+                                        </Label>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </ListView>
+
+                <HBox alignment="center" spacing="15">
+                    <padding>
+                        <Insets top="10" bottom="10" left="10" right="10"/>
+                    </padding>
+
+                    <Label fx:id="freeSpaceLabel">
+                        <tooltip>
+                            <Tooltip text="Free space left"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_HDD"/>
+                            </Label>
+                        </graphic>
+                    </Label>
+
+                    <Label fx:id="downSpeedLabel">
+                        <tooltip>
+                            <Tooltip text="Download speed"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_ARROW_DOWN"/>
+                            </Label>
+                        </graphic>
+                    </Label>
+
+                    <Label fx:id="upSpeedLabel">
+                        <tooltip>
+                            <Tooltip text="Upload speed"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_ARROW_UP"/>
+                            </Label>
+                        </graphic>
+                    </Label>
+
+                    <Label fx:id="ratingLabel">
+                        <tooltip>
+                            <Tooltip text="All-time rating"/>
+                        </tooltip>
+                        <graphic>
+                            <Label styleClass="icons">
+                                <Settings fx:constant="ICON_SIGNAL"/>
+                            </Label>
+                        </graphic>
+                    </Label>
+
+                </HBox>
+            </VBox>
+
+            <stylesheets>
+                <URL value="@/style/style.css"/>
+            </stylesheets>
+        </Scene>
+    </scene>
+</Stage>
