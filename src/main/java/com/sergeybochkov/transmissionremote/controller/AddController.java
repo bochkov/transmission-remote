@@ -49,7 +49,7 @@ public class AddController implements Initializable {
         openButton.setOnAction(event -> {
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Open a torrent file");
-            File dest = lastPath == null ? new File(System.getProperty("user.home")) : new File(lastPath);
+            File dest = lastPath == null || !new File(lastPath).exists() ? new File(System.getProperty("user.home")) : new File(lastPath);
             chooser.setInitialDirectory(dest);
             chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Torrent Files", "*.torrent"));
             files = chooser.showOpenMultipleDialog(null);
