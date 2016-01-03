@@ -5,7 +5,7 @@
 .icons {
     -fx-font-family: FontAwesome;
     -fx-text-fill: #333;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
 }
 
 .reflect {
@@ -13,7 +13,7 @@
 }
 
 .custom-font {
-    -fx-font-size: 11px;
+    -fx-font-size: 1em;
 }
 
 #descLabel {
@@ -21,7 +21,7 @@
 }
 
 #nameLabel {
-    -fx-font-size: 14pt;
+    -fx-font-size: 1em;
     -fx-font-family: "SansSerif";
     -fx-font-weight: bold;
 }
