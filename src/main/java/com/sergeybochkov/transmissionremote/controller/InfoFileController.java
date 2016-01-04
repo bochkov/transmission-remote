@@ -12,10 +12,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.TreeTableView;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InfoFileController {
@@ -24,7 +21,6 @@ public class InfoFileController {
     private ObservableList<TorrentFieldWrap> files = FXCollections.observableArrayList();
     private FileUpdateService service;
 
-    @SuppressWarnings("unchecked")
     public InfoFileController(ArrayList<Integer> ids, TreeTableView<TorrentFieldWrap> treeView) {
         service = new FileUpdateService(ids);
         service.setOnSucceeded(event -> {
@@ -67,8 +63,8 @@ public class InfoFileController {
                     ArrayList<TorrentFieldWrap> resArray = new ArrayList<>();
                     for (int i = 0; i < tf.getFiles().size(); ++i)
                         resArray.add(new TorrentFieldWrap(i, tf.getFiles().get(i), tf.getFileStats().get(i)));
+                    resArray.sort((o1, o2) -> o1.getInnerId().compareTo(o2.getInnerId()));
                     files.setAll(resArray);
-                    Collections.sort(files);
                     return files;
                 }
             };
