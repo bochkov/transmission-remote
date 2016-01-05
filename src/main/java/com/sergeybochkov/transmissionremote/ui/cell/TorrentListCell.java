@@ -4,14 +4,15 @@ import com.sergeybochkov.transmissionremote.helpers.Helpers;
 import com.sergeybochkov.transmissionremote.model.rpc.arguments.TorrentField;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
 
 import java.io.InputStream;
@@ -105,7 +106,7 @@ public class TorrentListCell<T> implements Callback<ListView<T>, ListCell<T>> {
 
         private Label createNameLabel() {
             Label label = new Label();
-            label.setFont(Font.font("SansSerif", FontWeight.BOLD, 12));
+            label.getStyleClass().add("header-font");
             label.setText(torrent.getName());
             return label;
         }

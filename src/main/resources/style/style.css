@@ -12,8 +12,13 @@
     -fx-scale-x: -1;
 }
 
-.custom-font {
+.header-font {
     -fx-font-size: 1em;
+    -fx-font-weight: bold;
+}
+
+.custom-font {
+    -fx-font-size: 0.9em;
 }
 
 #descLabel {
@@ -21,8 +26,7 @@
 }
 
 #nameLabel {
-    -fx-font-size: 1em;
-    -fx-font-family: "SansSerif";
+    -fx-font-size: 0.8em;
     -fx-font-weight: bold;
 }
 
