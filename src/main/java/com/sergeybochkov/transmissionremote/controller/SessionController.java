@@ -41,8 +41,8 @@ public class SessionController implements Initializable {
         passwordField.textProperty().setValue(passwordStr);
         authCheckbox.selectedProperty().setValue(authentication);
 
-        usernameField.disableProperty().bind(authCheckbox.selectedProperty());
-        passwordField.disableProperty().bind(authCheckbox.selectedProperty());
+        usernameField.disableProperty().bind(authCheckbox.selectedProperty().not());
+        passwordField.disableProperty().bind(authCheckbox.selectedProperty().not());
     }
 
     public void onCancel() {

@@ -249,7 +249,7 @@ public class AppController implements Initializable {
 
             boolean auth = Client.getInstance().getUsername().equals("") &&
                     Client.getInstance().getPassword().equals("");
-            controller.setAuthentication(auth);
+            controller.setAuthentication(!auth);
         }
 
         ((Stage) loader.getRoot()).setOnHidden(event -> {
