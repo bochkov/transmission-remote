@@ -27,7 +27,7 @@
                     <Label>Please select a torrent file to upload</Label>
 
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="Open" fx:id="openButton">
+                        <Button text="Open" fx:id="openButton" HBox.hgrow="NEVER">
                             <graphic>
                                 <Label styleClass="icons">
                                     <Settings fx:constant="ICON_FOLDER_OPEN" />
@@ -49,7 +49,7 @@
                 </VBox>
 
                 <HBox spacing="10" alignment="CENTER">
-                    <Button text="Ok" fx:id="okButton" onAction="#onOk" />
+                    <Button text="Ok" fx:id="okButton" onAction="#onOk" defaultButton="true" />
                     <Button text="Cancel" fx:id="cancelButton" onAction="#onCancel" />
                 </HBox>
             </VBox>
