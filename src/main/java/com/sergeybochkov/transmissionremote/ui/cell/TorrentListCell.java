@@ -34,7 +34,9 @@ public class TorrentListCell<T> implements Callback<ListView<T>, ListCell<T>> {
                 else if (item instanceof TorrentField) {
                     setText(null);
                     data.setFields((TorrentField) item);
-                    setGraphic(data.getBox());
+                    HBox box = data.getBox();
+                    box.setMaxWidth(p.getWidth() - 20);
+                    setGraphic(box);
                 }
                 else {
                     setText(item == null ? "null" : item.toString());
