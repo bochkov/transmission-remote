@@ -94,10 +94,7 @@ public class ServiceController {
             indexes.forEach(e -> listView.getSelectionModel().select((int) e));
 
             long completed = torrents.stream().filter(tf -> tf.getPercentDone() >= 1.0).count();
-            if (completed > 0)
-                com.apple.eawt.Application.getApplication().setDockIconBadge(String.valueOf(completed));
-            else
-                com.apple.eawt.Application.getApplication().setDockIconBadge(null);
+            com.apple.eawt.Application.getApplication().setDockIconBadge(completed > 0 ? String.valueOf(completed) : null);
         });
         service.setOnFailed(event -> torrents.clear());
         return service;

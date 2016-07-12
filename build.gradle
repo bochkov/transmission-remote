@@ -1,0 +1,44 @@
+plugins {
+    id "edu.sc.seis.macAppBundle" version "2.1.6"
+}
+
+group = 'com.sergeybochkov'
+version = '2.0'
+
+apply 'plugin': 'java'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories() {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.apache.httpcomponents:httpclient:4.5.2')
+    compile('com.intellij:annotations:12.0')
+    compile('com.google.code.gson:gson:2.7')
+    compile('com.apple:AppleJavaExtensions:1.4')
+
+    testCompile("junit:junit:4.11")
+}
+
+jar {
+    baseName = project.name
+    version = project.version
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
+
+macAppBundle {
+    appName = "Transmission Remote"
+    bundleIdentifier = "com.sergeybochkov.transmissionremote.ui.Main"
+    mainClassName = "com.sergeybochkov.transmissionremote.ui.Main"
+    icon = "src/main/resources/style/transmission-remote.icns"
+    javaProperties.put("apple.laf.useScreenBar", "true")
+}
+
+task dist {dependsOn createAppZip} << {
+}
