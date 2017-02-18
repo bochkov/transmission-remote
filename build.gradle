@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
 plugins {
     id "edu.sc.seis.macAppBundle" version "2.1.6"
 }
@@ -5,19 +14,19 @@ plugins {
 group = 'com.sergeybochkov'
 version = '2.0'
 
-apply 'plugin': 'java'
+apply plugin: "java"
+apply plugin: "com.jfrog.artifactory"
+apply plugin: "edu.sc.seis.macAppBundle"
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 repositories() {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    compile('org.apache.httpcomponents:httpclient:4.5.2')
-    compile('com.intellij:annotations:12.0')
-    compile('com.google.code.gson:gson:2.7')
+    compile('cordelia:cordelia:1.2.RELEASE')
     compile('com.apple:AppleJavaExtensions:1.4')
 
     testCompile("junit:junit:4.11")
@@ -28,10 +37,6 @@ jar {
     version = project.version
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-}
-
 macAppBundle {
     appName = "Transmission Remote"
     bundleIdentifier = "com.sergeybochkov.transmissionremote.ui.Main"
@@ -40,5 +45,24 @@ macAppBundle {
     javaProperties.put("apple.laf.useScreenBar", "true")
 }
 
-task dist {dependsOn createAppZip} << {
+task dist {
+    doLast {
+        createAppZip
+    }
+}
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"
+    publish {
+        repository {
+            repoKey = 'libs-release-local'
+            maven = true
+        }
+    }
+    resolve {
+        repository {
+            repoKey = 'libs-release'
+            maven = true
+        }
+    }
 }
