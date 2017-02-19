@@ -1,11 +1,13 @@
 package com.sergeybochkov.transmissionremote;
 
+import com.google.gson.Gson;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileReader;
 
 public final class TransmissionRemote extends Application {
 
@@ -57,7 +59,8 @@ public final class TransmissionRemote extends Application {
 
     public TransmissionRemote() throws Exception {
         Font.loadFont(getClass().getResource(FONT_AWESOME).toExternalForm(), 14);
-        props = new AppProperties();
+        props = new Gson().fromJson(
+                new FileReader(new File(SETTING_DIR, SETTING_FILE)), AppProperties.class);
         mainView = new View(MAIN_LAYOUT, props)
                 .children(
                         new View(SESSION_DIALOG_LAYOUT, props),
@@ -72,5 +75,12 @@ public final class TransmissionRemote extends Application {
     public void start(Stage stage) throws Exception {
         mainView.stage().show();
         mainView.target(Main.class).start();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        //props.setWidth(mainView.stage().getWidth());
+        //props.setHeight(mainView.stage().getHeight());
+        //props.save();
     }
 }
