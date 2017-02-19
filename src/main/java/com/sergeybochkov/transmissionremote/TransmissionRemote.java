@@ -56,6 +56,7 @@ public final class TransmissionRemote extends Application {
     private static final String MAIN_LAYOUT = "/ui/main.fxml";
     private static final String SESSION_DIALOG_LAYOUT = "/ui/session.fxml";
     private static final String ABOUT_DIALOG_LAYOUT = "/ui/about.fxml";
+    private static final String ADD_DIALOG_LAYOUT = "/ui/add.fxml";
 
     private final View mainView;
     private final AppProperties props;
@@ -71,6 +72,7 @@ public final class TransmissionRemote extends Application {
                 new AppProperties();
         mainView = new View(MAIN_LAYOUT, props)
                 .children(
+                        new View(ADD_DIALOG_LAYOUT, props),
                         new View(SESSION_DIALOG_LAYOUT, props),
                         new View(ABOUT_DIALOG_LAYOUT, props));
     }

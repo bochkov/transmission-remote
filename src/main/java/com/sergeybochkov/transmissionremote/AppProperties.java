@@ -1,5 +1,7 @@
 package com.sergeybochkov.transmissionremote;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,8 +31,10 @@ public final class AppProperties {
     }
 
     private class Dirs {
+        @SerializedName("last-destination")
         private String lastDestination;
-        private String lastOpenDialogPath;
+        @SerializedName("last-open-path")
+        private String lastOpenPath;
     }
 
     public String uri() {
@@ -96,5 +100,25 @@ public final class AppProperties {
 
     public void setHeight(double height) {
         stage.height = (int) height;
+    }
+
+    public String lastDestination() {
+        if (dirs.lastDestination == null)
+            setLastDestination("");
+        return dirs.lastDestination;
+    }
+
+    public void setLastDestination(String path) {
+        dirs.lastDestination = path;
+    }
+
+    public String lastOpenPath() {
+        if (dirs.lastOpenPath == null)
+            setLastOpenPath("");
+        return dirs.lastOpenPath;
+    }
+
+    public void setLastOpenPath(String path) {
+        dirs.lastOpenPath = path;
     }
 }

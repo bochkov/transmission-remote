@@ -17,7 +17,7 @@
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Add torrent" fx:id="addItem" onAction="#add">
+            <MenuItem text="Add torrent" fx:id="addItem" onAction="#add" accelerator="meta+D">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_FOLDER_OPEN_O"/>

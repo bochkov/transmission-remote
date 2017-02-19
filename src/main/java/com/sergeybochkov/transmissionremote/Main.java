@@ -138,6 +138,22 @@ public final class Main implements MainTarget {
                 .get("session")
                 .target(Session.class)
                 .callback(this::restart);
+        this.views
+                .get("add")
+                .target(Add.class)
+                .callback(objects -> {
+                    if (objects.length == 3) {
+                        List files = (List) objects[0];
+                        String url = (String) objects[1];
+                        String dir = (String) objects[2];
+                        if (!files.isEmpty()) {
+                            for (Object file : files)
+                                if (file instanceof File)
+                                    addTorrent((File) file, dir);
+                        } else if (!url.isEmpty())
+                            addTorrent(url, dir);
+                    }
+                });
     }
 
     public void start() {
@@ -340,7 +356,10 @@ public final class Main implements MainTarget {
 
     @FXML
     private void add() {
-
+        this.views
+                .get("add")
+                .stage()
+                .show();
     }
 
     @FXML

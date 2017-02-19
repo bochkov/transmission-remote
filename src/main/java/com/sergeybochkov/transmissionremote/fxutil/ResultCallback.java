@@ -5,7 +5,7 @@ import java.io.IOException;
 public interface ResultCallback {
 
     interface Callback {
-        void call(Object object) throws IOException;
+        void call(Object... objects) throws IOException;
     }
 
     Target callback(ResultCallback.Callback callback);

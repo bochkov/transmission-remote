@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.sergeybochkov.transmissionremote.TransmissionRemote?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Add"
+      minHeight="100" minWidth="400" spacing="10">
+    <padding>
+        <Insets top="10" left="10" bottom="10" right="10"/>
+    </padding>
+    <VBox spacing="3">
+        <Label>Select torrent file to upload</Label>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Open" fx:id="openButton" HBox.hgrow="NEVER">
+                <graphic>
+                    <Label styleClass="icons">
+                        <TransmissionRemote fx:constant="ICON_FOLDER_OPEN"/>
+                    </Label>
+                </graphic>
+            </Button>
+            <Label fx:id="filesLabel">Files not selected</Label>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="3">
+        <Label>Or enter a URL</Label>
+        <TextField fx:id="urlField"/>
+    </VBox>
+
+    <VBox spacing="3">
+        <Label fx:id="destinationLabel"/>
+        <TextField fx:id="destinationField"/>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Ok" onAction="#onOk" defaultButton="true"/>
+        <Button text="Cancel" onAction="#onCancel"/>
+    </HBox>
+    <stylesheets>
+        <URL value="@/style/style.css"/>
+    </stylesheets>
+</VBox>
