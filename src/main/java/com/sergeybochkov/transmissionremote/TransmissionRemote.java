@@ -1,6 +1,7 @@
 package com.sergeybochkov.transmissionremote;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import javafx.application.Application;
 import javafx.scene.text.Font;
@@ -8,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public final class TransmissionRemote extends Application {
 
@@ -15,10 +18,10 @@ public final class TransmissionRemote extends Application {
     public static final String LOGO = "/style/transmission-remote.png";
     public static final String FONT_AWESOME = "/style/fontawesome-webfont.woff";
     public static final String SETTING_DIR = System.getProperty("user.home") + File.separator + ".transmissionremote";
-    public static final String SETTING_FILE = "settings.json";
+    public static final String SETTING_FILE = "settings2.json";
 
-    public static final int MIN_HEIGHT = 600;
-    public static final int MIN_WIDTH = 450;
+    public static final int MIN_HEIGHT = 650;
+    public static final int MIN_WIDTH = 500;
 
     public static final int updateSessionInterval = 3000;
     public static final int updateListInterval = 1500;
@@ -59,8 +62,13 @@ public final class TransmissionRemote extends Application {
 
     public TransmissionRemote() throws Exception {
         Font.loadFont(getClass().getResource(FONT_AWESOME).toExternalForm(), 14);
-        props = new Gson().fromJson(
-                new FileReader(new File(SETTING_DIR, SETTING_FILE)), AppProperties.class);
+        File propsFile = new File(SETTING_DIR, SETTING_FILE);
+        if (!propsFile.getParentFile().exists() && !propsFile.getParentFile().mkdirs()) {
+            throw new IOException(String.format("Cannot create user dir %s", propsFile.getParent()));
+        }
+        props = propsFile.exists() ?
+                new Gson().fromJson(new FileReader(propsFile), AppProperties.class) :
+                new AppProperties();
         mainView = new View(MAIN_LAYOUT, props)
                 .children(
                         new View(SESSION_DIALOG_LAYOUT, props),
@@ -79,8 +87,13 @@ public final class TransmissionRemote extends Application {
 
     @Override
     public void stop() throws Exception {
-        //props.setWidth(mainView.stage().getWidth());
-        //props.setHeight(mainView.stage().getHeight());
-        //props.save();
+        props.setWidth(mainView.stage().getWidth());
+        props.setHeight(mainView.stage().getHeight());
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        try (FileWriter writer = new FileWriter(new File(SETTING_DIR, SETTING_FILE))) {
+            gson.toJson(props, writer);
+        }
     }
 }

@@ -34,11 +34,13 @@ public final class AppProperties {
     }
 
     public String uri() {
+        if (client.url == null)
+            setUrl("http://127.0.0.1:9091/transmission/rpc", "username", "password");
         return client.url;
     }
 
     public String url() {
-        Matcher m = FULL_URL.matcher(client.url);
+        Matcher m = FULL_URL.matcher(uri());
         if (m.find()) {
             return String.format("%s%s:%s/%s",
                     m.group("protocol"),
@@ -47,6 +49,20 @@ public final class AppProperties {
                     m.group("path"));
         } else
             return "";
+    }
+
+    public String username() {
+        Matcher m = FULL_URL.matcher(uri());
+        return m.find() ?
+                m.group("username") :
+                "";
+    }
+
+    public String password() {
+        Matcher m = FULL_URL.matcher(uri());
+        return m.find() ?
+                m.group("password") :
+                "";
     }
 
     public void setUrl(String url, String username, String password) {
@@ -63,10 +79,22 @@ public final class AppProperties {
     }
 
     public int width() {
+        if (stage.width == null)
+            setWidth(TransmissionRemote.MIN_WIDTH);
         return stage.width;
     }
 
+    public void setWidth(double width) {
+        stage.width = (int) width;
+    }
+
     public int height() {
+        if (stage.height == null)
+            setHeight(TransmissionRemote.MIN_HEIGHT);
         return stage.height;
+    }
+
+    public void setHeight(double height) {
+        stage.height = (int) height;
     }
 }

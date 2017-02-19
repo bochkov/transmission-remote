@@ -28,8 +28,9 @@ public final class Main implements MainTarget {
         stage.setTitle(TransmissionRemote.APP_NAME);
         stage.setMinWidth(TransmissionRemote.MIN_WIDTH);
         stage.setMinHeight(TransmissionRemote.MIN_HEIGHT);
+        stage.setHeight(props.height());
+        stage.setWidth(props.width());
         stage.getIcons().add(new Image(Main.class.getResourceAsStream(TransmissionRemote.LOGO)));
-
     }
 
     @Override

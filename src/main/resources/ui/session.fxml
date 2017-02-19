@@ -3,7 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" fx:controller="com.sergeybochkov.transmissionremote.Session">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Session"
+      spacing="10">
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
     </padding>
@@ -12,20 +13,20 @@
             <Insets top="10" left="10" bottom="10" right="10"/>
         </padding>
 
-        <Label text="Server" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="serverField"/>
+        <Label text="URL" GridPane.halignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="server"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS"/>
 
-        <Label text="Port" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="portField"/>
+        <CheckBox fx:id="auth" text="Authentication"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
 
-        <CheckBox text="Authentication" fx:id="authCheckbox"
-                  GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+        <Label text="Username" GridPane.halignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="username"
+                   GridPane.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-        <Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="usernameField"/>
-
-        <Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="passwordField"/>
+        <Label text="Password" GridPane.halignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <PasswordField fx:id="password"
+                       GridPane.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     </GridPane>
     <HBox spacing="10" alignment="CENTER">
         <Button text="OK" onAction="#onOk" defaultButton="true"/>

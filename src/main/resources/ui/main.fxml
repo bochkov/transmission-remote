@@ -130,7 +130,7 @@
                 </Label>
             </graphic>
         </Button>
-        <ToggleButton fx:id="speedLimitButton" text="Speed limit" onAction="clicked()">
+        <ToggleButton fx:id="speedLimitButton" text="Speed limit">
             <tooltip>
                 <Tooltip text="Now speed limit is OFF"/>
             </tooltip>
