@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public final class Size {
 
+    private static final String[] SIZES = {"B", "kB", "MB", "GB", "TB"};
+
     private final BigDecimal size;
 
     public Size(BigDecimal size) {
@@ -12,6 +14,12 @@ public final class Size {
 
     @Override
     public String toString() {
-        return size.toPlainString();
+        double res = size.doubleValue();
+        int count = 0;
+        while (res >= 1000) {
+            res /= 1000;
+            ++count;
+        }
+        return String.format("%.3f %s", res, SIZES[count]);
     }
 }
