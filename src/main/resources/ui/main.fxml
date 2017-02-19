@@ -9,7 +9,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Main">
     <MenuBar useSystemMenuBar="true">
         <Menu text="File">
-            <MenuItem text="Change session" fx:id="sessionItem">
+            <MenuItem text="Change session" onAction="#session">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_GLOBE"/>
@@ -107,11 +107,9 @@
     </MenuBar>
 
     <HBox alignment="center" spacing="10">
-
         <padding>
             <Insets top="10" bottom="10" left="10" right="10"/>
         </padding>
-
         <Button text="Start all" fx:id="startAllButton">
             <tooltip>
                 <Tooltip text="Start all torrents"/>
@@ -122,7 +120,6 @@
                 </Label>
             </graphic>
         </Button>
-
         <Button text="Stop all" fx:id="stopAllButton">
             <tooltip>
                 <Tooltip text="Stop all torrents"/>
@@ -133,7 +130,6 @@
                 </Label>
             </graphic>
         </Button>
-
         <ToggleButton fx:id="speedLimitButton" text="Speed limit" onAction="clicked()">
             <tooltip>
                 <Tooltip text="Now speed limit is OFF"/>
@@ -144,7 +140,6 @@
                 </Label>
             </graphic>
         </ToggleButton>
-
         <Button text="Delete" fx:id="trashButton">
             <tooltip>
                 <Tooltip text="Remove selected torrents"/>
@@ -155,7 +150,6 @@
                 </Label>
             </graphic>
         </Button>
-
         <Button text="Info" fx:id="infoButton">
             <tooltip>
                 <Tooltip text="Show info about selected torrent"/>
@@ -166,7 +160,6 @@
                 </Label>
             </graphic>
         </Button>
-
     </HBox>
 
     <ListView VBox.vgrow="ALWAYS" fx:id="torrentList">
@@ -226,7 +219,6 @@
         <padding>
             <Insets top="10" bottom="10" left="10" right="10"/>
         </padding>
-
         <Label fx:id="freeSpaceLabel">
             <tooltip>
                 <Tooltip text="Free space left"/>
@@ -237,7 +229,6 @@
                 </Label>
             </graphic>
         </Label>
-
         <Label fx:id="downSpeedLabel">
             <tooltip>
                 <Tooltip text="Download speed"/>
@@ -248,7 +239,6 @@
                 </Label>
             </graphic>
         </Label>
-
         <Label fx:id="upSpeedLabel">
             <tooltip>
                 <Tooltip text="Upload speed"/>
@@ -259,7 +249,6 @@
                 </Label>
             </graphic>
         </Label>
-
         <Label fx:id="ratingLabel">
             <tooltip>
                 <Tooltip text="All-time rating"/>

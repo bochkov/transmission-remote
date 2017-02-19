@@ -39,8 +39,8 @@ jar {
 
 macAppBundle {
     appName = "Transmission Remote"
-    bundleIdentifier = "com.sergeybochkov.transmissionremote.ui.Main"
-    mainClassName = "com.sergeybochkov.transmissionremote.ui.Main"
+    bundleIdentifier = "com.sergeybochkov.transmissionremote.ui.TransmissionRemote"
+    mainClassName = "com.sergeybochkov.transmissionremote.ui.TransmissionRemote"
     icon = "src/main/resources/style/transmission-remote.icns"
     javaProperties.put("apple.laf.useScreenBar", "true")
 }

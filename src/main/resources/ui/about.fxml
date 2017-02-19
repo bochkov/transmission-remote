@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
+
+<?import com.sergeybochkov.transmissionremote.TransmissionRemote?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.About"
+      alignment="CENTER" minHeight="350" minWidth="350" spacing="10">
+
+    <ImageView>
+        <Image url="/style/transmission-remote.png"/>
+    </ImageView>
+    <Label id="nameLabel">
+        <TransmissionRemote fx:constant="APP_NAME"/>
+    </Label>
+    <Label text="Remote client for Transmission daemon" id="descLabel" />
+    <Label fx:id="dateLabel" />
+
+    <VBox alignment="CENTER">
+        <Hyperlink text="bochkov.sa@gmail.com" visited="true" onAction="#mailClick">
+            <graphic>
+                <Label styleClass="icons">
+                    <TransmissionRemote fx:constant="ICON_ENVELOPE_O"/>
+                </Label>
+            </graphic>
+        </Hyperlink>
+        <Hyperlink text="http://sergeybochkov.com" visited="true" onAction="#urlClick">
+            <graphic>
+                <Label styleClass="icons">
+                    <TransmissionRemote fx:constant="ICON_LINK"/>
+                </Label>
+            </graphic>
+        </Hyperlink>
+    </VBox>
+    <stylesheets>
+        <URL value="@/style/style.css"/>
+    </stylesheets>
+</VBox>

@@ -10,7 +10,7 @@ import java.io.File;
 public final class TransmissionRemote extends Application {
 
     public static final String APP_NAME = "Transmission Remote";
-
+    public static final String LOGO = "/style/transmission-remote.png";
     public static final String FONT_AWESOME = "/style/fontawesome-webfont.woff";
     public static final String SETTING_DIR = System.getProperty("user.home") + File.separator + ".transmissionremote";
     public static final String SETTING_FILE = "settings.json";
@@ -48,15 +48,20 @@ public final class TransmissionRemote extends Application {
     public static final String ICON_ENVELOPE_O = "\uf003";
     public static final String ICON_LINK = "\uf0c1";
 
+    private static final String MAIN_LAYOUT = "/ui/main.fxml";
+    private static final String SESSION_DIALOG_LAYOUT = "/ui/session.fxml";
+    private static final String ABOUT_DIALOG_LAYOUT = "/ui/about.fxml";
+
     private final View mainView;
     private final AppProperties props;
 
     public TransmissionRemote() throws Exception {
         Font.loadFont(getClass().getResource(FONT_AWESOME).toExternalForm(), 14);
         props = new AppProperties();
-        mainView = new View("/ui/main_layout.fxml", props)
+        mainView = new View(MAIN_LAYOUT, props)
                 .children(
-                        new View("/ui/about_layout.fxml", props));
+                        new View(SESSION_DIALOG_LAYOUT, props),
+                        new View(ABOUT_DIALOG_LAYOUT, props));
     }
 
     public static void main(String[] args) throws Exception {
@@ -66,5 +71,6 @@ public final class TransmissionRemote extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainView.stage().show();
+        mainView.target(Main.class).start();
     }
 }
