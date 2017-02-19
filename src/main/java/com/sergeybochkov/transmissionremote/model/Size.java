@@ -18,6 +18,6 @@ public final class Size {
             res /= 1000;
             ++count;
         }
-        return String.format("%.3f %s", res, SIZES[count]);
+        return String.format("%.2f %s", res, SIZES[count]);
     }
 }

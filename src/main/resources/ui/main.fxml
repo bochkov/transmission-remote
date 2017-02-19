@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?language javascript?>
 <?import com.sergeybochkov.transmissionremote.*?>
+<?import com.sergeybochkov.transmissionremote.ui.TorrentCell?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
@@ -162,7 +163,10 @@
         </Button>
     </HBox>
 
-    <ListView VBox.vgrow="ALWAYS" fx:id="torrentList">
+    <ListView VBox.vgrow="ALWAYS" fx:id="torrents">
+        <cellFactory>
+            <TorrentCell />
+        </cellFactory>
         <contextMenu>
             <ContextMenu>
                 <items>

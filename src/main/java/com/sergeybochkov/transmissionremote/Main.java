@@ -4,21 +4,36 @@ import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.Speed;
+import com.sergeybochkov.transmissionremote.model.Torrent;
+import com.sergeybochkov.transmissionremote.model.TorrentComparator;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
 import cordelia.rpc.SessionGet;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class Main implements MainTarget {
 
@@ -27,9 +42,12 @@ public final class Main implements MainTarget {
     private final AppProperties props;
 
     private final Map<String, Object> session = new HashMap<>();
+    private final ObservableList<Torrent> items = FXCollections.observableArrayList();
 
     @FXML
     private Label freeSpace, downSpeed, upSpeed, rating;
+    @FXML
+    private ListView<Torrent> torrents;
 
     private TrClient client;
     private TorrentSchedule torrentSchedule;
@@ -49,6 +67,32 @@ public final class Main implements MainTarget {
         stage.setHeight(props.height());
         stage.setWidth(props.width());
         stage.getIcons().add(new Image(Main.class.getResourceAsStream(TransmissionRemote.LOGO)));
+        torrents.itemsProperty().bind(new SimpleListProperty<>(items));
+        torrents.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        torrents.setOnMouseClicked((MouseEvent ev) -> {
+            EventTarget target = ev.getTarget();
+            if (target instanceof ListCell) {
+                ListCell cell = (ListCell) target;
+                if (cell.getGraphic() == null)
+                    torrents.getSelectionModel().select(-1);
+            }
+            ev.consume();
+        });
+        torrents.setOnDragOver((DragEvent ev) -> {
+            ev.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            ev.consume();
+        });
+        torrents.setOnDragDropped((DragEvent ev) -> {
+            Dragboard db = ev.getDragboard();
+            List<File> files = db.getFiles();
+            if (files.size() == 0) {
+                // add by url  db.getUrl()
+            } else {
+                // add by file
+            }
+            ev.setDropCompleted(true);
+            ev.consume();
+        });
     }
 
     @Override
@@ -69,8 +113,21 @@ public final class Main implements MainTarget {
             // TORRENT-UPDATE
             torrentSchedule = new TorrentSchedule(client);
             torrentSchedule.setOnSucceeded(event -> {
-                for (Object obj : (List) event.getSource().getValue())
-                    Logger.debug(this, "%s", obj);
+                List<Integer> indexes = torrents
+                        .getSelectionModel()
+                        .getSelectedIndices()
+                        .stream()
+                        .collect(Collectors.toList());
+                List list = (List) event.getSource().getValue();
+                items.clear();
+                for (Object obj : list) {
+                    if (obj instanceof Torrent)
+                        items.add((Torrent) obj);
+                }
+                items.sort(new TorrentComparator());
+                indexes.forEach(i -> torrents.getSelectionModel().select(i));
+                long completed = torrents.getItems().stream().filter(Torrent::completed).count();
+                com.apple.eawt.Application.getApplication().setDockIconBadge(completed > 0 ? String.valueOf(completed) : "");
             });
             torrentSchedule.setOnFailed(event ->
                     Logger.warn(this, "%s" , event.getSource().getException()));
