@@ -17,10 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -44,6 +41,8 @@ public final class Main implements MainTarget {
     private final Map<String, Object> session = new HashMap<>();
     private final ObservableList<Torrent> items = FXCollections.observableArrayList();
 
+    @FXML
+    private Button startAllButton, stopAllButton, trashButton, infoButton;
     @FXML
     private Label freeSpace, downSpeed, upSpeed, rating;
     @FXML
@@ -93,6 +92,10 @@ public final class Main implements MainTarget {
             ev.setDropCompleted(true);
             ev.consume();
         });
+        trashButton.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        infoButton.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
     }
 
     @Override
@@ -169,6 +172,7 @@ public final class Main implements MainTarget {
         }
         if (torrentSchedule != null) {
             torrentSchedule.cancel();
+            items.clear();
         }
         start();
     }
