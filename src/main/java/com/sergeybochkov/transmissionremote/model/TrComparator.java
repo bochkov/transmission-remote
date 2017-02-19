@@ -2,9 +2,9 @@ package com.sergeybochkov.transmissionremote.model;
 
 import java.util.Comparator;
 
-public class TorrentComparator implements Comparator<Torrent> {
+public class TrComparator implements Comparator<Tr> {
     @Override
-    public int compare(Torrent o1, Torrent o2) {
+    public int compare(Tr o1, Tr o2) {
         return Integer.compare(o1.id(), o2.id());
     }
 }

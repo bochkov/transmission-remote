@@ -1,17 +1,20 @@
 package com.sergeybochkov.transmissionremote;
 
-import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.Speed;
-import com.sergeybochkov.transmissionremote.model.Torrent;
-import com.sergeybochkov.transmissionremote.model.TorrentComparator;
+import com.sergeybochkov.transmissionremote.model.Tr;
+import com.sergeybochkov.transmissionremote.model.TrComparator;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
 import cordelia.rpc.SessionGet;
+import cordelia.rpc.Torrent;
+import cordelia.rpc.TorrentAdd;
+import cordelia.rpc.TorrentRemove;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,9 +27,11 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +44,18 @@ public final class Main implements MainTarget {
     private final AppProperties props;
 
     private final Map<String, Object> session = new HashMap<>();
-    private final ObservableList<Torrent> items = FXCollections.observableArrayList();
+    private final ObservableList<Tr> items = FXCollections.observableArrayList();
 
+    @FXML
+    private MenuItem addItem, exitItem, startAllItem, stopAllItem, startItem, stopItem, infoItem, reannounceItem, trashItem, deleteItem;
+    @FXML
+    private MenuItem startContextItem, stopContextItem, reannounceContextItem, infoContextItem, trashContextItem, deleteContextItem;
     @FXML
     private Button startAllButton, stopAllButton, trashButton, infoButton;
     @FXML
     private Label freeSpace, downSpeed, upSpeed, rating;
     @FXML
-    private ListView<Torrent> torrents;
+    private ListView<Tr> torrents;
 
     private TrClient client;
     private TorrentSchedule torrentSchedule;
@@ -85,13 +94,37 @@ public final class Main implements MainTarget {
             Dragboard db = ev.getDragboard();
             List<File> files = db.getFiles();
             if (files.size() == 0) {
-                // add by url  db.getUrl()
+                addTorrent(db.getUrl());
             } else {
-                // add by file
+                files.forEach(this::addTorrent);
             }
             ev.setDropCompleted(true);
             ev.consume();
         });
+        startItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        stopItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        infoItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        reannounceItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        trashItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        deleteItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        startContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        stopContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        infoContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        reannounceContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        trashContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        deleteContextItem.disableProperty().bind(
+                torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         trashButton.disableProperty().bind(
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         infoButton.disableProperty().bind(
@@ -124,22 +157,19 @@ public final class Main implements MainTarget {
                 List list = (List) event.getSource().getValue();
                 items.clear();
                 for (Object obj : list) {
-                    if (obj instanceof Torrent)
-                        items.add((Torrent) obj);
+                    if (obj instanceof Tr)
+                        items.add((Tr) obj);
                 }
-                items.sort(new TorrentComparator());
+                items.sort(new TrComparator());
                 indexes.forEach(i -> torrents.getSelectionModel().select(i));
-                long completed = torrents.getItems().stream().filter(Torrent::completed).count();
+                long completed = torrents.getItems().stream().filter(Tr::completed).count();
                 com.apple.eawt.Application.getApplication().setDockIconBadge(completed > 0 ? String.valueOf(completed) : "");
             });
-            torrentSchedule.setOnFailed(event ->
-                    Logger.warn(this, "%s" , event.getSource().getException()));
             torrentSchedule.start();
             // SESSION-UPDATE
             sessionSchedule = new SessionSchedule(client);
             sessionSchedule.setOnSucceeded(event -> {
                 Map map = (Map) event.getSource().getValue();
-                Logger.debug(this, "%s", map);
                 Map cumul = (Map) map.get("cumulative-stats");
                 rating.setText(String.format("%.2f",
                         (double) cumul.get("uploadedBytes") / (double) cumul.get("downloadedBytes")));
@@ -181,6 +211,117 @@ public final class Main implements MainTarget {
 
     }
 
+    private void alert(Exception ex) {
+        new Alert(Alert.AlertType.ERROR, ex.getMessage()).showAndWait();
+    }
+
+    private Object[] allIds() {
+        return torrents.getItems()
+                .stream()
+                .map(Tr::id)
+                .toArray();
+    }
+
+    private Object[] selectedIds() {
+        return torrents.getSelectionModel().getSelectedItems()
+                .stream()
+                .map(Tr::id)
+                .toArray();
+    }
+
+    private void addTorrent(String url) {
+        addTorrent(url, (String) session.get("download-dir"));
+    }
+
+    private void addTorrent(String url, String directory) {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("filename", url);
+            map.put("download-dir", directory);
+            client.post(new TorrentAdd(map));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    private void addTorrent(File file) {
+        addTorrent(file, (String) session.get("download-dir"));
+    }
+
+    private void addTorrent(File file, String directory) {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("metainfo", Base64.getEncoder().encode(FileUtils.readFileToByteArray(file)));
+            map.put("download-dir", directory);
+            client.post(new TorrentAdd(map));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void startAll() {
+        try {
+            client.post(new Torrent(Torrent.Action.START, allIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void stopAll() {
+        try {
+            client.post(new Torrent(Torrent.Action.STOP, allIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void startTorrent() {
+        try {
+            client.post(new Torrent(Torrent.Action.START, selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void stopTorrent() {
+        try {
+            client.post(new Torrent(Torrent.Action.STOP, selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void reannounceTorrent() {
+        try {
+            client.post(new Torrent(Torrent.Action.REANNOUNCE, selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void deleteTorrent() {
+        try {
+            client.post(new TorrentRemove(true, selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void trashTorrent() {
+        try {
+            client.post(new TorrentRemove(selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
     @FXML
     private void about() {
         this.views
@@ -195,5 +336,20 @@ public final class Main implements MainTarget {
                 .get("session")
                 .stage()
                 .show();
+    }
+
+    @FXML
+    private void add() {
+
+    }
+
+    @FXML
+    private void info() {
+
+    }
+
+    @FXML
+    private void close() {
+        Platform.exit();
     }
 }

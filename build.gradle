@@ -26,6 +26,7 @@ repositories() {
 }
 
 dependencies {
+    compile('commons-io:commons-io:2.5')
     compile('cordelia:cordelia:1.2.1.RELEASE')
     compile('com.apple:AppleJavaExtensions:1.4')
 
@@ -39,8 +40,8 @@ jar {
 
 macAppBundle {
     appName = "Transmission Remote"
-    bundleIdentifier = "com.sergeybochkov.transmissionremote.ui.TransmissionRemote"
-    mainClassName = "com.sergeybochkov.transmissionremote.ui.TransmissionRemote"
+    bundleIdentifier = "com.sergeybochkov.transmissionremote.TransmissionRemote"
+    mainClassName = "com.sergeybochkov.transmissionremote.TransmissionRemote"
     icon = "src/main/resources/style/transmission-remote.icns"
     javaProperties.put("apple.laf.useScreenBar", "true")
 }

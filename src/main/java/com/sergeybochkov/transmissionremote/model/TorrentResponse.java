@@ -7,9 +7,9 @@ import java.util.Map;
 public final class TorrentResponse implements Serializable {
 
     private String result;
-    private Map<String, List<Torrent>> arguments;
+    private Map<String, List<Tr>> arguments;
 
-    public List<Torrent> torrents() {
+    public List<Tr> torrents() {
         return arguments.get("torrents");
     }
 

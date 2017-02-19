@@ -1,8 +1,8 @@
 package com.sergeybochkov.transmissionremote.scheduled;
 
 import com.sergeybochkov.transmissionremote.TransmissionRemote;
-import com.sergeybochkov.transmissionremote.model.Torrent;
 import com.sergeybochkov.transmissionremote.model.TorrentResponse;
+import com.sergeybochkov.transmissionremote.model.Tr;
 import cordelia.client.TrClient;
 import cordelia.rpc.TorrentGet;
 import javafx.concurrent.ScheduledService;
@@ -12,7 +12,7 @@ import javafx.util.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-public final class TorrentSchedule extends ScheduledService<List<Torrent>> {
+public final class TorrentSchedule extends ScheduledService<List<Tr>> {
 
     private static final List<String> FIELDS = Arrays.asList(
             "id", "name", "percentDone", "peersSendingToUs",
@@ -30,10 +30,10 @@ public final class TorrentSchedule extends ScheduledService<List<Torrent>> {
     }
 
     @Override
-    protected Task<List<Torrent>> createTask() {
-        return new Task<List<Torrent>>() {
+    protected Task<List<Tr>> createTask() {
+        return new Task<List<Tr>>() {
             @Override
-            protected List<Torrent> call() throws Exception {
+            protected List<Tr> call() throws Exception {
                 return client.post(new TorrentGet(FIELDS), TorrentResponse.class).torrents();
             }
         };

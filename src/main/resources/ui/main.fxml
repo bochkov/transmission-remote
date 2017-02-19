@@ -17,7 +17,7 @@
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Add torrent" fx:id="addItem">
+            <MenuItem text="Add torrent" fx:id="addItem" onAction="#add">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_FOLDER_OPEN_O"/>
@@ -25,7 +25,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem text="Exit" fx:id="exitItem">
+            <MenuItem text="Exit" fx:id="exitItem" onAction="#close">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_SIGN_OUT"/>
@@ -35,14 +35,14 @@
         </Menu>
 
         <Menu text="Edit">
-            <MenuItem text="Start all torrents" fx:id="startAllItem">
+            <MenuItem text="Start all torrents" fx:id="startAllItem" onAction="#startAll">
                 <graphic>
                     <Label styleClass="icons, reflect">
                         <TransmissionRemote fx:constant="ICON_REPLY_ALL"/>
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Stop all torrents" fx:id="stopAllItem">
+            <MenuItem text="Stop all torrents" fx:id="stopAllItem" onAction="#stopAll">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_SQUARE"/>
@@ -50,14 +50,14 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem text="Start torrent" fx:id="startItem">
+            <MenuItem text="Start torrent" fx:id="startItem" onAction="#startTorrent">
                 <graphic>
                     <Label styleClass="icons, reflect">
                         <TransmissionRemote fx:constant="ICON_REPLY"/>
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Stop torrent" fx:id="stopItem">
+            <MenuItem text="Stop torrent" fx:id="stopItem" onAction="#stopTorrent">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_SQUARE_O"/>
@@ -65,14 +65,14 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem text="Info" fx:id="infoItem">
+            <MenuItem text="Info" fx:id="infoItem" onAction="#info">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_INFO_CIRCLE"/>
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Reannounce all torrents" fx:id="reannounceItem">
+            <MenuItem text="Reannounce all torrents" fx:id="reannounceItem" onAction="#reannounceTorrent">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_REFRESH"/>
@@ -80,14 +80,14 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem text="Delete torrent" fx:id="trashItem">
+            <MenuItem text="Delete torrent" fx:id="trashItem" onAction="#trashTorrent">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_TRASH"/>
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Delete torrent with files" fx:id="deleteItem">
+            <MenuItem text="Delete torrent with files" fx:id="deleteItem" onAction="#deleteTorrent">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_BAN"/>
@@ -111,7 +111,7 @@
         <padding>
             <Insets top="10" bottom="10" left="10" right="10"/>
         </padding>
-        <Button text="Start all" fx:id="startAllButton">
+        <Button text="Start all" fx:id="startAllButton" onAction="#startAll">
             <tooltip>
                 <Tooltip text="Start all torrents"/>
             </tooltip>
@@ -121,7 +121,7 @@
                 </Label>
             </graphic>
         </Button>
-        <Button text="Stop all" fx:id="stopAllButton">
+        <Button text="Stop all" fx:id="stopAllButton" onAction="#stopAll">
             <tooltip>
                 <Tooltip text="Stop all torrents"/>
             </tooltip>
@@ -141,7 +141,7 @@
                 </Label>
             </graphic>
         </ToggleButton>
-        <Button text="Delete" fx:id="trashButton">
+        <Button text="Delete" fx:id="trashButton" onAction="#trashTorrent">
             <tooltip>
                 <Tooltip text="Remove selected torrents"/>
             </tooltip>
@@ -151,7 +151,7 @@
                 </Label>
             </graphic>
         </Button>
-        <Button text="Info" fx:id="infoButton">
+        <Button text="Info" fx:id="infoButton" onAction="#info">
             <tooltip>
                 <Tooltip text="Show info about selected torrent"/>
             </tooltip>
@@ -170,14 +170,14 @@
         <contextMenu>
             <ContextMenu>
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Start" fx:id="startContextItem">
+                    <MenuItem mnemonicParsing="false" text="Start" fx:id="startContextItem" onAction="#startTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_REPLY"/>
                             </Label>
                         </graphic>
                     </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Stop" fx:id="stopContextItem">
+                    <MenuItem mnemonicParsing="false" text="Stop" fx:id="stopContextItem" onAction="#stopTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_SQUARE_O"/>
@@ -185,14 +185,14 @@
                         </graphic>
                     </MenuItem>
                     <SeparatorMenuItem/>
-                    <MenuItem text="Reannounce" fx:id="reannounceContextItem">
+                    <MenuItem text="Reannounce" fx:id="reannounceContextItem" onAction="#reannounceTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_REFRESH"/>
                             </Label>
                         </graphic>
                     </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Info" fx:id="infoContextItem">
+                    <MenuItem mnemonicParsing="false" text="Info" fx:id="infoContextItem" onAction="#info">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_INFO_CIRCLE"/>
@@ -200,14 +200,14 @@
                         </graphic>
                     </MenuItem>
                     <SeparatorMenuItem mnemonicParsing="false"/>
-                    <MenuItem mnemonicParsing="false" text="Delete" fx:id="trashContextItem">
+                    <MenuItem mnemonicParsing="false" text="Delete" fx:id="trashContextItem" onAction="#trashTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_TRASH"/>
                             </Label>
                         </graphic>
                     </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Delete torrent and files" fx:id="deleteContextItem">
+                    <MenuItem mnemonicParsing="false" text="Delete torrent and files" fx:id="deleteContextItem" onAction="#deleteTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_BAN"/>
