@@ -2,11 +2,15 @@ package com.sergeybochkov.transmissionremote;
 
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
+import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import cordelia.client.TrClient;
+import cordelia.rpc.SessionGet;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +20,11 @@ public final class Main implements MainTarget {
     private final Stage stage;
     private final AppProperties props;
 
+    @FXML
+    private Label freeSpace;
+
     private TrClient client;
+    private FreeSpaceSchedule freeSpaceSchedule;
 
     public Main(Stage stage, AppProperties props) {
         this.stage = stage;
@@ -43,7 +51,20 @@ public final class Main implements MainTarget {
                 });
     }
 
-    public void start() {
+    public void start() throws IOException {
+        client = new TrClient(props.uri());
+        try {
+            client.post(new SessionGet());
+        } catch (IOException ex) {
+            session();
+            return;
+        }
+
+        freeSpaceSchedule = new FreeSpaceSchedule(client);
+        freeSpaceSchedule.setOnSucceeded(event -> {
+            System.out.println(event);
+        });
+        freeSpaceSchedule.start();
     }
 
     @FXML

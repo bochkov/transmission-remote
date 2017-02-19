@@ -219,7 +219,7 @@
         <padding>
             <Insets top="10" bottom="10" left="10" right="10"/>
         </padding>
-        <Label fx:id="freeSpaceLabel">
+        <Label fx:id="freeSpace">
             <tooltip>
                 <Tooltip text="Free space left"/>
             </tooltip>
