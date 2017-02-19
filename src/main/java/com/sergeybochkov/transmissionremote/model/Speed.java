@@ -1,14 +1,12 @@
 package com.sergeybochkov.transmissionremote.model;
 
-import java.math.BigDecimal;
-
 public final class Speed {
 
     private static final String[] SPEEDS = {"B/s", "kB/s", "MB/s", "GB/s", "TB/s"};
 
-    private final BigDecimal speed;
+    private final Double speed;
 
-    public Speed(BigDecimal speed) {
+    public Speed(Double speed) {
         this.speed = speed;
     }
 
@@ -21,18 +19,18 @@ public final class Speed {
                 break;
             ++multy;
         }
-        this.speed = new BigDecimal(multy == 0 ?
+        this.speed = multy == 0 ?
                 value :
-                value * multy * 1000);
+                value * multy * 1000;
     }
 
-    public BigDecimal speed() {
+    public Double speed() {
         return speed;
     }
 
     @Override
     public String toString() {
-        double res = speed.doubleValue();
+        double res = speed;
         int count = 0;
         while (res >= 1000) {
             res /= 1000;

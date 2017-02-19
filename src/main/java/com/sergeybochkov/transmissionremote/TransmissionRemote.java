@@ -23,9 +23,9 @@ public final class TransmissionRemote extends Application {
     public static final int MIN_HEIGHT = 650;
     public static final int MIN_WIDTH = 500;
 
-    public static final int updateSessionInterval = 3000;
+    public static final int SESSION_INTERVAL = 3000;
     public static final int updateListInterval = 1500;
-    public static final int freeSpaceUpdateInterval = 10000;
+    public static final int FREE_SPACE_INTERVAL = 5000;
     public static final int peersUpdateInterval = 1000;
     public static final int filesUpdateInterval = 2000;
 

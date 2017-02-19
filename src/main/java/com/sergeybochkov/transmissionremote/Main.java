@@ -1,9 +1,13 @@
 package com.sergeybochkov.transmissionremote;
 
+import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
+import com.sergeybochkov.transmissionremote.model.Speed;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
+import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import cordelia.client.TrClient;
+import cordelia.client.TrResponse;
 import cordelia.rpc.SessionGet;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -20,11 +24,14 @@ public final class Main implements MainTarget {
     private final Stage stage;
     private final AppProperties props;
 
+    private final Map<String, Object> session = new HashMap<>();
+
     @FXML
-    private Label freeSpace;
+    private Label freeSpace, downSpeed, upSpeed, rating;
 
     private TrClient client;
     private FreeSpaceSchedule freeSpaceSchedule;
+    private SessionSchedule sessionSchedule;
 
     public Main(Stage stage, AppProperties props) {
         this.stage = stage;
@@ -47,24 +54,56 @@ public final class Main implements MainTarget {
         this.views
                 .get("session")
                 .target(Session.class)
-                .callback(object -> {
-                });
+                .callback(this::restart);
     }
 
-    public void start() throws IOException {
+    public void start() {
+        controlsActive(false);
         client = new TrClient(props.uri());
         try {
-            client.post(new SessionGet());
+            session.putAll(
+                    client.post(new SessionGet(), TrResponse.class).arguments());
+            // SESSION-UPDATE
+            sessionSchedule = new SessionSchedule(client);
+            sessionSchedule.setOnSucceeded(event -> {
+                Map map = (Map) event.getSource().getValue();
+                Logger.debug(this, "%s", map);
+                Map cumul = (Map) map.get("cumulative-stats");
+                rating.setText(String.format("%.2f",
+                        (double) cumul.get("uploadedBytes") / (double) cumul.get("downloadedBytes")));
+                upSpeed.setText(new Speed((double) map.get("uploadSpeed")).toString());
+                downSpeed.setText(new Speed((double) map.get("downloadSpeed")).toString());
+            });
+            sessionSchedule.start();
+            // FREE-SPACE
+            freeSpaceSchedule = new FreeSpaceSchedule(client, (String) session.get("download-dir"));
+            freeSpaceSchedule.setOnSucceeded(event ->
+                    freeSpace.setText(event.getSource().getValue().toString()));
+            freeSpaceSchedule.start();
+            controlsActive(true);
         } catch (IOException ex) {
+            session.clear();
             session();
-            return;
+        }
+    }
+
+    public void restart() {
+        if (freeSpaceSchedule != null) {
+            freeSpaceSchedule.cancel();
+            freeSpace.setText("");
+        }
+        if (sessionSchedule != null) {
+            sessionSchedule.cancel();
+            rating.setText("");
+            upSpeed.setText("");
+            downSpeed.setText("");
         }
 
-        freeSpaceSchedule = new FreeSpaceSchedule(client);
-        freeSpaceSchedule.setOnSucceeded(event -> {
-            System.out.println(event);
-        });
-        freeSpaceSchedule.start();
+        start();
+    }
+
+    public void controlsActive(boolean active) {
+
     }
 
     @FXML

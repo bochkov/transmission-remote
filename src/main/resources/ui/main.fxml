@@ -229,7 +229,7 @@
                 </Label>
             </graphic>
         </Label>
-        <Label fx:id="downSpeedLabel">
+        <Label fx:id="downSpeed">
             <tooltip>
                 <Tooltip text="Download speed"/>
             </tooltip>
@@ -239,7 +239,7 @@
                 </Label>
             </graphic>
         </Label>
-        <Label fx:id="upSpeedLabel">
+        <Label fx:id="upSpeed">
             <tooltip>
                 <Tooltip text="Upload speed"/>
             </tooltip>
@@ -249,7 +249,7 @@
                 </Label>
             </graphic>
         </Label>
-        <Label fx:id="ratingLabel">
+        <Label fx:id="rating">
             <tooltip>
                 <Tooltip text="All-time rating"/>
             </tooltip>

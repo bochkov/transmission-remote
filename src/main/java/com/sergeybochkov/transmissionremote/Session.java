@@ -1,6 +1,6 @@
 package com.sergeybochkov.transmissionremote;
 
-import com.sergeybochkov.transmissionremote.fxutil.ResultCallback;
+import com.sergeybochkov.transmissionremote.fxutil.CallbackTarget;
 import com.sergeybochkov.transmissionremote.fxutil.Target;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public final class Session implements Target, ResultCallback {
+public final class Session implements Target, CallbackTarget {
 
     private final Stage stage;
     private final AppProperties props;
@@ -47,8 +47,12 @@ public final class Session implements Target, ResultCallback {
 
     @FXML
     public void onOk() throws IOException {
-        callback.call(props);
+        if (auth.isSelected())
+            props.setUrl(server.getText(), username.getText(), password.getText());
+        else
+            props.setUrl(server.getText(), "", "");
         stage.close();
+        callback.call();
     }
 
     @FXML
