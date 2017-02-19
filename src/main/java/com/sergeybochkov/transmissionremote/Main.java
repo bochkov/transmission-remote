@@ -6,6 +6,7 @@ import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.Speed;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
+import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
 import cordelia.rpc.SessionGet;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Main implements MainTarget {
@@ -30,8 +32,9 @@ public final class Main implements MainTarget {
     private Label freeSpace, downSpeed, upSpeed, rating;
 
     private TrClient client;
-    private FreeSpaceSchedule freeSpaceSchedule;
+    private TorrentSchedule torrentSchedule;
     private SessionSchedule sessionSchedule;
+    private FreeSpaceSchedule freeSpaceSchedule;
 
     public Main(Stage stage, AppProperties props) {
         this.stage = stage;
@@ -63,6 +66,15 @@ public final class Main implements MainTarget {
         try {
             session.putAll(
                     client.post(new SessionGet(), TrResponse.class).arguments());
+            // TORRENT-UPDATE
+            torrentSchedule = new TorrentSchedule(client);
+            torrentSchedule.setOnSucceeded(event -> {
+                for (Object obj : (List) event.getSource().getValue())
+                    Logger.debug(this, "%s", obj);
+            });
+            torrentSchedule.setOnFailed(event ->
+                    Logger.warn(this, "%s" , event.getSource().getException()));
+            torrentSchedule.start();
             // SESSION-UPDATE
             sessionSchedule = new SessionSchedule(client);
             sessionSchedule.setOnSucceeded(event -> {
@@ -98,7 +110,9 @@ public final class Main implements MainTarget {
             upSpeed.setText("");
             downSpeed.setText("");
         }
-
+        if (torrentSchedule != null) {
+            torrentSchedule.cancel();
+        }
         start();
     }
 

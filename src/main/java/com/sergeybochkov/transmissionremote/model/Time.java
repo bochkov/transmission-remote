@@ -1,18 +1,16 @@
 package com.sergeybochkov.transmissionremote.model;
 
-import java.math.BigDecimal;
-
 public final class Time {
 
-    public final BigDecimal secs;
+    private final Long secs;
 
-    public Time(BigDecimal secs) {
+    public Time(Long secs) {
         this.secs = secs;
     }
 
     @Override
     public String toString() {
-        long millis = secs.longValue();
+        long millis = secs;
         String retVal = "";
         if (millis >= 0) {
             long days = millis / 86400;
