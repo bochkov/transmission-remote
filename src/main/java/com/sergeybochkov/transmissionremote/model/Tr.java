@@ -37,19 +37,14 @@ public final class Tr {
     }
 
     public HBox graphic(Control parent) {
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(
+        VBox vbox = new VBox(
                 new NameElem(name).graphic(),
                 new PeersSpeedElem(error, errorString, status, peersSendingToUs,
                         peersGettingFromUs, peersConnected, rateDownload, rateUpload).graphic(),
-                new ProgressElem(error, status, percentDone).graphic(),
+                new ProgressElem(error, status, percentDone, parent).graphic(),
                 new FileElem(status, sizeWhenDone, percentDone, uploadRatio, eta).graphic());
-
-        HBox graphicBox = new HBox(10);
-        //graphicBox.setMaxWidth(parent.getWidth() - 20);
-        graphicBox.getChildren().addAll(
+        return new HBox(10,
                 new ImageElem(name).graphic(),
                 vbox);
-        return graphicBox;
     }
 }

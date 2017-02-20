@@ -20,7 +20,7 @@
                     </Label>
                 </graphic>
             </Button>
-            <Label fx:id="filesLabel">Files not selected</Label>
+            <Label fx:id="filesLabel" />
         </HBox>
     </VBox>
 

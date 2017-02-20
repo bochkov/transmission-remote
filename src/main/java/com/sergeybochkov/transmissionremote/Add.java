@@ -49,6 +49,7 @@ public final class Add implements Target, ResultCallback {
     @Override
     public void init() {
         stage.setWidth(TransmissionRemote.MIN_WIDTH - 50);
+        filesLabel.setText("Files not selected");
         openButton.setOnAction(event -> {
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Open a torrent file");
@@ -80,13 +81,16 @@ public final class Add implements Target, ResultCallback {
     @FXML
     private void onOk() throws IOException {
         props.setLastDestination(destinationField.getText());
-        stage.close();
         callback.call(files, urlField.getText(), destinationField.getText());
+        onCancel();
     }
 
     @FXML
     private void onCancel() {
         stage.close();
+        filesLabel.setText("Files not selected");
+        files.clear();
+        urlField.clear();
     }
 
     private String printFS() {

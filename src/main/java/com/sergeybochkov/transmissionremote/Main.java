@@ -284,7 +284,10 @@ public final class Main implements MainTarget {
     private void addTorrent(File file, String directory) {
         try {
             Map<String, Object> map = new HashMap<>();
-            map.put("metainfo", Base64.getEncoder().encode(FileUtils.readFileToByteArray(file)));
+            map.put("metainfo", Base64
+                    .getEncoder()
+                    .encodeToString(
+                            FileUtils.readFileToByteArray(file)));
             map.put("download-dir", directory);
             client.post(new TorrentAdd(map));
         } catch (IOException ex) {
