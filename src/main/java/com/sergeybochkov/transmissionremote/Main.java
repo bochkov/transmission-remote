@@ -1,5 +1,6 @@
 package com.sergeybochkov.transmissionremote;
 
+import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.Speed;
@@ -10,10 +11,7 @@ import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
-import cordelia.rpc.SessionGet;
-import cordelia.rpc.Torrent;
-import cordelia.rpc.TorrentAdd;
-import cordelia.rpc.TorrentRemove;
+import cordelia.rpc.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -47,11 +45,13 @@ public final class Main implements MainTarget {
     private final ObservableList<Tr> items = FXCollections.observableArrayList();
 
     @FXML
-    private MenuItem addItem, exitItem, startAllItem, stopAllItem, startItem, stopItem, infoItem, reannounceItem, trashItem, deleteItem;
+    private MenuItem startItem, stopItem, infoItem, reannounceItem, trashItem, deleteItem;
     @FXML
     private MenuItem startContextItem, stopContextItem, reannounceContextItem, infoContextItem, trashContextItem, deleteContextItem;
     @FXML
-    private Button startAllButton, stopAllButton, trashButton, infoButton;
+    private Button trashButton, infoButton;
+    @FXML
+    private ToggleButton speedLimitButton;
     @FXML
     private Label freeSpace, downSpeed, upSpeed, rating;
     @FXML
@@ -186,11 +186,13 @@ public final class Main implements MainTarget {
             sessionSchedule = new SessionSchedule(client);
             sessionSchedule.setOnSucceeded(event -> {
                 Map map = (Map) event.getSource().getValue();
+                Logger.info(this, "%s", map);
+                upSpeed.setText(new Speed((Double) map.get("uploadSpeed")).toString());
+                downSpeed.setText(new Speed((Double) map.get("downloadSpeed")).toString());
+                speedLimitButton.setSelected((Boolean) map.get("alt-speed-enabled"));
                 Map cumul = (Map) map.get("cumulative-stats");
                 rating.setText(String.format("%.2f",
-                        (double) cumul.get("uploadedBytes") / (double) cumul.get("downloadedBytes")));
-                upSpeed.setText(new Speed((double) map.get("uploadSpeed")).toString());
-                downSpeed.setText(new Speed((double) map.get("downloadSpeed")).toString());
+                        (Double) cumul.get("uploadedBytes") / (Double) cumul.get("downloadedBytes")));
             });
             sessionSchedule.start();
             // FREE-SPACE
@@ -333,6 +335,17 @@ public final class Main implements MainTarget {
     private void trashTorrent() {
         try {
             client.post(new TorrentRemove(selectedIds()));
+        } catch (IOException ex) {
+            alert(ex);
+        }
+    }
+
+    @FXML
+    private void turtle() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("alt-speed-enabled", speedLimitButton.isSelected());
+        try {
+            client.post(new SessionSet(map));
         } catch (IOException ex) {
             alert(ex);
         }

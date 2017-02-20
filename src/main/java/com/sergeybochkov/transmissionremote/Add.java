@@ -52,8 +52,9 @@ public final class Add implements Target, ResultCallback {
             chooser.setInitialDirectory(dest);
             chooser.getExtensionFilters().add(
                     new FileChooser.ExtensionFilter("Torrent Files", "*.torrent"));
-            files.addAll(chooser.showOpenMultipleDialog(null));
-            if (!files.isEmpty()) {
+            List<File> selected = chooser.showOpenMultipleDialog(null);
+            if (selected != null && !selected.isEmpty()) {
+                files.addAll(selected);
                 filesLabel.setText(files.size() > 0 ?
                         files.get(0).getName() :
                         String.format("Selected %d files", files.size()));
