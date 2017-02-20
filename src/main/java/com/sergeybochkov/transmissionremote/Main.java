@@ -371,6 +371,10 @@ public final class Main implements MainTarget {
     private void add() {
         this.views
                 .get("add")
+                .target(Add.class)
+                .withClient(client);
+        this.views
+                .get("add")
                 .stage()
                 .show();
     }

@@ -2,6 +2,10 @@ package com.sergeybochkov.transmissionremote;
 
 import com.sergeybochkov.transmissionremote.fxutil.ResultCallback;
 import com.sergeybochkov.transmissionremote.fxutil.Target;
+import com.sergeybochkov.transmissionremote.model.Size;
+import cordelia.client.TrClient;
+import cordelia.client.TrResponse;
+import cordelia.rpc.FreeSpace;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,6 +32,7 @@ public final class Add implements Target, ResultCallback {
 
     private final List<File> files = new ArrayList<>();
 
+    private TrClient client;
     private Callback callback;
 
     public Add(Stage stage, AppProperties props) {
@@ -43,6 +48,7 @@ public final class Add implements Target, ResultCallback {
 
     @Override
     public void init() {
+        stage.setWidth(TransmissionRemote.MIN_WIDTH - 50);
         openButton.setOnAction(event -> {
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Open a torrent file");
@@ -61,6 +67,14 @@ public final class Add implements Target, ResultCallback {
                 props.setLastOpenPath(files.get(0).getParent());
             }
         });
+        destinationField.setText(props.lastDestination());
+        destinationField.setOnKeyReleased(event -> destinationLabel.setText(printFS()));
+    }
+
+    public Add withClient(TrClient client) {
+        this.client = client;
+        destinationLabel.setText(printFS());
+        return this;
     }
 
     @FXML
@@ -73,5 +87,18 @@ public final class Add implements Target, ResultCallback {
     @FXML
     private void onCancel() {
         stage.close();
+    }
+
+    private String printFS() {
+        try {
+            Double bytes = (Double) client
+                    .post(new FreeSpace(destinationField.getText()), TrResponse.class)
+                    .get("size-bytes");
+            return bytes < 0 ?
+                    "No such directory" :
+                    String.format("Destination folder (%s free)", new Size(bytes));
+        } catch (IOException ex) {
+            return ex.getMessage();
+        }
     }
 }
