@@ -125,6 +125,17 @@ public final class Main implements MainTarget {
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         deleteContextItem.disableProperty().bind(
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        speedLimitButton.selectedProperty().addListener((val, oldV, newV) -> {
+            Label label = new Label(speedLimitButton.isSelected() ?
+                    TransmissionRemote.ICON_ANCHOR :
+                    TransmissionRemote.ICON_ROCKET);
+            label.setStyle("-fx-font-size: 14px;");
+            label.getStyleClass().add("icons");
+            speedLimitButton.setGraphic(label);
+            speedLimitButton.setTooltip(new Tooltip(
+                    String.format("Now speed limit is %s",
+                            speedLimitButton.isSelected() ? "ON" : "OFF")));
+        });
         trashButton.disableProperty().bind(
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         infoButton.disableProperty().bind(
@@ -187,6 +198,10 @@ public final class Main implements MainTarget {
             sessionSchedule.setOnSucceeded(event -> {
                 Map map = (Map) event.getSource().getValue();
                 Logger.info(this, "%s", map);
+                stage.setTitle(String.format("%s - [%s] - %s",
+                        TransmissionRemote.APP_NAME,
+                        props.server(),
+                        map.get("version")));
                 upSpeed.setText(new Speed((Double) map.get("uploadSpeed")).toString());
                 downSpeed.setText(new Speed((Double) map.get("downloadSpeed")).toString());
                 speedLimitButton.setSelected((Boolean) map.get("alt-speed-enabled"));

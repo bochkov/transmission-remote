@@ -10,7 +10,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Main">
     <MenuBar useSystemMenuBar="true">
         <Menu text="File">
-            <MenuItem text="Change session" onAction="#session">
+            <MenuItem text="Change session" onAction="#session" accelerator="meta+N">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_GLOBE"/>

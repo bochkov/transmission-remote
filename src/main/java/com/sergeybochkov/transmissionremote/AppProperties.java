@@ -69,6 +69,13 @@ public final class AppProperties {
                 "";
     }
 
+    public String server() {
+        Matcher m = FULL_URL.matcher(uri());
+        return m.find() ?
+                String.format("%s", m.group("host")) :
+                "";
+    }
+
     public void setUrl(String url, String username, String password) {
         Matcher m = SHORT_URL.matcher(url);
         if (m.find()) {

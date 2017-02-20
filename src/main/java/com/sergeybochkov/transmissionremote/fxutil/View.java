@@ -3,12 +3,13 @@ package com.sergeybochkov.transmissionremote.fxutil;
 import com.sergeybochkov.transmissionremote.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 public final class View {
 
@@ -40,6 +41,10 @@ public final class View {
             view.stage().initModality(Modality.APPLICATION_MODAL);
             view.stage().setTitle(stage.getTitle());
             view.stage().getIcons().addAll(stage.getIcons());
+            view.stage().addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+                if (ev.getCode() == KeyCode.ESCAPE)
+                    view.stage().close();
+            });
             this.views.put(view.target().getClass().getSimpleName().toLowerCase(), view);
         }
         if (target instanceof MainTarget)
