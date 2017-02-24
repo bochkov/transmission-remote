@@ -1,4 +1,5 @@
-.list-view:focused .list-cell:selected #peers, .list-view:focused .list-cell:selected #file {
+.list-view:focused .list-cell:selected #peers,
+.list-view:focused .list-cell:selected #files {
     -fx-text-fill: lightgray;
 }
 

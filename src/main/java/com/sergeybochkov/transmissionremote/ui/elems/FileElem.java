@@ -27,6 +27,7 @@ public final class FileElem implements Element {
     @Override
     public Node graphic() {
         Label fileLabel = new Label();
+        fileLabel.setId("files");
         fileLabel.getStyleClass().add("custom-font");
         fileLabel.setTextFill(Color.GRAY);
         Size total = new Size(sizeWhenDone * percentDone);
