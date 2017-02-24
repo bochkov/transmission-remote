@@ -2,6 +2,8 @@ package com.sergeybochkov.transmissionremote;
 
 import com.sergeybochkov.transmissionremote.fxutil.ResultCallback;
 import com.sergeybochkov.transmissionremote.fxutil.Target;
+import com.sergeybochkov.transmissionremote.model.AddTrList;
+import com.sergeybochkov.transmissionremote.model.AddTrUrl;
 import com.sergeybochkov.transmissionremote.model.Size;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
@@ -80,8 +82,13 @@ public final class Add implements Target, ResultCallback {
 
     @FXML
     private void onOk() throws IOException {
-        props.setLastDestination(destinationField.getText());
-        callback.call(files, urlField.getText(), destinationField.getText());
+        if (!destinationField.getText().isEmpty()) {
+            props.setLastDestination(destinationField.getText());
+            if (!files.isEmpty())
+                callback.call(new AddTrList(files, destinationField.getText()));
+            if (!urlField.getText().isEmpty())
+                callback.call(new AddTrUrl(urlField.getText(), destinationField.getText()));
+        }
         onCancel();
     }
 

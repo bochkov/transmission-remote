@@ -3,15 +3,16 @@ package com.sergeybochkov.transmissionremote;
 import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
-import com.sergeybochkov.transmissionremote.model.Speed;
-import com.sergeybochkov.transmissionremote.model.Tr;
-import com.sergeybochkov.transmissionremote.model.TrComparator;
+import com.sergeybochkov.transmissionremote.model.*;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
-import cordelia.rpc.*;
+import cordelia.rpc.SessionGet;
+import cordelia.rpc.SessionSet;
+import cordelia.rpc.Torrent;
+import cordelia.rpc.TorrentRemove;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -25,11 +26,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,10 +92,28 @@ public final class Main implements MainTarget {
         torrents.setOnDragDropped((DragEvent ev) -> {
             Dragboard db = ev.getDragboard();
             List<File> files = db.getFiles();
-            if (files.size() == 0) {
-                addTorrent(db.getUrl());
-            } else {
-                files.forEach(this::addTorrent);
+            if (!files.isEmpty())
+                try {
+                    new TrashAddTr(
+                            new AddTrList(
+                                    files,
+                                    (String) session.get("download-dir")
+                            )
+                    ).add(client);
+                } catch (IOException ex) {
+                    alert(ex);
+                }
+            if (!db.getUrl().isEmpty()) {
+                try {
+                    new TrashAddTr(
+                            new AddTrUrl(
+                                    db.getUrl(),
+                                    (String) session.get("download-dir")
+                            )
+                    ).add(client);
+                } catch (IOException ex) {
+                    alert(ex);
+                }
             }
             ev.setDropCompleted(true);
             ev.consume();
@@ -152,18 +169,9 @@ public final class Main implements MainTarget {
         this.views
                 .get("add")
                 .target(Add.class)
-                .callback(objects -> {
-                    if (objects.length == 3) {
-                        List files = (List) objects[0];
-                        String url = (String) objects[1];
-                        String dir = (String) objects[2];
-                        if (!files.isEmpty()) {
-                            for (Object file : files)
-                                if (file instanceof File)
-                                    addTorrent((File) file, dir);
-                        } else if (!url.isEmpty())
-                            addTorrent(url, dir);
-                    }
+                .callback(object -> {
+                    if (object instanceof AddTr)
+                        new TrashAddTr((AddTr) object).add(client);
                 });
     }
 
@@ -260,39 +268,6 @@ public final class Main implements MainTarget {
                 .stream()
                 .map(Tr::id)
                 .toArray();
-    }
-
-    private void addTorrent(String url) {
-        addTorrent(url, (String) session.get("download-dir"));
-    }
-
-    private void addTorrent(String url, String directory) {
-        try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("filename", url);
-            map.put("download-dir", directory);
-            client.post(new TorrentAdd(map));
-        } catch (IOException ex) {
-            alert(ex);
-        }
-    }
-
-    private void addTorrent(File file) {
-        addTorrent(file, (String) session.get("download-dir"));
-    }
-
-    private void addTorrent(File file, String directory) {
-        try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("metainfo", Base64
-                    .getEncoder()
-                    .encodeToString(
-                            FileUtils.readFileToByteArray(file)));
-            map.put("download-dir", directory);
-            client.post(new TorrentAdd(map));
-        } catch (IOException ex) {
-            alert(ex);
-        }
     }
 
     @FXML
