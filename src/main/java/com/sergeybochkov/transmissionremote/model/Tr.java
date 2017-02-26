@@ -35,6 +35,10 @@ public final class Tr {
         return id;
     }
 
+    public String name() {
+        return name;
+    }
+
     public Boolean completed() {
         return percentDone >= 1.0;
     }

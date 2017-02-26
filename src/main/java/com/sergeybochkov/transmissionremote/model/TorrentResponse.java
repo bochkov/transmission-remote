@@ -17,4 +17,7 @@ public final class TorrentResponse implements Serializable {
         return arguments.get("torrents").get(0).peers();
     }
 
+    public String name() {
+        return arguments.get("torrents").get(0).name();
+    }
 }
