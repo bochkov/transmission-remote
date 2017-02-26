@@ -92,7 +92,7 @@ public final class Main implements MainTarget {
         torrents.setOnDragDropped((DragEvent ev) -> {
             Dragboard db = ev.getDragboard();
             List<File> files = db.getFiles();
-            if (!files.isEmpty())
+            if (files != null && !files.isEmpty())
                 try {
                     new TrashAddTr(
                             new AddTrList(
@@ -103,7 +103,7 @@ public final class Main implements MainTarget {
                 } catch (IOException ex) {
                     alert(ex);
                 }
-            if (!db.getUrl().isEmpty()) {
+            if (db.getUrl() != null && !db.getUrl().isEmpty()) {
                 try {
                     new TrashAddTr(
                             new AddTrUrl(
@@ -374,7 +374,14 @@ public final class Main implements MainTarget {
 
     @FXML
     private void info() {
-
+        this.views
+                .get("info")
+                .target(Info.class)
+                .withClient(client);
+        this.views
+                .get("info")
+                .stage()
+                .show();
     }
 
     @FXML
