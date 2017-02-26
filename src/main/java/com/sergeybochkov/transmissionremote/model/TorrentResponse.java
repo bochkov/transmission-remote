@@ -13,4 +13,8 @@ public final class TorrentResponse implements Serializable {
         return arguments.get("torrents");
     }
 
+    public List<Peer> peers() {
+        return arguments.get("torrents").get(0).peers();
+    }
+
 }

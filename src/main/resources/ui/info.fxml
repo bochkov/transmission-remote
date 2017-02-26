@@ -89,8 +89,11 @@
                     </TableColumn>
                     <TableColumn text="Encryption" prefWidth="90" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <PeerEncryptionValue />
+                            <BasePeerValue />
                         </cellValueFactory>
+                        <cellFactory>
+                            <PeerEncryptionCell />
+                        </cellFactory>
                     </TableColumn>
                 </columns>
             </TableView>

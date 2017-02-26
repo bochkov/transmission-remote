@@ -17,7 +17,7 @@
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Add torrent" fx:id="addItem" onAction="#add" accelerator="meta+D">
+            <MenuItem text="Add torrent" onAction="#add" accelerator="meta+D">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_FOLDER_OPEN_O"/>
@@ -25,7 +25,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem text="Exit" fx:id="exitItem" onAction="#close">
+            <MenuItem text="Exit" onAction="#close">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_SIGN_OUT"/>
@@ -35,14 +35,14 @@
         </Menu>
 
         <Menu text="Edit">
-            <MenuItem text="Start all torrents" fx:id="startAllItem" onAction="#startAll">
+            <MenuItem text="Start all torrents" onAction="#startAll">
                 <graphic>
                     <Label styleClass="icons, reflect">
                         <TransmissionRemote fx:constant="ICON_REPLY_ALL"/>
                     </Label>
                 </graphic>
             </MenuItem>
-            <MenuItem text="Stop all torrents" fx:id="stopAllItem" onAction="#stopAll">
+            <MenuItem text="Stop all torrents" onAction="#stopAll">
                 <graphic>
                     <Label styleClass="icons">
                         <TransmissionRemote fx:constant="ICON_SQUARE"/>
@@ -111,7 +111,7 @@
         <padding>
             <Insets top="10" bottom="10" left="10" right="10"/>
         </padding>
-        <Button text="Start all" fx:id="startAllButton" onAction="#startAll">
+        <Button text="Start all" onAction="#startAll">
             <tooltip>
                 <Tooltip text="Start all torrents"/>
             </tooltip>
@@ -121,7 +121,7 @@
                 </Label>
             </graphic>
         </Button>
-        <Button text="Stop all" fx:id="stopAllButton" onAction="#stopAll">
+        <Button text="Stop all" onAction="#stopAll">
             <tooltip>
                 <Tooltip text="Stop all torrents"/>
             </tooltip>

@@ -377,7 +377,7 @@ public final class Main implements MainTarget {
         this.views
                 .get("info")
                 .target(Info.class)
-                .withClient(client);
+                .withClient(client, selectedIds()[0]);
         this.views
                 .get("info")
                 .stage()

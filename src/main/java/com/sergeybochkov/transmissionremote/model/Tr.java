@@ -5,6 +5,8 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.List;
+
 public final class Tr {
 
     public static final int STATUS_PAUSED = 0;
@@ -27,6 +29,7 @@ public final class Tr {
     private Long sizeWhenDone;
     private Integer status;
     private Double uploadRatio;
+    private List<Peer> peers;
 
     public Integer id() {
         return id;
@@ -34,6 +37,10 @@ public final class Tr {
 
     public Boolean completed() {
         return percentDone >= 1.0;
+    }
+
+    public List<Peer> peers() {
+        return peers;
     }
 
     public HBox graphic(Control parent) {
