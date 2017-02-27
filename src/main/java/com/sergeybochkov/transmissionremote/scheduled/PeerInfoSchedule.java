@@ -2,7 +2,7 @@ package com.sergeybochkov.transmissionremote.scheduled;
 
 import com.sergeybochkov.transmissionremote.TransmissionRemote;
 import com.sergeybochkov.transmissionremote.model.Peer;
-import com.sergeybochkov.transmissionremote.model.TorrentResponse;
+import com.sergeybochkov.transmissionremote.model.TorResponse;
 import cordelia.client.TrClient;
 import cordelia.rpc.TorrentGet;
 import javafx.concurrent.ScheduledService;
@@ -30,7 +30,7 @@ public final class PeerInfoSchedule extends ScheduledService<List<Peer>> {
             protected List<Peer> call() throws Exception {
                 return client.post(
                         new TorrentGet(Collections.singletonList("peers"), id),
-                        TorrentResponse.class
+                        TorResponse.class
                 ).peers();
             }
         };

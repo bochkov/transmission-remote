@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public final class Tr {
+public final class Tor {
 
     public static final int STATUS_PAUSED = 0;
     public static final int STATUS_CHECKED = 2;

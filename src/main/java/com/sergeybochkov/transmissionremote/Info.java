@@ -2,7 +2,7 @@ package com.sergeybochkov.transmissionremote;
 
 import com.sergeybochkov.transmissionremote.fxutil.Target;
 import com.sergeybochkov.transmissionremote.model.Peer;
-import com.sergeybochkov.transmissionremote.model.TorrentResponse;
+import com.sergeybochkov.transmissionremote.model.TorResponse;
 import com.sergeybochkov.transmissionremote.scheduled.FileInfoSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.PeerInfoSchedule;
 import cordelia.client.TrClient;
@@ -52,7 +52,7 @@ public final class Info implements Target {
                                     Collections.singletonList("name"),
                                     id
                             ),
-                            TorrentResponse.class
+                            TorResponse.class
                     ).name());
         } catch (IOException ex) {
             ex.printStackTrace();

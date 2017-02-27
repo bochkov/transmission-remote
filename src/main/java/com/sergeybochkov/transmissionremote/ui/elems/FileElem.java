@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
-import static com.sergeybochkov.transmissionremote.model.Tr.*;
+import static com.sergeybochkov.transmissionremote.model.Tor.*;
 
 public final class FileElem implements Element {
 

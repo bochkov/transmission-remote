@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 
-import static com.sergeybochkov.transmissionremote.model.Tr.*;
+import static com.sergeybochkov.transmissionremote.model.Tor.*;
 
 public final class ProgressElem implements Element {
 

@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public final class TorrentResponse implements Serializable {
+public final class TorResponse implements Serializable {
 
     private String result;
-    private Map<String, List<Tr>> arguments;
+    private Map<String, List<Tor>> arguments;
 
-    public List<Tr> torrents() {
+    public List<Tor> torrents() {
         return arguments.get("torrents");
     }
 

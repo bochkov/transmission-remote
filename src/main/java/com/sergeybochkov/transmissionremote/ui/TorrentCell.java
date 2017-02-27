@@ -1,6 +1,6 @@
 package com.sergeybochkov.transmissionremote.ui;
 
-import com.sergeybochkov.transmissionremote.model.Tr;
+import com.sergeybochkov.transmissionremote.model.Tor;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -15,9 +15,9 @@ public final class TorrentCell<T> implements Callback<ListView<T>, ListCell<T>> 
                 if (empty) {
                     setText(null);
                     setGraphic(null);
-                } else if (item instanceof Tr) {
+                } else if (item instanceof Tor) {
                     setText(null);
-                    setGraphic(((Tr) item).graphic(listView));
+                    setGraphic(((Tor) item).graphic(listView));
                 } else {
                     setText(item == null ? "null" : item.toString());
                     setGraphic(null);

@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public final class TrashAddTr implements AddTr {
+public final class TrSourceTrash implements TrSource {
 
-    private final AddTr origin;
+    private final TrSource origin;
     private final File trashDir;
 
-    public TrashAddTr(AddTr origin) {
+    public TrSourceTrash(TrSource origin) {
         this.origin = origin;
         this.trashDir = new File(System.getProperty("user.home"), ".Trash");
     }

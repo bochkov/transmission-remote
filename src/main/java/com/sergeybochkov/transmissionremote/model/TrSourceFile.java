@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public final class AddTrList implements AddTr {
+public final class TrSourceFile implements TrSource {
 
     private final List<File> files;
     private final String destDir;
 
-    public AddTrList(List<File> files, String destDir) {
+    public TrSourceFile(List<File> files, String destDir) {
         this.files = new ArrayList<>(files);
         this.destDir = destDir;
     }

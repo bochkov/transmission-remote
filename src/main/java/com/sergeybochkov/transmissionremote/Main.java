@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public final class Main implements MainTarget {
     private final AppProperties props;
 
     private final Map<String, Object> session = new HashMap<>();
-    private final ObservableList<Tr> items = FXCollections.observableArrayList();
+    private final ObservableList<Tor> items = FXCollections.observableArrayList();
 
     @FXML
     private MenuItem startItem, stopItem, infoItem, reannounceItem, trashItem, deleteItem;
@@ -54,7 +55,7 @@ public final class Main implements MainTarget {
     @FXML
     private Label freeSpace, downSpeed, upSpeed, rating;
     @FXML
-    private ListView<Tr> torrents;
+    private ListView<Tor> torrents;
 
     private TrClient client;
     private TorrentSchedule torrentSchedule;
@@ -94,8 +95,8 @@ public final class Main implements MainTarget {
             List<File> files = db.getFiles();
             if (files != null && !files.isEmpty())
                 try {
-                    new TrashAddTr(
-                            new AddTrList(
+                    new TrSourceTrash(
+                            new TrSourceFile(
                                     files,
                                     (String) session.get("download-dir")
                             )
@@ -105,8 +106,8 @@ public final class Main implements MainTarget {
                 }
             if (db.getUrl() != null && !db.getUrl().isEmpty()) {
                 try {
-                    new TrashAddTr(
-                            new AddTrUrl(
+                    new TrSourceTrash(
+                            new TrSourceUrl(
                                     db.getUrl(),
                                     (String) session.get("download-dir")
                             )
@@ -170,8 +171,8 @@ public final class Main implements MainTarget {
                 .get("add")
                 .target(Add.class)
                 .callback(object -> {
-                    if (object instanceof AddTr)
-                        new TrashAddTr((AddTr) object).add(client);
+                    if (object instanceof TrSource)
+                        new TrSourceTrash((TrSource) object).add(client);
                 });
     }
 
@@ -192,12 +193,12 @@ public final class Main implements MainTarget {
                 List list = (List) event.getSource().getValue();
                 items.clear();
                 for (Object obj : list) {
-                    if (obj instanceof Tr)
-                        items.add((Tr) obj);
+                    if (obj instanceof Tor)
+                        items.add((Tor) obj);
                 }
-                items.sort(new TrComparator());
+                items.sort(Comparator.comparingInt(Tor::id));
                 indexes.forEach(i -> torrents.getSelectionModel().select(i));
-                long completed = torrents.getItems().stream().filter(Tr::completed).count();
+                long completed = torrents.getItems().stream().filter(Tor::completed).count();
                 com.apple.eawt.Application.getApplication().setDockIconBadge(completed > 0 ? String.valueOf(completed) : "");
             });
             torrentSchedule.start();
@@ -259,14 +260,14 @@ public final class Main implements MainTarget {
     private Object[] allIds() {
         return torrents.getItems()
                 .stream()
-                .map(Tr::id)
+                .map(Tor::id)
                 .toArray();
     }
 
     private Object[] selectedIds() {
         return torrents.getSelectionModel().getSelectedItems()
                 .stream()
-                .map(Tr::id)
+                .map(Tor::id)
                 .toArray();
     }
 

@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class AddTrUrl implements AddTr {
+public final class TrSourceUrl implements TrSource {
 
     private final String url;
     private final String destDir;
 
-    public AddTrUrl(String url, String destDir) {
+    public TrSourceUrl(String url, String destDir) {
         this.url = url;
         this.destDir = destDir;
     }
