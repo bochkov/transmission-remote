@@ -1,12 +1,12 @@
 package com.sergeybochkov.transmissionremote;
 
-import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.*;
 import com.sergeybochkov.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.SessionSchedule;
 import com.sergeybochkov.transmissionremote.scheduled.TorrentSchedule;
+import com.sergeybochkov.transmissionremote.ui.IconLabel;
 import cordelia.client.TrClient;
 import cordelia.client.TrResponse;
 import cordelia.rpc.SessionGet;
@@ -144,12 +144,9 @@ public final class Main implements MainTarget {
         deleteContextItem.disableProperty().bind(
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         speedLimitButton.selectedProperty().addListener((val, oldV, newV) -> {
-            Label label = new Label(speedLimitButton.isSelected() ?
+            speedLimitButton.setGraphic(new IconLabel(speedLimitButton.isSelected() ?
                     TransmissionRemote.ICON_ANCHOR :
-                    TransmissionRemote.ICON_ROCKET);
-            label.setStyle("-fx-font-size: 14px;");
-            label.getStyleClass().add("icons");
-            speedLimitButton.setGraphic(label);
+                    TransmissionRemote.ICON_ROCKET));
             speedLimitButton.setTooltip(new Tooltip(
                     String.format("Now speed limit is %s",
                             speedLimitButton.isSelected() ? "ON" : "OFF")));
@@ -177,7 +174,6 @@ public final class Main implements MainTarget {
     }
 
     public void start() {
-        controlsActive(false);
         client = new TrClient(props.uri());
         try {
             session.putAll(
@@ -206,7 +202,6 @@ public final class Main implements MainTarget {
             sessionSchedule = new SessionSchedule(client);
             sessionSchedule.setOnSucceeded(event -> {
                 Map map = (Map) event.getSource().getValue();
-                Logger.info(this, "%s", map);
                 stage.setTitle(String.format("%s - [%s] - %s",
                         TransmissionRemote.APP_NAME,
                         props.server(),
@@ -224,7 +219,6 @@ public final class Main implements MainTarget {
             freeSpaceSchedule.setOnSucceeded(event ->
                     freeSpace.setText(event.getSource().getValue().toString()));
             freeSpaceSchedule.start();
-            controlsActive(true);
         } catch (IOException ex) {
             session.clear();
             session();
@@ -247,10 +241,6 @@ public final class Main implements MainTarget {
             items.clear();
         }
         start();
-    }
-
-    public void controlsActive(boolean active) {
-
     }
 
     private void alert(Exception ex) {

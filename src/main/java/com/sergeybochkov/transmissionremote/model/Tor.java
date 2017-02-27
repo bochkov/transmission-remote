@@ -30,6 +30,8 @@ public final class Tor {
     private Integer status;
     private Double uploadRatio;
     private List<Peer> peers;
+    private List<TorFile> files;
+    private List<TorFStat> fileStats;
 
     public Integer id() {
         return id;
@@ -57,5 +59,13 @@ public final class Tor {
         return new HBox(10,
                 new ImageElem(name).graphic(),
                 vbox);
+    }
+
+    public List<TorFile> files() {
+        return files;
+    }
+
+    public List<TorFStat> fstats() {
+        return fileStats;
     }
 }

@@ -1,6 +1,7 @@
 package com.sergeybochkov.transmissionremote.model;
 
 import com.sergeybochkov.transmissionremote.TransmissionRemote;
+import com.sergeybochkov.transmissionremote.ui.IconLabel;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -38,11 +39,7 @@ public final class Peer {
     }
 
     public Label encryptedGraphic() {
-        Label label = new Label(isEncrypted ? TransmissionRemote.ICON_LOCK : "");
-        label.setStyle("-fx-font-size: 14px;");
-        label.setStyle("-fx-text-fill: gray");
-        label.getStyleClass().add("icons");
-        return label;
+        return new IconLabel(isEncrypted ? TransmissionRemote.ICON_LOCK : "");
     }
 
     public ObservableValue<String> fromUs() {

@@ -26,8 +26,7 @@ public final class TransmissionRemote extends Application {
     public static final int SESSION_INTERVAL = 3000;
     public static final int TORRENT_INTERVAL = 1500;
     public static final int FREE_SPACE_INTERVAL = 5000;
-    public static final int PEERS_INFO_INTERVAL = 1000;
-    public static final int filesUpdateInterval = 2000;
+    public static final int INFO_INTERVAL = 1000;
 
     public static final String ICON_GLOBE = "\uf0ac"; // session
     public static final String ICON_FOLDER_OPEN_O = "\uf115"; // open

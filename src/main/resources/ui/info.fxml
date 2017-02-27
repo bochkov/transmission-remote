@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?language javascript?>
-<?import com.sergeybochkov.transmissionremote.ui.*?>
+<?import com.sergeybochkov.transmissionremote.ui.cell.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
@@ -31,7 +31,7 @@
                 <columns>
                     <TreeTableColumn text="Name" prefWidth="300">
                         <cellValueFactory>
-                            <FileValue />
+                            <FileBaseValue />
                         </cellValueFactory>
                         <cellFactory>
                             <CheckedFileCell/>
@@ -54,7 +54,7 @@
                     </TreeTableColumn>
                     <TreeTableColumn text="Priority" prefWidth="60" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <FileValue/>
+                            <FileBaseValue/>
                         </cellValueFactory>
                         <cellFactory>
                             <FilePriorityCell/>

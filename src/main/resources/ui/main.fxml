@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?language javascript?>
 <?import com.sergeybochkov.transmissionremote.*?>
-<?import com.sergeybochkov.transmissionremote.ui.TorrentCell?>
+<?import com.sergeybochkov.transmissionremote.ui.cell.TorrentCell?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>

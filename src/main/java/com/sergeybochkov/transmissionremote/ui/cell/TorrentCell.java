@@ -1,4 +1,4 @@
-package com.sergeybochkov.transmissionremote.ui;
+package com.sergeybochkov.transmissionremote.ui.cell;
 
 import com.sergeybochkov.transmissionremote.model.Tor;
 import javafx.scene.control.ListCell;
