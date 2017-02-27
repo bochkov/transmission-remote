@@ -31,10 +31,6 @@ public final class TorWrap {
                 new Size(file.completed()).toString());
     }
 
-    public ObservableValue<String> nameValue() {
-        return new SimpleStringProperty(file.name());
-    }
-
     public ObservableValue<String> length() {
         return new SimpleStringProperty(
                 new Size(file.length())
@@ -43,6 +39,10 @@ public final class TorWrap {
 
     public ObservableValue<Boolean> wanted() {
         return new SimpleBooleanProperty(stat.wanted());
+    }
+
+    public Integer priority() {
+        return stat.priority();
     }
 
     public IconLabel priorityGraphic() {

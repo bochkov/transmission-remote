@@ -20,11 +20,11 @@
                             <ToggleGroup fx:id="radioMenu"/>
                         </fx:define>
                         <items>
-                            <CheckMenuItem text="Wanted" fx:id="wantedMenuItem"/>
+                            <CheckMenuItem text="Wanted" fx:id="wantedItem"/>
                             <SeparatorMenuItem/>
-                            <RadioMenuItem text="Low" toggleGroup="$radioMenu" fx:id="lowPriorityMenuItem"/>
-                            <RadioMenuItem text="Normal" toggleGroup="$radioMenu" fx:id="normalPriorityMenuItem"/>
-                            <RadioMenuItem text="High" toggleGroup="$radioMenu" fx:id="highPriorityMenuItem"/>
+                            <RadioMenuItem fx:id="lowItem" text="Low" toggleGroup="$radioMenu" onAction="#lowPriority"/>
+                            <RadioMenuItem fx:id="normalItem" text="Normal" toggleGroup="$radioMenu" onAction="#normalPriority"/>
+                            <RadioMenuItem fx:id="highItem" text="High" toggleGroup="$radioMenu" onAction="#highPriority"/>
                         </items>
                     </ContextMenu>
                 </contextMenu>
