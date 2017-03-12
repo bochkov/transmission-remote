@@ -53,6 +53,7 @@ public final class Add implements Target, ResultCallback {
         stage.setWidth(TransmissionRemote.MIN_WIDTH - 50);
         filesLabel.setText("Files not selected");
         openButton.setOnAction(event -> {
+            files.clear();
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Open a torrent file");
             File dest = !new File(props.lastOpenPath()).exists() ?
@@ -64,7 +65,7 @@ public final class Add implements Target, ResultCallback {
             List<File> selected = chooser.showOpenMultipleDialog(null);
             if (selected != null && !selected.isEmpty()) {
                 files.addAll(selected);
-                filesLabel.setText(files.size() > 0 ?
+                filesLabel.setText(files.size() == 1 ?
                         files.get(0).getName() :
                         String.format("Selected %d files", files.size()));
                 props.setLastOpenPath(files.get(0).getParent());
