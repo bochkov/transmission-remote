@@ -86,6 +86,9 @@ public final class Info implements Target {
         stage.setOnCloseRequest(e -> {
             if (infoSchedule != null)
                 infoSchedule.cancel();
+            files.clear();
+            peers.clear();
+            fileView.setRoot(new TreeItem<>());
         });
         this.peerView.itemsProperty().bind(new SimpleListProperty<>(peers));
         this.peerView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
