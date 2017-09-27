@@ -27,7 +27,7 @@ repositories() {
 
 dependencies {
     compile('commons-io:commons-io:2.5')
-    compile('cordelia:cordelia:1.2.1.RELEASE')
+    compile('cordelia:cordelia:1.2.2.RELEASE')
     compile('com.apple:AppleJavaExtensions:1.4')
 
     testCompile("junit:junit:4.11")
