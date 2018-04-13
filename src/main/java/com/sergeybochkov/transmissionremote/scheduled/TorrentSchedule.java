@@ -31,7 +31,7 @@ public final class TorrentSchedule extends ScheduledService<List<Tor>> {
 
     @Override
     protected Task<List<Tor>> createTask() {
-        return new Task<List<Tor>>() {
+        return new Task<>() {
             @Override
             protected List<Tor> call() throws Exception {
                 return client.post(new TorrentGet(FIELDS), TorResponse.class).torrents();

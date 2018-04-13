@@ -29,11 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public final class Main implements MainTarget {
 
@@ -181,11 +177,9 @@ public final class Main implements MainTarget {
             // TORRENT-UPDATE
             torrentSchedule = new TorrentSchedule(client);
             torrentSchedule.setOnSucceeded(event -> {
-                List<Integer> indexes = torrents
+                List<Integer> indexes = new ArrayList<>(torrents
                         .getSelectionModel()
-                        .getSelectedIndices()
-                        .stream()
-                        .collect(Collectors.toList());
+                        .getSelectedIndices());
                 List list = (List) event.getSource().getValue();
                 items.clear();
                 for (Object obj : list) {

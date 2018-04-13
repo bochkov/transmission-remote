@@ -78,12 +78,12 @@ public final class TransmissionRemote extends Application {
                         new View(ABOUT_DIALOG_LAYOUT, props));
     }
 
-    public static void main(String[] args) throws Exception {
-        launch(args);
+    public static void main(String[] args) {
+        Application.launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         mainView.stage().show();
         mainView.target(Main.class).start();
     }

@@ -8,7 +8,7 @@ import javafx.util.Callback;
 public final class TorrentCell<T> implements Callback<ListView<T>, ListCell<T>> {
     @Override
     public ListCell<T> call(final ListView<T> listView) {
-        return new ListCell<T>() {
+        return new ListCell<>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);

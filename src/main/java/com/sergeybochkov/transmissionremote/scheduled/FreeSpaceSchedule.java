@@ -24,7 +24,7 @@ public final class FreeSpaceSchedule extends ScheduledService<Size> {
 
     @Override
     protected Task<Size> createTask() {
-        return new Task<Size>() {
+        return new Task<>() {
             @Override
             protected Size call() throws Exception {
                 return new Size( (Double)

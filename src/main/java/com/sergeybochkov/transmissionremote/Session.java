@@ -7,8 +7,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public final class Session implements Target, CallbackTarget {
 
     private final Stage stage;
@@ -46,7 +44,7 @@ public final class Session implements Target, CallbackTarget {
     }
 
     @FXML
-    public void onOk() throws IOException {
+    public void onOk() {
         if (auth.isSelected())
             props.setUrl(server.getText(), username.getText(), password.getText());
         else
