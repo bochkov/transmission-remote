@@ -10,8 +10,8 @@ apply plugin: "java"
 apply plugin: "com.jfrog.artifactory"
 apply plugin: "edu.sc.seis.macAppBundle"
 
-sourceCompatibility = '10'
-targetCompatibility = '10'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories() {
     jcenter()

@@ -26,7 +26,7 @@ public final class SessionSchedule extends ScheduledService<Map<String, Object>>
 
     @Override
     protected Task<Map<String, Object>> createTask() {
-        return new Task<>() {
+        return new Task<Map<String, Object>>() {
             @Override
             protected Map<String, Object> call() throws Exception {
                 Map<String, Object> map = new HashMap<>();

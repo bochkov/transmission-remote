@@ -10,7 +10,7 @@ public final class PeerEncryptionCell<S, T>
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> param) {
-        return new TableCell<>() {
+        return new TableCell<S, T>() {
             @Override
             protected void updateItem(T item, boolean empty) {
                 if (item != getItem()) {
