@@ -312,7 +312,7 @@ public final class Main implements MainTarget {
     @FXML
     private void trashTorrent() {
         try {
-            client.post(new TorrentRemove(selectedIds()));
+            client.post(new TorrentRemove(false, selectedIds()));
         } catch (IOException ex) {
             alert(ex);
         }
