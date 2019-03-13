@@ -29,7 +29,7 @@ public final class View {
                         .getConstructor(Stage.class, AppProperties.class)
                         .newInstance(stage, properties);
             } catch (Exception ex) {
-                Logger.debug(this, "Ctor with params Stage and AppProperties not found");
+                Logger.debug(this, "%s: Ctor with params Stage and AppProperties not found", clz);
             }
             if (obj != null)
                 return obj;
@@ -37,7 +37,7 @@ public final class View {
                 obj = clz.getConstructor(Stage.class)
                         .newInstance(stage);
             } catch (Exception ex) {
-                Logger.debug(this, "Ctor with params Stage not found");
+                Logger.debug(this, "%s: Ctor with params Stage not found", clz);
             }
             return obj;
         });

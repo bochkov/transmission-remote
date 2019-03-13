@@ -75,7 +75,8 @@ public final class TransmissionRemote extends Application {
                         new View(ADD_DIALOG_LAYOUT, props),
                         new View(INFO_DIALOG_LAYOUT, props),
                         new View(SESSION_DIALOG_LAYOUT, props),
-                        new View(ABOUT_DIALOG_LAYOUT, props));
+                        new View(ABOUT_DIALOG_LAYOUT, props)
+                );
     }
 
     public static void main(String[] args) {
