@@ -1,10 +1,10 @@
 package com.sergeybochkov.transmissionremote.model;
 
-public final class Time {
+public final class HumanTime {
 
     private final Long secs;
 
-    public Time(Long secs) {
+    public HumanTime(Long secs) {
         this.secs = secs;
     }
 
@@ -20,8 +20,7 @@ public final class Time {
                 long hours = millis / 3600;
                 long minutes = (millis % 3600) / 60;
                 long seconds = millis % 60;
-                retVal = String.format("%02d:%02d:%02d",
-                        hours, minutes, seconds);
+                retVal = String.format("%02d:%02d:%02d", hours, minutes, seconds);
             }
         }
         return retVal;

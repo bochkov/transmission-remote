@@ -1,6 +1,5 @@
 package com.sergeybochkov.transmissionremote.ui.elems;
 
-import com.sergeybochkov.transmissionremote.model.Speed;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -12,28 +11,13 @@ public final class PeersSpeedElem implements Element {
     private final int error;
     private final String errorString;
     private final int status;
-    private final int peersSendingToUs;
-    private final int peersGettingFromUs;
-    private final int peersConnected;
-    private final double rateDownload;
-    private final double rateUpload;
+    private final PeersLabel peers;
 
-    public PeersSpeedElem(int error,
-                          String errorString,
-                          int status,
-                          int peersSendingToUs,
-                          int peersGettingFromUs,
-                          int peersConnected,
-                          double rateDownload,
-                          double rateUpload) {
+    public PeersSpeedElem(int error, String errorString, int status, PeersLabel peers) {
         this.error = error;
         this.errorString = errorString;
         this.status = status;
-        this.peersSendingToUs = peersSendingToUs;
-        this.peersGettingFromUs = peersGettingFromUs;
-        this.peersConnected = peersConnected;
-        this.rateDownload = rateDownload;
-        this.rateUpload = rateUpload;
+        this.peers = peers;
     }
 
     @Override
@@ -48,13 +32,10 @@ public final class PeersSpeedElem implements Element {
             peersAndSpeed.setTextFill(Color.GRAY);
             switch (status) {
                 case STATUS_DOWNLOAD:
-                    peersAndSpeed.setText(String.format("Downloading from %d of %d peers — ↓ %s ↑ %s",
-                            peersSendingToUs, peersConnected,
-                            new Speed(rateDownload), new Speed(rateUpload)));
+                    peersAndSpeed.setText(peers.downDesc());
                     break;
                 case STATUS_UPLOAD:
-                    peersAndSpeed.setText(String.format("Seeding to %d of %d peers — ↑ %s",
-                            peersGettingFromUs, peersConnected, new Speed(rateUpload)));
+                    peersAndSpeed.setText(peers.upDesc());
                     break;
                 case STATUS_PAUSED:
                     peersAndSpeed.setText("Paused");
@@ -64,6 +45,8 @@ public final class PeersSpeedElem implements Element {
                     break;
                 case STATUS_QUEUED:
                     peersAndSpeed.setText("Queued");
+                    break;
+                default:
                     break;
             }
         }

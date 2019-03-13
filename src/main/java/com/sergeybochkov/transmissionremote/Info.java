@@ -42,13 +42,17 @@ public final class Info implements Target {
     @FXML
     private CheckMenuItem wantedItem;
     @FXML
-    private RadioMenuItem lowItem, normalItem, highItem;
+    private RadioMenuItem lowItem;
+    @FXML
+    private RadioMenuItem normalItem;
+    @FXML
+    private RadioMenuItem highItem;
 
     private TrClient client;
     private Integer id;
     private InfoSchedule infoSchedule;
 
-    public Info(Stage stage, AppProperties props) {
+    public Info(Stage stage) {
         this.stage = stage;
         this.files.addListener((ListChangeListener<TorWrap>) change -> {
             for (TorWrap wrap : change.getList())
@@ -69,7 +73,7 @@ public final class Info implements Target {
                             TorResponse.class
                     ).name());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.warn(this, "{}", ex);
         }
         infoSchedule = new InfoSchedule(this.client, this.id);
         infoSchedule.setOnSucceeded(e -> {
@@ -105,6 +109,8 @@ public final class Info implements Target {
                     break;
                 case 1:
                     highItem.setSelected(true);
+                    break;
+                default:
                     break;
             }
         });

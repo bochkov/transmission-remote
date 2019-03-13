@@ -15,7 +15,11 @@ public final class Session implements Target, CallbackTarget {
     private Callback callback;
 
     @FXML
-    private TextField server, username, password;
+    private TextField server;
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField password;
     @FXML
     private CheckBox auth;
 
@@ -26,7 +30,7 @@ public final class Session implements Target, CallbackTarget {
 
     @Override
     public void init() {
-        this.stage.setWidth(TransmissionRemote.MIN_WIDTH - 50);
+        this.stage.setWidth(TransmissionRemote.MIN_WIDTH - 50.0D);
         this.stage.setResizable(false);
         this.username.disableProperty().bind(this.auth.selectedProperty().not());
         this.password.disableProperty().bind(this.auth.selectedProperty().not());

@@ -17,7 +17,7 @@ public final class ImageElem implements Element {
     @Override
     public Node graphic() {
         ImageView view = new ImageView();
-        String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+        String extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
         InputStream stream = getClass().getResourceAsStream(String.format("/filetypes/%s.png", extension));
         if (stream == null)
             stream = getClass().getResourceAsStream("/filetypes/folder.png");

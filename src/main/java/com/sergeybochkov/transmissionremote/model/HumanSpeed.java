@@ -1,16 +1,16 @@
 package com.sergeybochkov.transmissionremote.model;
 
-public final class Speed {
+public final class HumanSpeed {
 
     private static final String[] SPEEDS = {"B/s", "kB/s", "MB/s", "GB/s", "TB/s"};
 
     private final Double speed;
 
-    public Speed(Double speed) {
+    public HumanSpeed(Double speed) {
         this.speed = speed;
     }
 
-    public Speed(String speed) {
+    public HumanSpeed(String speed) {
         String[] parts = speed.split(" ");
         int multy = 0;
         Double value = Double.valueOf(parts[0].replace(",", "."));

@@ -5,20 +5,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Calendar;
 
 public final class About implements Target {
 
     private final Stage stage;
-    private final AppProperties props;
 
     @FXML
     private Label dateLabel;
 
-    public About(Stage stage, AppProperties props) {
+    public About(Stage stage) {
         this.stage = stage;
-        this.props = props;
     }
 
     @Override
@@ -30,17 +29,17 @@ public final class About implements Target {
         dateLabel.setText(String.format(text, curYear));
     }
 
-    private void click(String url) throws Exception {
-        java.awt.Desktop.getDesktop().browse(new URI(url));
+    private void click(String url) throws IOException {
+        java.awt.Desktop.getDesktop().browse(URI.create(url));
     }
 
     @FXML
-    private void mailClick() throws Exception {
+    private void mailClick() throws IOException {
         click("mailto:bochkov.sa@gmail.com?subject=Transmission%20Remote");
     }
 
     @FXML
-    private void urlClick() throws Exception {
+    private void urlClick() throws IOException {
         click("http://sergeybochkov.com");
     }
 }

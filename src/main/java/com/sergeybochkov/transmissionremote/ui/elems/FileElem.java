@@ -1,7 +1,7 @@
 package com.sergeybochkov.transmissionremote.ui.elems;
 
-import com.sergeybochkov.transmissionremote.model.Size;
-import com.sergeybochkov.transmissionremote.model.Time;
+import com.sergeybochkov.transmissionremote.model.HumanSize;
+import com.sergeybochkov.transmissionremote.model.HumanTime;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -30,18 +30,20 @@ public final class FileElem implements Element {
         fileLabel.setId("files");
         fileLabel.getStyleClass().add("custom-font");
         fileLabel.setTextFill(Color.GRAY);
-        Size total = new Size(sizeWhenDone * percentDone);
+        HumanSize total = new HumanSize(sizeWhenDone * percentDone);
         switch (status) {
             case STATUS_DOWNLOAD:
                 fileLabel.setText(String.format("%s of %s — %s remaining",
-                        total, new Size(sizeWhenDone), new Time(eta)));
+                        total, new HumanSize(sizeWhenDone), new HumanTime(eta)));
                 break;
             case STATUS_UPLOAD:
                 fileLabel.setText(String.format("%s, uploaded %s (Ratio %.2f)",
-                        total, new Size(sizeWhenDone * uploadRatio), uploadRatio));
+                        total, new HumanSize(sizeWhenDone * uploadRatio), uploadRatio));
                 break;
             case STATUS_CHECKED:
-                fileLabel.setText(String.format("%s of %s", total, new Size(sizeWhenDone)));
+                fileLabel.setText(String.format("%s of %s", total, new HumanSize(sizeWhenDone)));
+                break;
+            default:
                 break;
         }
         return fileLabel;

@@ -2,7 +2,7 @@ package com.sergeybochkov.transmissionremote;
 
 import com.sergeybochkov.transmissionremote.fxutil.ResultCallback;
 import com.sergeybochkov.transmissionremote.fxutil.Target;
-import com.sergeybochkov.transmissionremote.model.Size;
+import com.sergeybochkov.transmissionremote.model.HumanSize;
 import com.sergeybochkov.transmissionremote.model.TrSourceFile;
 import com.sergeybochkov.transmissionremote.model.TrSourceUrl;
 import cordelia.client.TrClient;
@@ -28,9 +28,13 @@ public final class Add implements Target, ResultCallback {
     @FXML
     private Button openButton;
     @FXML
-    private Label filesLabel, destinationLabel;
+    private Label filesLabel;
     @FXML
-    private TextField urlField, destinationField;
+    private Label destinationLabel;
+    @FXML
+    private TextField urlField;
+    @FXML
+    private TextField destinationField;
 
     private final List<File> files = new ArrayList<>();
 
@@ -50,7 +54,7 @@ public final class Add implements Target, ResultCallback {
 
     @Override
     public void init() {
-        stage.setWidth(TransmissionRemote.MIN_WIDTH - 50);
+        stage.setWidth(TransmissionRemote.MIN_WIDTH - 50.0D);
         filesLabel.setText("Files not selected");
         openButton.setOnAction(event -> {
             files.clear();
@@ -75,10 +79,9 @@ public final class Add implements Target, ResultCallback {
         destinationField.setOnKeyReleased(event -> destinationLabel.setText(printFS()));
     }
 
-    public Add withClient(TrClient client) {
+    public void withClient(TrClient client) {
         this.client = client;
         destinationLabel.setText(printFS());
-        return this;
     }
 
     @FXML
@@ -108,7 +111,7 @@ public final class Add implements Target, ResultCallback {
                     .get("size-bytes");
             return bytes < 0 ?
                     "No such directory" :
-                    String.format("Destination folder (%s free)", new Size(bytes));
+                    String.format("Destination folder (%s free)", new HumanSize(bytes));
         } catch (IOException ex) {
             return ex.getMessage();
         }

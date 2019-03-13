@@ -1,12 +1,12 @@
 package com.sergeybochkov.transmissionremote.model;
 
-public final class Size {
+public final class HumanSize {
 
     private static final String[] SIZES = {"B", "kB", "MB", "GB", "TB"};
 
     private final double size;
 
-    public Size(double size) {
+    public HumanSize(double size) {
         this.size = size;
     }
 

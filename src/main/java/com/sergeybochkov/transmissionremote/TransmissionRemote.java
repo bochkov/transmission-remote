@@ -61,7 +61,7 @@ public final class TransmissionRemote extends Application {
     private final View mainView;
     private final AppProperties props;
 
-    public TransmissionRemote() throws Exception {
+    public TransmissionRemote() throws IOException {
         Font.loadFont(getClass().getResource(FONT_AWESOME).toExternalForm(), 14);
         File propsFile = new File(SETTING_DIR, SETTING_FILE);
         if (!propsFile.getParentFile().exists() && !propsFile.getParentFile().mkdirs()) {

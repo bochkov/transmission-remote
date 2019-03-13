@@ -33,6 +33,8 @@ import java.util.*;
 
 public final class Main implements MainTarget {
 
+    private static final String DOWNLOAD_DIR = "download-dir";
+
     private final Map<String, View> views = new HashMap<>();
     private final Stage stage;
     private final AppProperties props;
@@ -41,15 +43,43 @@ public final class Main implements MainTarget {
     private final ObservableList<Tor> items = FXCollections.observableArrayList();
 
     @FXML
-    private MenuItem startItem, stopItem, infoItem, reannounceItem, trashItem, deleteItem;
+    private MenuItem startItem;
     @FXML
-    private MenuItem startContextItem, stopContextItem, reannounceContextItem, infoContextItem, trashContextItem, deleteContextItem;
+    private MenuItem stopItem;
     @FXML
-    private Button trashButton, infoButton;
+    private MenuItem infoItem;
+    @FXML
+    private MenuItem reannounceItem;
+    @FXML
+    private MenuItem trashItem;
+    @FXML
+    private MenuItem deleteItem;
+    @FXML
+    private MenuItem startContextItem;
+    @FXML
+    private MenuItem stopContextItem;
+    @FXML
+    private MenuItem reannounceContextItem;
+    @FXML
+    private MenuItem infoContextItem;
+    @FXML
+    private MenuItem trashContextItem;
+    @FXML
+    private MenuItem deleteContextItem;
+    @FXML
+    private Button trashButton;
+    @FXML
+    private Button infoButton;
     @FXML
     private ToggleButton speedLimitButton;
     @FXML
-    private Label freeSpace, downSpeed, upSpeed, rating;
+    private Label freeSpace;
+    @FXML
+    private Label downSpeed;
+    @FXML
+    private Label upSpeed;
+    @FXML
+    private Label rating;
     @FXML
     private ListView<Tor> torrents;
 
@@ -82,39 +112,8 @@ public final class Main implements MainTarget {
             }
             ev.consume();
         });
-        torrents.setOnDragOver((DragEvent ev) -> {
-            ev.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            ev.consume();
-        });
-        torrents.setOnDragDropped((DragEvent ev) -> {
-            Dragboard db = ev.getDragboard();
-            List<File> files = db.getFiles();
-            if (files != null && !files.isEmpty())
-                try {
-                    new TrSourceTrash(
-                            new TrSourceFile(
-                                    files,
-                                    (String) session.get("download-dir")
-                            )
-                    ).add(client);
-                } catch (IOException ex) {
-                    alert(ex);
-                }
-            if (db.getUrl() != null && !db.getUrl().isEmpty()) {
-                try {
-                    new TrSourceTrash(
-                            new TrSourceUrl(
-                                    db.getUrl(),
-                                    (String) session.get("download-dir")
-                            )
-                    ).add(client);
-                } catch (IOException ex) {
-                    alert(ex);
-                }
-            }
-            ev.setDropCompleted(true);
-            ev.consume();
-        });
+        torrents.setOnDragOver(this::dragOver);
+        torrents.setOnDragDropped(this::dragDrop);
         startItem.disableProperty().bind(
                 torrents.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         stopItem.disableProperty().bind(
@@ -173,7 +172,8 @@ public final class Main implements MainTarget {
         client = new TrClient(props.uri());
         try {
             session.putAll(
-                    client.post(new SessionGet(), TrResponse.class).arguments());
+                    client.post(new SessionGet(), TrResponse.class).arguments()
+            );
             // TORRENT-UPDATE
             torrentSchedule = new TorrentSchedule(client);
             torrentSchedule.setOnSucceeded(event -> {
@@ -200,8 +200,8 @@ public final class Main implements MainTarget {
                         TransmissionRemote.APP_NAME,
                         props.server(),
                         map.get("version")));
-                upSpeed.setText(new Speed((Double) map.get("uploadSpeed")).toString());
-                downSpeed.setText(new Speed((Double) map.get("downloadSpeed")).toString());
+                upSpeed.setText(new HumanSpeed((Double) map.get("uploadSpeed")).toString());
+                downSpeed.setText(new HumanSpeed((Double) map.get("downloadSpeed")).toString());
                 speedLimitButton.setSelected((Boolean) map.get("alt-speed-enabled"));
                 Map cumul = (Map) map.get("cumulative-stats");
                 rating.setText(String.format("%.2f",
@@ -209,7 +209,7 @@ public final class Main implements MainTarget {
             });
             sessionSchedule.start();
             // FREE-SPACE
-            freeSpaceSchedule = new FreeSpaceSchedule(client, (String) session.get("download-dir"));
+            freeSpaceSchedule = new FreeSpaceSchedule(client, (String) session.get(DOWNLOAD_DIR));
             freeSpaceSchedule.setOnSucceeded(event ->
                     freeSpace.setText(event.getSource().getValue().toString()));
             freeSpaceSchedule.start();
@@ -372,5 +372,40 @@ public final class Main implements MainTarget {
     @FXML
     private void close() {
         Platform.exit();
+    }
+
+    private void dragOver(DragEvent event) {
+        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        event.consume();
+    }
+
+    public void dragDrop(DragEvent event) {
+        Dragboard db = event.getDragboard();
+        List<File> files = db.getFiles();
+        if (files != null && !files.isEmpty())
+            try {
+                new TrSourceTrash(
+                        new TrSourceFile(
+                                files,
+                                (String) session.get(DOWNLOAD_DIR)
+                        )
+                ).add(client);
+            } catch (IOException ex) {
+                alert(ex);
+            }
+        if (db.getUrl() != null && !db.getUrl().isEmpty()) {
+            try {
+                new TrSourceTrash(
+                        new TrSourceUrl(
+                                db.getUrl(),
+                                (String) session.get(DOWNLOAD_DIR)
+                        )
+                ).add(client);
+            } catch (IOException ex) {
+                alert(ex);
+            }
+        }
+        event.setDropCompleted(true);
+        event.consume();
     }
 }

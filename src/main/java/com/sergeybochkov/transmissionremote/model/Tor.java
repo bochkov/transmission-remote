@@ -52,8 +52,18 @@ public final class Tor {
     public HBox graphic(Control parent) {
         VBox vbox = new VBox(
                 new NameElem(name).graphic(),
-                new PeersSpeedElem(error, errorString, status, peersSendingToUs,
-                        peersGettingFromUs, peersConnected, rateDownload, rateUpload).graphic(),
+                new PeersSpeedElem(
+                        error,
+                        errorString,
+                        status,
+                        new PeersLabel(
+                                peersSendingToUs,
+                                peersGettingFromUs,
+                                peersConnected,
+                                rateDownload,
+                                rateUpload
+                        )
+                ).graphic(),
                 new ProgressElem(error, status, percentDone, parent).graphic(),
                 new FileElem(status, sizeWhenDone, percentDone, uploadRatio, eta).graphic());
         return new HBox(10,

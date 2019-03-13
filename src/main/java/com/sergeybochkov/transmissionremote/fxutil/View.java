@@ -1,5 +1,6 @@
 package com.sergeybochkov.transmissionremote.fxutil;
 
+import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,18 +19,27 @@ public final class View {
     private final Target target;
     private final Map<String, View> views = new HashMap<>();
 
-    public View(String location, AppProperties properties) throws Exception {
+    public View(String location, AppProperties properties) throws IOException {
         stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
         loader.setControllerFactory(clz -> {
+            Object obj = null;
             try {
-                return clz
+                obj = clz
                         .getConstructor(Stage.class, AppProperties.class)
                         .newInstance(stage, properties);
+            } catch (Exception ex) {
+                Logger.debug(this, "Ctor with params Stage and AppProperties not found");
             }
-            catch (Exception ex) {
-                return null;
+            if (obj != null)
+                return obj;
+            try {
+                obj = clz.getConstructor(Stage.class)
+                        .newInstance(stage);
+            } catch (Exception ex) {
+                Logger.debug(this, "Ctor with params Stage not found");
             }
+            return obj;
         });
         stage.setScene(new Scene(loader.load()));
         target = loader.getController();

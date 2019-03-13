@@ -28,12 +28,12 @@ public final class TorWrap {
 
     public ObservableValue<String> complete() {
         return new SimpleStringProperty(
-                new Size(file.completed()).toString());
+                new HumanSize(file.completed()).toString());
     }
 
     public ObservableValue<String> length() {
         return new SimpleStringProperty(
-                new Size(file.length())
+                new HumanSize(file.length())
                         .toString());
     }
 
@@ -56,6 +56,8 @@ public final class TorWrap {
                 break;
             case 1:
                 il.setStyle("-fx-text-fill: red");
+                break;
+            default:
                 break;
         }
         return il;
