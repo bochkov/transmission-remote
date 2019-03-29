@@ -19,9 +19,7 @@ public final class SessionSchedule extends ScheduledService<Map<String, Object>>
 
     public SessionSchedule(TrClient client) {
         this.client = client;
-        setPeriod(
-                new Duration(
-                        TransmissionRemote.SESSION_INTERVAL));
+        setPeriod(new Duration(TransmissionRemote.SESSION_INTERVAL));
     }
 
     @Override

@@ -33,8 +33,6 @@ import java.util.*;
 
 public final class Main implements MainTarget {
 
-    private static final String DOWNLOAD_DIR = "download-dir";
-
     private final Map<String, View> views = new HashMap<>();
     private final Stage stage;
     private final AppProperties props;
@@ -177,9 +175,7 @@ public final class Main implements MainTarget {
             // TORRENT-UPDATE
             torrentSchedule = new TorrentSchedule(client);
             torrentSchedule.setOnSucceeded(event -> {
-                List<Integer> indexes = new ArrayList<>(torrents
-                        .getSelectionModel()
-                        .getSelectedIndices());
+                List<Integer> indexes = new ArrayList<>(torrents.getSelectionModel().getSelectedIndices());
                 List list = (List) event.getSource().getValue();
                 items.clear();
                 for (Object obj : list) {
@@ -209,7 +205,7 @@ public final class Main implements MainTarget {
             });
             sessionSchedule.start();
             // FREE-SPACE
-            freeSpaceSchedule = new FreeSpaceSchedule(client, (String) session.get(DOWNLOAD_DIR));
+            freeSpaceSchedule = new FreeSpaceSchedule(client, session);
             freeSpaceSchedule.setOnSucceeded(event ->
                     freeSpace.setText(event.getSource().getValue().toString()));
             freeSpaceSchedule.start();
@@ -385,10 +381,7 @@ public final class Main implements MainTarget {
         if (files != null && !files.isEmpty())
             try {
                 new TrSourceTrash(
-                        new TrSourceFile(
-                                files,
-                                (String) session.get(DOWNLOAD_DIR)
-                        )
+                        new TrSourceFile(files, session)
                 ).add(client);
             } catch (IOException ex) {
                 alert(ex);
@@ -396,10 +389,7 @@ public final class Main implements MainTarget {
         if (db.getUrl() != null && !db.getUrl().isEmpty()) {
             try {
                 new TrSourceTrash(
-                        new TrSourceUrl(
-                                db.getUrl(),
-                                (String) session.get(DOWNLOAD_DIR)
-                        )
+                        new TrSourceUrl(db.getUrl(), session)
                 ).add(client);
             } catch (IOException ex) {
                 alert(ex);

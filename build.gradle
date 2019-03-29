@@ -1,7 +1,6 @@
 plugins {
     id "com.jfrog.artifactory" version "4.9.0"
     id "edu.sc.seis.macAppBundle" version "2.3.0"
-    id "org.sonarqube" version "2.6"
 }
 
 group = 'com.sergeybochkov'

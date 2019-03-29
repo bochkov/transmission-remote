@@ -13,18 +13,18 @@ import java.util.Map;
 public final class TrSourceUrl implements TrSource {
 
     private final String url;
-    private final String destDir;
+    private final Map<String, Object> session;
 
-    public TrSourceUrl(String url, String destDir) {
+    public TrSourceUrl(String url, Map<String, Object> session) {
         this.url = url;
-        this.destDir = destDir;
+        this.session = session;
     }
 
     @Override
     public void add(TrClient client) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put("filename", url);
-        map.put("download-dir", destDir);
+        map.put("download-dir", session.get("download-dir"));
         client.post(new TorrentAdd(map));
     }
 

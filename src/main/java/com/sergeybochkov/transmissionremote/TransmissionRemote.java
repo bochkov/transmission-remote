@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -18,7 +19,7 @@ public final class TransmissionRemote extends Application {
     public static final String LOGO = "/style/transmission-remote.png";
     public static final String FONT_AWESOME = "/style/fontawesome-webfont.woff";
     public static final String SETTING_DIR = System.getProperty("user.home") + File.separator + ".transmissionremote";
-    public static final String SETTING_FILE = "settings2.json";
+    public static final String SETTING_FILE = "settings.json";
 
     public static final int MIN_HEIGHT = 650;
     public static final int MIN_WIDTH = 500;
@@ -86,7 +87,7 @@ public final class TransmissionRemote extends Application {
     @Override
     public void start(Stage stage) {
         mainView.stage().show();
-        mainView.target(Main.class).start();
+        Platform.runLater(() -> mainView.target(Main.class).start());
     }
 
     @Override

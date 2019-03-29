@@ -18,7 +18,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class Add implements Target, ResultCallback {
 
@@ -88,10 +90,11 @@ public final class Add implements Target, ResultCallback {
     private void onOk() throws IOException {
         if (!destinationField.getText().isEmpty()) {
             props.setLastDestination(destinationField.getText());
+            Map<String, Object> args = Collections.singletonMap("download-dir", destinationField.getText());
             if (!files.isEmpty())
-                callback.call(new TrSourceFile(files, destinationField.getText()));
+                callback.call(new TrSourceFile(files, args));
             if (!urlField.getText().isEmpty())
-                callback.call(new TrSourceUrl(urlField.getText(), destinationField.getText()));
+                callback.call(new TrSourceUrl(urlField.getText(), args));
         }
         onCancel();
     }

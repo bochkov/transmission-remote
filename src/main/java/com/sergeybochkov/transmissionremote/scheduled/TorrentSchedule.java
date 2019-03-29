@@ -24,9 +24,7 @@ public final class TorrentSchedule extends ScheduledService<List<Tor>> {
 
     public TorrentSchedule(TrClient client) {
         this.client = client;
-        setPeriod(
-                new Duration(
-                        TransmissionRemote.TORRENT_INTERVAL));
+        setPeriod(new Duration(TransmissionRemote.TORRENT_INTERVAL));
     }
 
     @Override

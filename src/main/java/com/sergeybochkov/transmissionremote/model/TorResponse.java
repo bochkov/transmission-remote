@@ -10,7 +10,7 @@ public final class TorResponse implements Serializable {
 
     private static final String TORRENT_KEY = "torrents";
 
-    private final transient Map<String, List<Tor>> arguments;
+    private final Map<String, List<Tor>> arguments;
 
     public TorResponse(Map<String, List<Tor>> args) {
         this.arguments = args;

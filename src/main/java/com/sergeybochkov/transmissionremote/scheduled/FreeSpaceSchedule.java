@@ -9,17 +9,17 @@ import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 
+import java.util.Map;
+
 public final class FreeSpaceSchedule extends ScheduledService<HumanSize> {
 
     private final TrClient client;
-    private final String downloadDir;
+    private final Map<String, Object> session;
 
-    public FreeSpaceSchedule(TrClient client, String downloadDir) {
+    public FreeSpaceSchedule(TrClient client, Map<String, Object> session) {
         this.client = client;
-        this.downloadDir = downloadDir;
-        setPeriod(
-                new Duration(
-                        TransmissionRemote.FREE_SPACE_INTERVAL));
+        this.session = session;
+        setPeriod(new Duration(TransmissionRemote.FREE_SPACE_INTERVAL));
     }
 
     @Override
@@ -27,10 +27,11 @@ public final class FreeSpaceSchedule extends ScheduledService<HumanSize> {
         return new Task<HumanSize>() {
             @Override
             protected HumanSize call() throws Exception {
-                return new HumanSize( (Double)
-                        client.post(new FreeSpace(downloadDir), TrResponse.class)
-                                .arguments()
-                                .get("size-bytes"));
+                FreeSpace fs = new FreeSpace((String) session.get("download-dir"));
+                Double size = (Double) client.post(fs, TrResponse.class)
+                        .arguments()
+                        .get("size-bytes");
+                return new HumanSize(size);
             }
         };
     }

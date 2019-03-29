@@ -11,11 +11,11 @@ import java.util.*;
 public final class TrSourceFile implements TrSource {
 
     private final List<File> files;
-    private final String destDir;
+    private final Map<String, Object> session;
 
-    public TrSourceFile(List<File> files, String destDir) {
+    public TrSourceFile(List<File> files, Map<String, Object> session) {
         this.files = new ArrayList<>(files);
-        this.destDir = destDir;
+        this.session = session;
     }
 
     @Override
@@ -26,7 +26,7 @@ public final class TrSourceFile implements TrSource {
                     .getEncoder()
                     .encodeToString(
                             FileUtils.readFileToByteArray(file)));
-            map.put("download-dir", destDir);
+            map.put("download-dir", session.get("download-dir"));
             client.post(new TorrentAdd(map));
         }
     }
