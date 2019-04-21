@@ -1,5 +1,7 @@
-package com.sergeybochkov.transmissionremote;
+package com.sergeybochkov.transmissionremote.frm;
 
+import com.sergeybochkov.transmissionremote.AppProperties;
+import com.sergeybochkov.transmissionremote.TransmissionRemote;
 import com.sergeybochkov.transmissionremote.fxutil.MainTarget;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import com.sergeybochkov.transmissionremote.model.*;
@@ -19,6 +21,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
@@ -27,8 +32,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.*;
 
 public final class Main implements MainTarget {
@@ -98,7 +105,7 @@ public final class Main implements MainTarget {
         stage.setMinHeight(TransmissionRemote.MIN_HEIGHT);
         stage.setHeight(props.height());
         stage.setWidth(props.width());
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(TransmissionRemote.LOGO)));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream(TransmissionRemote.LOGO)));
         torrents.itemsProperty().bind(new SimpleListProperty<>(items));
         torrents.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         torrents.setOnMouseClicked((MouseEvent ev) -> {
@@ -185,7 +192,9 @@ public final class Main implements MainTarget {
                 items.sort(Comparator.comparingInt(Tor::id));
                 indexes.forEach(i -> torrents.getSelectionModel().select(i));
                 long completed = torrents.getItems().stream().filter(Tor::completed).count();
-                com.apple.eawt.Application.getApplication().setDockIconBadge(completed > 0 ? String.valueOf(completed) : "");
+                Taskbar.getTaskbar().setIconBadge(
+                        completed > 0 ? String.valueOf(completed) : ""
+                );
             });
             torrentSchedule.start();
             // SESSION-UPDATE

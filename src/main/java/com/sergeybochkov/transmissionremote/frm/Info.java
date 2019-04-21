@@ -1,4 +1,4 @@
-package com.sergeybochkov.transmissionremote;
+package com.sergeybochkov.transmissionremote.frm;
 
 import com.jcabi.log.Logger;
 import com.sergeybochkov.transmissionremote.fxutil.Target;

@@ -1,10 +1,11 @@
-package com.sergeybochkov.transmissionremote;
+package com.sergeybochkov.transmissionremote.frm;
 
 import com.sergeybochkov.transmissionremote.fxutil.Target;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Calendar;
@@ -29,17 +30,13 @@ public final class About implements Target {
         dateLabel.setText(String.format(text, curYear));
     }
 
-    private void click(String url) throws IOException {
-        java.awt.Desktop.getDesktop().browse(URI.create(url));
-    }
-
     @FXML
     private void mailClick() throws IOException {
-        click("mailto:bochkov.sa@gmail.com?subject=Transmission%20Remote");
+        Desktop.getDesktop().mail(URI.create("mailto:bochkov.sa@gmail.com?subject=Transmission%20Remote"));
     }
 
     @FXML
     private void urlClick() throws IOException {
-        click("http://sergeybochkov.com");
+        Desktop.getDesktop().browse(URI.create("http://sergeybochkov.com"));
     }
 }

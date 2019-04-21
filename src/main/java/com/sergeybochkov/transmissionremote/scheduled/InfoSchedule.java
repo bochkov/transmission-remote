@@ -23,7 +23,7 @@ public final class InfoSchedule extends ScheduledService<TorResponse> {
 
     @Override
     protected Task<TorResponse> createTask() {
-        return new Task<TorResponse>() {
+        return new Task<>() {
             @Override
             protected TorResponse call() throws Exception {
                 return client.post(

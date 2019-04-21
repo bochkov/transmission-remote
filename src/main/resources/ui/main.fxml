@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Main">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.frm.Main">
     <MenuBar useSystemMenuBar="true">
         <Menu text="File">
             <MenuItem text="Change session" onAction="#session" accelerator="meta+N">
@@ -165,7 +165,7 @@
 
     <ListView VBox.vgrow="ALWAYS" fx:id="torrents">
         <cellFactory>
-            <TorrentCell />
+            <TorrentCell/>
         </cellFactory>
         <contextMenu>
             <ContextMenu>
@@ -207,7 +207,8 @@
                             </Label>
                         </graphic>
                     </MenuItem>
-                    <MenuItem mnemonicParsing="false" text="Delete torrent and files" fx:id="deleteContextItem" onAction="#deleteTorrent">
+                    <MenuItem mnemonicParsing="false" text="Delete torrent and files" fx:id="deleteContextItem"
+                              onAction="#deleteTorrent">
                         <graphic>
                             <Label styleClass="icons, reflect">
                                 <TransmissionRemote fx:constant="ICON_BAN"/>
@@ -266,6 +267,6 @@
 
     </HBox>
     <stylesheets>
-        <URL value="@/style/style.css"/>
+        <URL value="@../style/style.css"/>
     </stylesheets>
 </VBox>

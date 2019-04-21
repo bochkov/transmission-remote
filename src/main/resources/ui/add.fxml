@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Add"
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.frm.Add"
       minHeight="100" minWidth="400" spacing="10">
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -20,7 +20,7 @@
                     </Label>
                 </graphic>
             </Button>
-            <Label fx:id="filesLabel" />
+            <Label fx:id="filesLabel"/>
         </HBox>
     </VBox>
 
@@ -39,6 +39,6 @@
         <Button text="Cancel" onAction="#onCancel"/>
     </HBox>
     <stylesheets>
-        <URL value="@/style/style.css"/>
+        <URL value="@../style/style.css"/>
     </stylesheets>
 </VBox>

@@ -24,7 +24,7 @@ public final class FreeSpaceSchedule extends ScheduledService<HumanSize> {
 
     @Override
     protected Task<HumanSize> createTask() {
-        return new Task<HumanSize>() {
+        return new Task<>() {
             @Override
             protected HumanSize call() throws Exception {
                 FreeSpace fs = new FreeSpace((String) session.get("download-dir"));

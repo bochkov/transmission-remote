@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.Info"
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.sergeybochkov.transmissionremote.frm.Info"
       spacing="10">
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -23,15 +23,17 @@
                             <CheckMenuItem text="Wanted" fx:id="wantedItem"/>
                             <SeparatorMenuItem/>
                             <RadioMenuItem fx:id="lowItem" text="Low" toggleGroup="$radioMenu" onAction="#lowPriority"/>
-                            <RadioMenuItem fx:id="normalItem" text="Normal" toggleGroup="$radioMenu" onAction="#normalPriority"/>
-                            <RadioMenuItem fx:id="highItem" text="High" toggleGroup="$radioMenu" onAction="#highPriority"/>
+                            <RadioMenuItem fx:id="normalItem" text="Normal" toggleGroup="$radioMenu"
+                                           onAction="#normalPriority"/>
+                            <RadioMenuItem fx:id="highItem" text="High" toggleGroup="$radioMenu"
+                                           onAction="#highPriority"/>
                         </items>
                     </ContextMenu>
                 </contextMenu>
                 <columns>
                     <TreeTableColumn text="Name" prefWidth="300">
                         <cellValueFactory>
-                            <FileBaseValue />
+                            <FileBaseValue/>
                         </cellValueFactory>
                         <cellFactory>
                             <CheckedFileCell/>
@@ -69,30 +71,30 @@
                 <columns>
                     <TableColumn text="Address" prefWidth="120" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <PeerAddressValue />
+                            <PeerAddressValue/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn text="Speed to peer" prefWidth="120" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <PeerFromUsValue />
+                            <PeerFromUsValue/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn text="Speed from peer" prefWidth="120" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <PeerToUsValue />
+                            <PeerToUsValue/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn text="Client" prefWidth="150" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <PeerClientValue />
+                            <PeerClientValue/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn text="Encryption" prefWidth="90" style="-fx-alignment: CENTER;">
                         <cellValueFactory>
-                            <BasePeerValue />
+                            <BasePeerValue/>
                         </cellValueFactory>
                         <cellFactory>
-                            <PeerEncryptionCell />
+                            <PeerEncryptionCell/>
                         </cellFactory>
                     </TableColumn>
                 </columns>
@@ -100,6 +102,6 @@
         </Tab>
     </TabPane>
     <stylesheets>
-        <URL value="@/style/style.css"/>
+        <URL value="@../style/style.css"/>
     </stylesheets>
 </VBox>

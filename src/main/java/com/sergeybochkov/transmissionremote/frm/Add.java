@@ -1,5 +1,7 @@
-package com.sergeybochkov.transmissionremote;
+package com.sergeybochkov.transmissionremote.frm;
 
+import com.sergeybochkov.transmissionremote.AppProperties;
+import com.sergeybochkov.transmissionremote.TransmissionRemote;
 import com.sergeybochkov.transmissionremote.fxutil.ResultCallback;
 import com.sergeybochkov.transmissionremote.fxutil.Target;
 import com.sergeybochkov.transmissionremote.model.HumanSize;

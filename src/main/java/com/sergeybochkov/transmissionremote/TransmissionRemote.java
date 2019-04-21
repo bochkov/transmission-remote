@@ -2,12 +2,15 @@ package com.sergeybochkov.transmissionremote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sergeybochkov.transmissionremote.frm.Main;
 import com.sergeybochkov.transmissionremote.fxutil.View;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -63,6 +66,9 @@ public final class TransmissionRemote extends Application {
     private final AppProperties props;
 
     public TransmissionRemote() throws IOException {
+        Taskbar.getTaskbar().setIconImage(
+                new ImageIcon(getClass().getResource(LOGO)).getImage()
+        );
         Font.loadFont(getClass().getResource(FONT_AWESOME).toExternalForm(), 14);
         File propsFile = new File(SETTING_DIR, SETTING_FILE);
         if (!propsFile.getParentFile().exists() && !propsFile.getParentFile().mkdirs()) {
