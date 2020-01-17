@@ -1,8 +1,8 @@
 plugins {
     id "application"
-    id "org.openjfx.javafxplugin" version "0.0.7"
-    id "org.beryx.jlink" version "2.10.2"
-    id "com.jfrog.artifactory" version "4.9.5"
+    id "org.openjfx.javafxplugin" version "0.0.8"
+    id "org.beryx.jlink" version "2.17.0"
+    id "com.jfrog.artifactory" version "4.13.0"
 }
 
 group = 'com.sergeybochkov'
@@ -11,15 +11,15 @@ version = '3.0'
 apply plugin: "java"
 apply plugin: "com.jfrog.artifactory"
 
-sourceCompatibility = 12
-targetCompatibility = 12
+sourceCompatibility = JavaVersion.VERSION_13
+targetCompatibility = JavaVersion.VERSION_13
 
 repositories() {
     jcenter()
 }
 
 javafx {
-    version = "12"
+    version = "13"
     modules = ["javafx.controls", "javafx.fxml"]
 }
 
