@@ -114,7 +114,7 @@ public final class Add implements Target, ResultCallback {
             Double bytes = (Double) client
                     .post(new FreeSpace(destinationField.getText()), TrResponse.class)
                     .get("size-bytes");
-            return bytes < 0 ?
+            return bytes == null || bytes < 0 ?
                     "No such directory" :
                     String.format("Destination folder (%s free)", new HumanSize(bytes));
         } catch (IOException ex) {
