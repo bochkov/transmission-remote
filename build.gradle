@@ -39,26 +39,28 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-task("macApp", dependsOn: 'assembleDist') {
-    def outDir = "$buildDir/macApp"
-    def appDir = "$outDir/Transmission Remote.app"
-    delete outDir
-    project.file(appDir).mkdirs()
-    copy {
-        from tarTree(distTar.archiveFile)
-        into "$appDir/Contents/MacOS"
-    }
-    copy {
-        from 'src/main/resources/style/transmission-remote.icns'
-        into "$appDir/Contents/Resources"
-    }
-    copy {
-        from 'src/main/resources/Info.plist'
-        into "$appDir/Contents"
-        filter { line -> line.replace('{{ root }}', distTar.getArchiveBaseName().get() + "-" + distTar.getArchiveVersion().get()) }
-    }
-    copy {
-        from 'src/main/resources/PkgInfo'
-        into "$appDir/Contents"
+task("macApp", dependsOn: 'build') {
+    doLast {
+        def outDir = "$buildDir/macApp"
+        def appDir = "$outDir/Transmission Remote.app"
+        delete outDir
+        project.file(appDir).mkdirs()
+        copy {
+            from tarTree(distTar.archiveFile)
+            into "$appDir/Contents/MacOS"
+        }
+        copy {
+            from 'src/main/resources/style/transmission-remote.icns'
+            into "$appDir/Contents/Resources"
+        }
+        copy {
+            from 'src/main/resources/Info.plist'
+            into "$appDir/Contents"
+            filter { line -> line.replace('{{ root }}', distTar.getArchiveBaseName().get() + "-" + distTar.getArchiveVersion().get()) }
+        }
+        copy {
+            from 'src/main/resources/PkgInfo'
+            into "$appDir/Contents"
+        }
     }
 }
