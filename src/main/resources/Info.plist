@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Transmission Remote</string>
 	<key>CFBundleExecutable</key>
-	<string>bin/transmissionremote</string>
+	<string>{{ root }}/bin/transmission-remote</string>
 	<key>CFBundleIconFile</key>
 	<string>transmission-remote.icns</string>
 	<key>CFBundleIdentifier</key>
