@@ -22,7 +22,7 @@ public final class FrmSession extends JDialog {
     public FrmSession(Frame owner, Callback callback) {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.callback = callback;
-        setLayout(new MigLayout("fillx, wrap 2", "[right][fill, grow]"));
+        setLayout(new MigLayout("fillx, wrap 2, insets 10", "[right][fill, grow]"));
 
         add(new JLabel("URL"));
         add(serverField);

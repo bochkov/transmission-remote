@@ -36,7 +36,7 @@ public final class FrmAdd extends JDialog {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.client = client;
 
-        setLayout(new MigLayout("fillx, wrap 3", "[right][fill, grow][]", "[][][][]push[]"));
+        setLayout(new MigLayout("fillx, insets 10, wrap 3", "[right][fill, grow][]", "[][][][]push[]"));
 
         add(new JLabel("Select torrent file(s)"), "span 2, left");
         add(new JButton(new OpenAction()), "right");
@@ -52,7 +52,7 @@ public final class FrmAdd extends JDialog {
         destinationLabel.setForeground(Color.GRAY);
         add(destinationLabel);
 
-        JPanel cmdPanel = new JPanel(new MigLayout("fillx, nogrid"));
+        JPanel cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
         cmdPanel.add(new JButton(new OkAction()));
         cmdPanel.add(new JButton(new CancelAction()));
         add(cmdPanel, "span, center");

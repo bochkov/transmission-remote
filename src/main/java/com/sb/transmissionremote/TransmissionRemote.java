@@ -53,6 +53,8 @@ public final class TransmissionRemote {
     public static final AppProperties PROPS = AppProperties.get();
 
     private static void run() {
+        if (PROPS.isMacOs())
+            Taskbar.getTaskbar().setIconImage(TransmissionRemote.LOGO.getImage());
         JFrame mainFrame = new FrmMain();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -69,6 +71,7 @@ public final class TransmissionRemote {
 
     @SneakyThrows
     public static void main(String[] args) {
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
         FlatLightLaf.install();
         TransmissionRemote.run();
     }

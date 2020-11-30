@@ -85,7 +85,7 @@ public final class AppProperties {
 
     @JsonIgnore
     public boolean isMacOs() {
-        return System.getProperty("os.name").contains("mac");
+        return System.getProperty("os.name").toLowerCase().contains("mac");
     }
 
     public String uri() {

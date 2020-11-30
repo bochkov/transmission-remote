@@ -29,7 +29,7 @@ public final class ProgressElem implements Element {
         } else {
             switch (status) {
                 case Tor.STATUS_UPLOAD:
-                    pb.setForeground(Color.GREEN);
+                    pb.setForeground(new Color(5, 109, 5));
                     break;
                 case Tor.STATUS_PAUSED:
                     pb.setForeground(Color.LIGHT_GRAY);

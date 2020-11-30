@@ -66,7 +66,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
     public FrmMain() {
         setTitle(TransmissionRemote.APP_NAME);
         setIconImage(TransmissionRemote.LOGO.getImage());
-        setLayout(new MigLayout("wrap 1, fillx", "center", "[][fill,grow][]"));
+        setLayout(new MigLayout("wrap 1, insets 10, gap 7, fillx", "center", "[][fill,grow][]"));
 
         int metaKey = props.isMacOs() ?
                 InputEvent.META_DOWN_MASK :
@@ -98,7 +98,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
                 )
         );
 
-        JPanel cmdPanel = new JPanel(new MigLayout());
+        JPanel cmdPanel = new JPanel(new MigLayout("insets 0"));
         cmdPanel.add(new JButton(acStartAll));
         cmdPanel.add(new JButton(acStopAll));
         cmdPanel.add(speedLimitButton);
@@ -144,7 +144,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         popup.add(acDelete);
         torList.setComponentPopupMenu(popup);
 
-        JPanel infoPanel = new JPanel(new MigLayout("", "[][]30[][]30[][]"));
+        JPanel infoPanel = new JPanel(new MigLayout("insets 0", "[][]30[][]30[][]"));
         infoPanel.add(new JLabel(TransmissionRemote.ICON_HDD));
         infoPanel.add(freeSpaceLabel);
         freeSpaceLabel.setToolTipText("Free space left");
@@ -216,9 +216,10 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         }
         long completed = torrents.getAll().stream().filter(Tor::completed).count();
         LOG.debug("completed={}", completed);
-//        Taskbar.getTaskbar().setIconBadge(
-//                completed > 0 ? String.valueOf(completed) : ""
-//        );
+        if (props.isMacOs())
+            Taskbar.getTaskbar().setIconBadge(
+                    completed > 0 ? String.valueOf(completed) : ""
+            );
     }
 
     private void updateSession(Map<String, Object> map) {
