@@ -53,7 +53,7 @@ public final class TransmissionRemote {
     public static final AppProperties PROPS = AppProperties.get();
 
     private static void run() {
-        if (PROPS.isMacOs())
+        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE))
             Taskbar.getTaskbar().setIconImage(TransmissionRemote.LOGO.getImage());
         JFrame mainFrame = new FrmMain();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

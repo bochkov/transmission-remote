@@ -216,9 +216,9 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         }
         long completed = torrents.getAll().stream().filter(Tor::completed).count();
         LOG.debug("completed={}", completed);
-        if (props.isMacOs())
+        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_BADGE_NUMBER))
             Taskbar.getTaskbar().setIconBadge(
-                    completed > 0 ? String.valueOf(completed) : ""
+                    completed > 0 ? String.valueOf(completed) : null
             );
     }
 
