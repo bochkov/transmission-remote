@@ -23,8 +23,8 @@ application {
 
 dependencies {
     implementation 'cordelia:cordelia:2.0.RELEASE'
-    implementation 'com.formdev:flatlaf:0.44'
-    implementation 'com.formdev:flatlaf-extras:0.44'
+    implementation 'com.formdev:flatlaf:0.46'
+    implementation 'com.formdev:flatlaf-extras:0.46'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'com.miglayout:miglayout-core:5.2'

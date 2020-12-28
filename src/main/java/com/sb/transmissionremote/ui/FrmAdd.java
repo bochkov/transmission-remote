@@ -3,15 +3,14 @@ package com.sb.transmissionremote.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.filechooser.FileFilter;
 
 import com.sb.transmissionremote.AppProperties;
 import com.sb.transmissionremote.TransmissionRemote;
@@ -85,17 +84,7 @@ public final class FrmAdd extends JDialog {
                 String.format("%s free", new HumanSize(bytes));
     }
 
-    private static final FileFilter TORRENT_FILTER = new FileFilter() {
-        @Override
-        public boolean accept(File f) {
-            return f.getName().toLowerCase().endsWith(".torrent");
-        }
-
-        @Override
-        public String getDescription() {
-            return "Torrent Files (*.torrent)";
-        }
-    };
+    private static final FilenameFilter TORRENT_FILTER = (dir, name) -> name.toLowerCase().endsWith(".torrent");
 
     private final class OkAction extends AbstractAction {
 
@@ -150,23 +139,18 @@ public final class FrmAdd extends JDialog {
             File dest = !new File(AppProperties.get().lastOpenPath()).exists() ?
                     new File(System.getProperty("user.home")) :
                     new File(AppProperties.get().lastOpenPath());
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Open a torrent file");
-            chooser.setCurrentDirectory(dest);
-            chooser.setAcceptAllFileFilterUsed(false);
-            chooser.setFileFilter(TORRENT_FILTER);
-            chooser.setMultiSelectionEnabled(true);
-            int res = chooser.showOpenDialog(FrmAdd.this);
-            if (res == JFileChooser.APPROVE_OPTION) {
-                File[] selected = chooser.getSelectedFiles();
-                if (selected.length > 0) {
-                    Collections.addAll(files, selected);
-                    filesLabel.setVisible(true);
-                    filesLabel.setText(files.size() == 1 ?
-                            files.get(0).getName() :
-                            String.format("selected %d files", files.size()));
-                    AppProperties.get().setLastOpenPath(files.get(0).getParent());
-                }
+            FileDialog chooser = new FileDialog(FrmAdd.this, "Open a torrent file", FileDialog.LOAD);
+            chooser.setDirectory(dest.getAbsolutePath());
+            chooser.setMultipleMode(true);
+            chooser.setFilenameFilter(TORRENT_FILTER);
+            chooser.setVisible(true);
+            for (File file : chooser.getFiles()) {
+                files.add(file);
+                filesLabel.setVisible(true);
+                filesLabel.setText(files.size() == 1 ?
+                        files.get(0).getName() :
+                        String.format("selected %d files", files.size()));
+                AppProperties.get().setLastOpenPath(files.get(0).getParent());
             }
         }
     }
