@@ -51,10 +51,10 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
     private final Action acStartOne = new AcStartOne(trclient, this::selectedIds);
     private final Action acStopOne = new AcStopOne(trclient, this::selectedIds);
     private final Action acSpeedLimit = new AcSpeedLimit(trclient);
-    private final Action acTrash = new AcTrash(trclient, this::selectedIds);
+    private final Action acTrash = new AcRemove(trclient, this::selectedIds);
     private final Action acInfo = new AcInfo();
     private final Action acReannounce = new AcReannounce(trclient, this::selectedIds);
-    private final Action acDelete = new AcDelete(trclient, this::selectedIds);
+    private final Action acDelete = new AcRemoveData(trclient, this::selectedIds);
 
     private final JToggleButton speedLimitButton = new JToggleButton(acSpeedLimit);
     private final JLabel freeSpaceLabel = new JLabel("");
@@ -127,7 +127,8 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
             @Override
             public void show(Component invoker, int x, int y) {
                 int row = torList.locationToIndex(new Point(x, y));
-                if (torList.getCellBounds(row, row).contains(new Point(x, y)))
+                Rectangle rect = torList.getCellBounds(row, row);
+                if (rect != null && rect.contains(new Point(x, y)))
                     torList.setSelectedIndex(row);
                 else
                     torList.removeSelectionInterval(0, torrents.getSize());

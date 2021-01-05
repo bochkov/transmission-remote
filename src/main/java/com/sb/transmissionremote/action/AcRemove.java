@@ -9,13 +9,13 @@ import cordelia.client.Client;
 import cordelia.client.TrResponse;
 import cordelia.rpc.TorrentRemove;
 
-public final class AcTrash extends AcError {
+public final class AcRemove extends AcError {
 
     private final AtomicReference<Client> client;
     private final Supplier<Object[]> supplier;
 
-    public AcTrash(AtomicReference<Client> client, Supplier<Object[]> supplier) {
-        super("Trash", TransmissionRemote.ICON_TRASH);
+    public AcRemove(AtomicReference<Client> client, Supplier<Object[]> supplier) {
+        super("Remove", TransmissionRemote.ICON_TRASH);
         this.client = client;
         this.supplier = supplier;
     }

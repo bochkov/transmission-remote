@@ -9,13 +9,13 @@ import cordelia.client.Client;
 import cordelia.client.TrResponse;
 import cordelia.rpc.TorrentRemove;
 
-public final class AcDelete extends AcError {
+public final class AcRemoveData extends AcError {
 
     private final AtomicReference<Client> client;
     private final Supplier<Object[]> supplier;
 
-    public AcDelete(AtomicReference<Client> client, Supplier<Object[]> supplier) {
-        super("Delete torrent with files", TransmissionRemote.ICON_BAN);
+    public AcRemoveData(AtomicReference<Client> client, Supplier<Object[]> supplier) {
+        super("Remove torrent with data", TransmissionRemote.ICON_BAN);
         this.client = client;
         this.supplier = supplier;
     }
