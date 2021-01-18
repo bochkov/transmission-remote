@@ -121,7 +121,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         torList.setTransferHandler(new Drop(trclient));
         torList.setCellRenderer(new TorRender());
         torList.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        JScrollPane sc = new JScrollPane(torList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane sc = new JScrollPane(torList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(sc, "grow");
         JPopupMenu popup = new JPopupMenu() {
             @Override
