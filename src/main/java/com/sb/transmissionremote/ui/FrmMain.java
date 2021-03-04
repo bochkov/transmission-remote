@@ -112,7 +112,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
             public void mousePressed(MouseEvent e) {
                 int row = torList.locationToIndex(e.getPoint());
                 if (row >= 0 && torList.getCellBounds(row, row).contains(e.getPoint()))
-                    torList.setSelectedIndex(row);
+                    torList.addSelectionInterval(row, row);
                 else
                     torList.removeSelectionInterval(0, torrents.getSize());
             }
@@ -129,7 +129,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
                 int row = torList.locationToIndex(new Point(x, y));
                 Rectangle rect = torList.getCellBounds(row, row);
                 if (rect != null && rect.contains(new Point(x, y)))
-                    torList.setSelectedIndex(row);
+                    torList.addSelectionInterval(row, row);
                 else
                     torList.removeSelectionInterval(0, torrents.getSize());
                 super.show(invoker, x, y);
