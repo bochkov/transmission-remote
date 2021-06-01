@@ -8,11 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AcError extends AbstractAction {
 
-    public AcError(String text) {
+    protected AcError(String text) {
         super(text);
     }
 
-    public AcError(String text, Icon icon) {
+    protected AcError(String text, Icon icon) {
         super(text, icon);
     }
 

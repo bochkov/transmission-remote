@@ -6,14 +6,12 @@ import java.io.IOException;
 import java.util.List;
 
 import cordelia.client.Client;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class TrSourceTrash implements TrSource {
 
     private final TrSource origin;
-
-    public TrSourceTrash(TrSource origin) {
-        this.origin = origin;
-    }
 
     @Override
     public void add(Client client) throws IOException {

@@ -9,11 +9,7 @@ public final class TorRender implements ListCellRenderer<Tor> {
     public Component getListCellRendererComponent(JList<? extends Tor> list, Tor value, int index, boolean isSelected, boolean cellHasFocus) {
         JComponent cmp = value.graphic();
         cmp.setOpaque(true);
-        if (isSelected) {
-            cmp.setBackground(new Color(228, 230, 239));
-        } else {
-            cmp.setBackground(UIManager.getColor("JPanel.background"));
-        }
+        cmp.setBackground(isSelected ? new Color(228, 230, 239) : UIManager.getColor("JPanel.background"));
         return cmp;
     }
 }

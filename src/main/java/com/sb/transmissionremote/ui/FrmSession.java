@@ -44,7 +44,7 @@ public final class FrmSession extends JDialog {
             passField.setEnabled(src.isSelected());
         });
 
-        JPanel cmdPanel = new JPanel(new MigLayout());
+        var cmdPanel = new JPanel(new MigLayout());
         cmdPanel.add(new JButton(new OkAction()));
         cmdPanel.add(new JButton(new CancelAction()));
         add(cmdPanel, "span 2");

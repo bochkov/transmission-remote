@@ -98,7 +98,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
                 )
         );
 
-        JPanel cmdPanel = new JPanel(new MigLayout("insets 0"));
+        var cmdPanel = new JPanel(new MigLayout("insets 0"));
         cmdPanel.add(new JButton(acStartAll));
         cmdPanel.add(new JButton(acStopAll));
         cmdPanel.add(speedLimitButton);
@@ -121,7 +121,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         torList.setTransferHandler(new Drop(trclient));
         torList.setCellRenderer(new TorRender());
         torList.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        JScrollPane sc = new JScrollPane(torList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        var sc = new JScrollPane(torList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         add(sc, "grow");
         JPopupMenu popup = new JPopupMenu() {
             @Override
@@ -145,7 +145,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         popup.add(acDelete);
         torList.setComponentPopupMenu(popup);
 
-        JPanel infoPanel = new JPanel(new MigLayout("insets 0", "[][]30[][]30[][]"));
+        var infoPanel = new JPanel(new MigLayout("insets 0", "[][]30[][]30[][]"));
         infoPanel.add(new JLabel(TransmissionRemote.ICON_HDD));
         infoPanel.add(freeSpaceLabel);
         freeSpaceLabel.setToolTipText("Free space left");

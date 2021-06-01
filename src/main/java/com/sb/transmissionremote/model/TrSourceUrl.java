@@ -9,16 +9,13 @@ import java.util.Map;
 import cordelia.client.Client;
 import cordelia.client.TrResponse;
 import cordelia.rpc.TorrentAdd;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class TrSourceUrl implements TrSource {
 
     private final String url;
     private final Map<String, Object> args;
-
-    public TrSourceUrl(String url, Map<String, Object> args) {
-        this.url = url;
-        this.args = args;
-    }
 
     @Override
     public void add(Client client) {

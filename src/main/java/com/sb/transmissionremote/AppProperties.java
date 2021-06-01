@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,12 +58,12 @@ public final class AppProperties {
     }
 
     private static AppProperties load() {
-        File propsFile = new File(SETTING_DIR, SETTING_FILE);
+        var propsFile = new File(SETTING_DIR, SETTING_FILE);
         if (!propsFile.getParentFile().exists() && !propsFile.getParentFile().mkdirs()) {
             LOG.warn("can't create settings dir");
         }
         if (propsFile.exists()) {
-            try (FileReader reader = new FileReader(propsFile)) {
+            try (var reader = new FileReader(propsFile)) {
                 LOG.info("props loaded");
                 return JSON.readValue(reader, AppProperties.class);
             } catch (IOException ex) {
@@ -75,7 +74,7 @@ public final class AppProperties {
     }
 
     public void store() {
-        try (FileWriter writer = new FileWriter(new File(SETTING_DIR, SETTING_FILE))) {
+        try (var writer = new FileWriter(new File(SETTING_DIR, SETTING_FILE))) {
             JSON.writeValue(writer, this);
             LOG.info("props stored");
         } catch (IOException ex) {
@@ -95,7 +94,7 @@ public final class AppProperties {
     }
 
     public String url() {
-        Matcher m = FULL_URL.matcher(uri());
+        var m = FULL_URL.matcher(uri());
         if (m.find()) {
             return String.format("%s%s:%s/%s",
                     m.group("protocol"),
@@ -107,28 +106,28 @@ public final class AppProperties {
     }
 
     public String username() {
-        Matcher m = FULL_URL.matcher(uri());
+        var m = FULL_URL.matcher(uri());
         return m.find() ?
                 m.group("username") :
                 "";
     }
 
     public String password() {
-        Matcher m = FULL_URL.matcher(uri());
+        var m = FULL_URL.matcher(uri());
         return m.find() ?
                 m.group("password") :
                 "";
     }
 
     public String server() {
-        Matcher m = FULL_URL.matcher(uri());
+        var m = FULL_URL.matcher(uri());
         return m.find() ?
                 String.format("%s", m.group("host")) :
                 "";
     }
 
     public void setUrl(String url, String username, String password) {
-        Matcher m = SHORT_URL.matcher(url);
+        var m = SHORT_URL.matcher(url);
         if (m.find()) {
             client.url = String.format("%s%s:%s@%s:%s/%s",
                     m.group("protocol"),

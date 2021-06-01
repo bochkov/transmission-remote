@@ -14,7 +14,7 @@ public final class FrmAbout extends JDialog {
 
     private static final String DESC = "<html><center><h3>%s</h3>Remote client for Transmission daemon<br><br>%s";
     private static final String MAIL = "<html><a href=''>bochkov.sa@gmail.com</a>";
-    private static final String WEB = "<html><a href=''>http://sergeybochkov.com</a>";
+    private static final String WEB = "<html><a href=''>https://sergeybochkov.com</a>";
 
     public FrmAbout(Frame owner) {
         super(owner, "О программе", true);
@@ -24,7 +24,7 @@ public final class FrmAbout extends JDialog {
         add(new JLabel(TransmissionRemote.LOGO), "span");
         add(new JLabel(String.format(DESC, TransmissionRemote.APP_NAME, years())));
 
-        JLabel mailLabel = new JLabel(MAIL, TransmissionRemote.ICON_ENVELOPE_O, SwingConstants.CENTER);
+        var mailLabel = new JLabel(MAIL, TransmissionRemote.ICON_ENVELOPE_O, SwingConstants.CENTER);
         add(mailLabel);
         mailLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         mailLabel.addMouseListener(new MouseAdapter() {
@@ -38,13 +38,13 @@ public final class FrmAbout extends JDialog {
             }
         });
 
-        JLabel webLabel = new JLabel(WEB, TransmissionRemote.ICON_LINK, SwingConstants.CENTER);
+        var webLabel = new JLabel(WEB, TransmissionRemote.ICON_LINK, SwingConstants.CENTER);
         webLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         webLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(URI.create("http://sergeybochkov.com"));
+                    Desktop.getDesktop().browse(URI.create("https://sergeybochkov.com"));
                 } catch (Exception ex) {
                     //
                 }

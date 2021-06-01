@@ -1,7 +1,9 @@
 package com.sb.transmissionremote.model.elems;
 
 import com.sb.transmissionremote.model.HumanSpeed;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class PeersLabel {
 
     private final int peersSendingToUs;
@@ -9,14 +11,6 @@ public final class PeersLabel {
     private final int peersConnected;
     private final double rateDownload;
     private final double rateUpload;
-
-    public PeersLabel(int sendToUs, int getFromUs, int connected, double rateDownload, double rateUpload) {
-        this.peersSendingToUs = sendToUs;
-        this.peersGettingFromUs = getFromUs;
-        this.peersConnected = connected;
-        this.rateDownload = rateDownload;
-        this.rateUpload = rateUpload;
-    }
 
     public String downDesc() {
         return String.format(

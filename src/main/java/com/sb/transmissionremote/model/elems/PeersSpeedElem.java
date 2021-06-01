@@ -4,7 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.sb.transmissionremote.model.Tor;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class PeersSpeedElem implements Element {
 
     private final int error;
@@ -12,16 +14,9 @@ public final class PeersSpeedElem implements Element {
     private final int status;
     private final PeersLabel peers;
 
-    public PeersSpeedElem(int error, String errorString, int status, PeersLabel peers) {
-        this.error = error;
-        this.errorString = errorString;
-        this.status = status;
-        this.peers = peers;
-    }
-
     @Override
     public JComponent graphic() {
-        JLabel peersAndSpeed = new JLabel();
+        var peersAndSpeed = new JLabel();
         if (error != 0) {
             peersAndSpeed.setForeground(Color.RED);
             peersAndSpeed.setText(errorString);

@@ -4,22 +4,18 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.sb.transmissionremote.model.Tor;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class ProgressElem implements Element {
 
     private final int error;
     private final int status;
     private final double percentDone;
 
-    public ProgressElem(int error, int status, double percentDone) {
-        this.error = error;
-        this.status = status;
-        this.percentDone = percentDone;
-    }
-
     @Override
     public JComponent graphic() {
-        JProgressBar pb = new JProgressBar();
+        var pb = new JProgressBar();
         pb.setMaximum(100);
         pb.setValue((int) (percentDone * 100));
         pb.setStringPainted(true);

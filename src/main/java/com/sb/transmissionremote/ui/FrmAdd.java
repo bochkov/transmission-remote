@@ -51,7 +51,7 @@ public final class FrmAdd extends JDialog {
         destinationLabel.setForeground(Color.GRAY);
         add(destinationLabel);
 
-        JPanel cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
+        var cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
         cmdPanel.add(new JButton(new OkAction()));
         cmdPanel.add(new JButton(new CancelAction()));
         add(cmdPanel, "span, center");
@@ -139,7 +139,7 @@ public final class FrmAdd extends JDialog {
             File dest = !new File(AppProperties.get().lastOpenPath()).exists() ?
                     new File(System.getProperty("user.home")) :
                     new File(AppProperties.get().lastOpenPath());
-            FileDialog chooser = new FileDialog(FrmAdd.this, "Open a torrent file", FileDialog.LOAD);
+            var chooser = new FileDialog(FrmAdd.this, "Open a torrent file", FileDialog.LOAD);
             chooser.setDirectory(dest.getAbsolutePath());
             chooser.setMultipleMode(true);
             chooser.setFilenameFilter(TORRENT_FILTER);

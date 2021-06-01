@@ -4,15 +4,12 @@ import java.net.URL;
 import javax.swing.*;
 
 import com.sb.transmissionremote.TransmissionRemote;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class ImageElem implements Element {
 
-    private static final URL FOLDER = TransmissionRemote.class.getResource("/filetypes/folder.png");
     private final String filename;
-
-    public ImageElem(String filename) {
-        this.filename = filename;
-    }
 
     @Override
     public JComponent graphic() {
@@ -20,7 +17,10 @@ public final class ImageElem implements Element {
         URL resource = TransmissionRemote.class.getResource(String.format("/filetypes/%s.png", extension));
         if (resource != null)
             return new JLabel(new ImageIcon(resource));
+        URL folderResource = TransmissionRemote.class.getResource("/filetypes/folder.png");
+        if (folderResource != null)
+            return new JLabel(new ImageIcon(folderResource));
 
-        return new JLabel(new ImageIcon(FOLDER));
+        return new JLabel();
     }
 }

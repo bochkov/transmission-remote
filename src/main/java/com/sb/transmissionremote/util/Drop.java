@@ -11,15 +11,13 @@ import javax.swing.*;
 import com.sb.transmissionremote.model.TrSourceFile;
 import com.sb.transmissionremote.model.TrSourceTrash;
 import cordelia.client.Client;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@RequiredArgsConstructor
 public final class Drop extends TransferHandler {
 
     private final AtomicReference<Client> client;
-
-    public Drop(AtomicReference<Client> client) {
-        this.client = client;
-    }
 
     @SneakyThrows
     @Override

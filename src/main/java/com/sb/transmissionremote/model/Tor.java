@@ -57,7 +57,7 @@ public final class Tor {
     }
 
     public JComponent graphic() {
-        JPanel panel = new JPanel(new MigLayout("fillx, debug, wrap 1, insets 3 10 3 10, gap 2", "fill, grow"));
+        var panel = new JPanel(new MigLayout("fillx, debug, wrap 1, insets 3 10 3 10, gap 2", "fill, grow"));
         panel.add(new ImageElem(name).graphic(), "dock west");
         panel.add(new NameElem(name).graphic());
         panel.add(new PeersSpeedElem(

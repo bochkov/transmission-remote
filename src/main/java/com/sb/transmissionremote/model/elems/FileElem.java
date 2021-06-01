@@ -6,29 +6,23 @@ import javax.swing.*;
 import com.sb.transmissionremote.model.HumanSize;
 import com.sb.transmissionremote.model.HumanTime;
 import com.sb.transmissionremote.model.Tor;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public final class FileElem implements Element {
 
     private final int status;
     private final long sizeWhenDone;
     private final double percentDone;
-    private final long eta;
     private final double uploadRatio;
-
-    public FileElem(int status, long sizeWhenDone, double percentDone, double uploadRatio, long eta) {
-        this.status = status;
-        this.sizeWhenDone = sizeWhenDone;
-        this.percentDone = percentDone;
-        this.uploadRatio = uploadRatio;
-        this.eta = eta;
-    }
+    private final long eta;
 
     @Override
     public JComponent graphic() {
-        JLabel fileLabel = new JLabel();
+        var fileLabel = new JLabel();
         fileLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
         fileLabel.setForeground(Color.GRAY);
-        HumanSize total = new HumanSize(sizeWhenDone * percentDone);
+        var total = new HumanSize(sizeWhenDone * percentDone);
         switch (status) {
             case Tor.STATUS_DOWNLOAD:
                 fileLabel.setText(String.format("%s of %s — %s remaining",

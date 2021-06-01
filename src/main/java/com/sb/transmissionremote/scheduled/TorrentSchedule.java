@@ -9,9 +9,11 @@ import com.sb.transmissionremote.model.Tor;
 import com.sb.transmissionremote.model.TorResponse;
 import cordelia.client.Client;
 import cordelia.rpc.TorrentGet;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public final class TorrentSchedule implements Runnable {
 
     private static final List<String> FIELDS = Arrays.asList(
@@ -22,11 +24,6 @@ public final class TorrentSchedule implements Runnable {
 
     private final AtomicReference<Client> client;
     private final Consumer<List<Tor>> consumer;
-
-    public TorrentSchedule(AtomicReference<Client> client, Consumer<List<Tor>> consumer) {
-        this.client = client;
-        this.consumer = consumer;
-    }
 
     @Override
     public void run() {
