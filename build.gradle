@@ -21,10 +21,10 @@ mainClassName = "com.sb.transmissionremote.TransmissionRemote"
 
 dependencies {
     implementation 'cordelia:cordelia:2.0.RELEASE'
-    implementation 'com.formdev:flatlaf:1.2'
-    implementation 'com.formdev:flatlaf-extras:1.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'com.formdev:flatlaf:1.5'
+    implementation 'com.formdev:flatlaf-extras:1.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+    implementation 'ch.qos.logback:logback-classic:1.2.5'
     implementation 'com.miglayout:miglayout-core:11.0'
     implementation 'com.miglayout:miglayout-swing:11.0'
 
@@ -34,7 +34,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.20'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
     
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 task("macApp", dependsOn: 'build') {

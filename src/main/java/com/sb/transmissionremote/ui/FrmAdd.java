@@ -129,8 +129,16 @@ public final class FrmAdd extends JDialog {
 
     private final class OpenAction extends AbstractAction {
 
+        private static final int MAX_LENGTH = 50;
+
         public OpenAction() {
             super("", TransmissionRemote.ICON_FOLDER_OPEN);
+        }
+
+        private String fitToWidth(String source) {
+            if (source.length() > MAX_LENGTH)
+                return source.substring(0, MAX_LENGTH - 3) + "...";
+            return source;
         }
 
         @Override
@@ -148,7 +156,7 @@ public final class FrmAdd extends JDialog {
                 files.add(file);
                 filesLabel.setVisible(true);
                 filesLabel.setText(files.size() == 1 ?
-                        files.get(0).getName() :
+                        fitToWidth(files.get(0).getName()) :
                         String.format("selected %d files", files.size()));
                 AppProperties.get().setLastOpenPath(files.get(0).getParent());
             }
