@@ -24,19 +24,18 @@ public final class FileElem implements Element {
         fileLabel.setForeground(Color.GRAY);
         var total = new HumanSize(sizeWhenDone * percentDone);
         switch (status) {
-            case Tor.STATUS_DOWNLOAD:
-                fileLabel.setText(String.format("%s of %s — %s remaining",
-                        total, new HumanSize(sizeWhenDone), new HumanTime(eta)));
-                break;
-            case Tor.STATUS_UPLOAD:
-                fileLabel.setText(String.format("%s, uploaded %s (Ratio %.2f)",
-                        total, new HumanSize(sizeWhenDone * uploadRatio), uploadRatio));
-                break;
-            case Tor.STATUS_CHECKED:
-                fileLabel.setText(String.format("%s of %s", total, new HumanSize(sizeWhenDone)));
-                break;
-            default:
-                break;
+            case Tor.STATUS_DOWNLOAD -> fileLabel.setText(
+                    String.format("%s of %s — %s remaining", total, new HumanSize(sizeWhenDone), new HumanTime(eta))
+            );
+            case Tor.STATUS_UPLOAD -> fileLabel.setText(
+                    String.format("%s, uploaded %s (Ratio %.2f)", total, new HumanSize(sizeWhenDone * uploadRatio), uploadRatio)
+            );
+            case Tor.STATUS_CHECKED -> fileLabel.setText(
+                    String.format("%s of %s", total, new HumanSize(sizeWhenDone))
+            );
+            default -> {
+                // do nothing
+            }
         }
         return fileLabel;
     }

@@ -1,14 +1,13 @@
 plugins {
-    id "application"
+    id 'java'
+    id 'application'
 }
 
 group = 'com.sergeybochkov'
 version = '3.0'
 
-apply plugin: "java"
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories() {
     mavenCentral()
@@ -17,14 +16,12 @@ repositories() {
     }
 }
 
-mainClassName = "com.sb.transmissionremote.TransmissionRemote"
-
 dependencies {
     implementation 'cordelia:cordelia:2.0.RELEASE'
-    implementation 'com.formdev:flatlaf:1.5'
-    implementation 'com.formdev:flatlaf-extras:1.5'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-    implementation 'ch.qos.logback:logback-classic:1.2.5'
+    implementation 'com.formdev:flatlaf:1.6'
+    implementation 'com.formdev:flatlaf-extras:1.6'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'com.miglayout:miglayout-core:11.0'
     implementation 'com.miglayout:miglayout-swing:11.0'
 
@@ -35,6 +32,13 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
     
     testImplementation 'junit:junit:4.13.2'
+}
+
+application {
+    mainClass = "com.sb.transmissionremote.TransmissionRemote"
+    applicationDefaultJvmArgs = [
+            '-Xdock:name=Transmission Remote'
+    ]
 }
 
 task("macApp", dependsOn: 'build') {

@@ -24,21 +24,13 @@ public final class ProgressElem implements Element {
             pb.setForeground(Color.RED);
         } else {
             switch (status) {
-                case Tor.STATUS_UPLOAD:
-                    pb.setForeground(new Color(5, 109, 5));
-                    break;
-                case Tor.STATUS_PAUSED:
-                    pb.setForeground(Color.LIGHT_GRAY);
-                    break;
-                case Tor.STATUS_CHECKED:
-                    pb.setForeground(Color.GRAY);
-                    break;
-                case Tor.STATUS_QUEUED:
-                    pb.setForeground(Color.DARK_GRAY);
-                    break;
-                case Tor.STATUS_DOWNLOAD:
-                default:
-                    break;
+                case Tor.STATUS_UPLOAD -> pb.setForeground(new Color(5, 109, 5));
+                case Tor.STATUS_PAUSED -> pb.setForeground(Color.LIGHT_GRAY);
+                case Tor.STATUS_CHECKED -> pb.setForeground(Color.GRAY);
+                case Tor.STATUS_QUEUED -> pb.setForeground(Color.DARK_GRAY);
+                default -> {
+                    // do nothing
+                }
             }
         }
         return pb;

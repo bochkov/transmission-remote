@@ -34,8 +34,8 @@ public final class Drop extends TransferHandler {
         List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
         List<File> files = new ArrayList<>();
         for (Object obj : list) {
-            if (obj instanceof File && ((File) obj).getName().toLowerCase().endsWith(".torrent"))
-                files.add((File) obj);
+            if (obj instanceof File file && file.getName().toLowerCase().endsWith(".torrent"))
+                files.add(file);
         }
         if (files.isEmpty())
             return false;

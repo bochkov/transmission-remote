@@ -1,14 +1,20 @@
 package com.sb.transmissionremote;
 
 import java.awt.*;
+import java.awt.desktop.QuitEvent;
+import java.awt.desktop.QuitHandler;
+import java.awt.desktop.QuitResponse;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 import javax.swing.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.sb.transmissionremote.action.AcAbout;
 import com.sb.transmissionremote.ui.FrmMain;
 import com.sb.transmissionremote.util.FlatSvgFlip;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 public final class TransmissionRemote {
 
     public static final String APP_NAME = "Transmission Remote";
-    public static final ImageIcon LOGO = new ImageIcon(TransmissionRemote.class.getResource("/style/transmission-remote.png"));
+    public static final ImageIcon LOGO = new ImageIcon(
+            Objects.requireNonNull(TransmissionRemote.class.getResource("/style/transmission-remote.png"))
+    );
 
     public static final int MIN_HEIGHT = 650;
     public static final int MIN_WIDTH = 500;
@@ -53,20 +61,39 @@ public final class TransmissionRemote {
     public static final AppProperties PROPS = AppProperties.get();
 
     private static void run() {
-        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE))
-            Taskbar.getTaskbar().setIconImage(TransmissionRemote.LOGO.getImage());
         JFrame mainFrame = new FrmMain();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 Window frm = (Window) e.getSource();
-                PROPS.setWidth(frm.getWidth());
-                PROPS.setHeight(frm.getHeight());
-                PROPS.store();
+                quitProcedures(frm);
             }
         });
+        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE))
+            Taskbar.getTaskbar().setIconImage(TransmissionRemote.LOGO.getImage());
+        Desktop.getDesktop().setAboutHandler(new AcAbout(mainFrame));
+        Desktop.getDesktop().setQuitHandler(new Quit(mainFrame));
+
         mainFrame.setVisible(true);
+    }
+
+    private static void quitProcedures(Window window) {
+        PROPS.setWidth(window.getWidth());
+        PROPS.setHeight(window.getHeight());
+        PROPS.store();
+    }
+
+    @RequiredArgsConstructor
+    private static final class Quit implements QuitHandler {
+
+        private final Window window;
+
+        @Override
+        public void handleQuitRequestWith(QuitEvent e, QuitResponse response) {
+            quitProcedures(window);
+            response.performQuit();
+        }
     }
 
     @SneakyThrows

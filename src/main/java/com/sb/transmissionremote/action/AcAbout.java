@@ -1,23 +1,38 @@
 package com.sb.transmissionremote.action;
 
 import java.awt.*;
+import java.awt.desktop.AboutEvent;
+import java.awt.desktop.AboutHandler;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.ui.FrmAbout;
 
-public final class AcAbout extends AbstractAction {
+public final class AcAbout extends AbstractAction implements AboutHandler {
 
     private final Frame owner;
+
+    private static JDialog dialogInstance;
 
     public AcAbout(Frame owner) {
         super("About", TransmissionRemote.ICON_FLASK);
         this.owner = owner;
     }
 
+    private synchronized JDialog dialogInst() {
+        if (dialogInstance == null)
+            dialogInstance = new FrmAbout(owner);
+        return dialogInstance;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        new FrmAbout(owner).setVisible(true);
+        dialogInst().setVisible(true);
+    }
+
+    @Override
+    public void handleAbout(AboutEvent e) {
+        dialogInst().setVisible(true);
     }
 }

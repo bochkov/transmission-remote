@@ -23,23 +23,14 @@ public final class PeersSpeedElem implements Element {
         } else {
             peersAndSpeed.setForeground(Color.GRAY);
             switch (status) {
-                case Tor.STATUS_DOWNLOAD:
-                    peersAndSpeed.setText(peers.downDesc());
-                    break;
-                case Tor.STATUS_UPLOAD:
-                    peersAndSpeed.setText(peers.upDesc());
-                    break;
-                case Tor.STATUS_PAUSED:
-                    peersAndSpeed.setText("Paused");
-                    break;
-                case Tor.STATUS_CHECKED:
-                    peersAndSpeed.setText("Verifying local data");
-                    break;
-                case Tor.STATUS_QUEUED:
-                    peersAndSpeed.setText("Queued");
-                    break;
-                default:
-                    break;
+                case Tor.STATUS_DOWNLOAD -> peersAndSpeed.setText(peers.downDesc());
+                case Tor.STATUS_UPLOAD -> peersAndSpeed.setText(peers.upDesc());
+                case Tor.STATUS_PAUSED -> peersAndSpeed.setText("Paused");
+                case Tor.STATUS_CHECKED -> peersAndSpeed.setText("Verifying local data");
+                case Tor.STATUS_QUEUED -> peersAndSpeed.setText("Queued");
+                default -> {
+                    // do nothing
+                }
             }
         }
         peersAndSpeed.setFont(new Font("SansSerif", Font.PLAIN, 11));
