@@ -18,10 +18,10 @@ repositories() {
 
 dependencies {
     implementation 'cordelia:cordelia:2.0.RELEASE'
-    implementation 'com.formdev:flatlaf:1.6.1'
-    implementation 'com.formdev:flatlaf-extras:1.6.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
-    implementation 'ch.qos.logback:logback-classic:1.2.6'
+    implementation 'com.formdev:flatlaf:2.0-rc1'
+    implementation 'com.formdev:flatlaf-extras:2.0-rc1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+    implementation 'ch.qos.logback:logback-classic:1.2.10'
     implementation 'com.miglayout:miglayout-core:11.0'
     implementation 'com.miglayout:miglayout-swing:11.0'
 
