@@ -12,24 +12,24 @@ targetCompatibility = JavaVersion.VERSION_17
 repositories() {
     mavenCentral()
     maven {
-        url "https://nexus.sergeybochkov.com/repository/maven-public"
+        url "https://maven.sergeybochkov.com/releases"
     }
 }
 
 dependencies {
-    implementation 'cordelia:cordelia:2.0.RELEASE'
-    implementation 'com.formdev:flatlaf:2.0-rc1'
-    implementation 'com.formdev:flatlaf-extras:2.0-rc1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+    implementation 'cordelia:cordelia:2.0.1.RELEASE'
+    implementation 'com.formdev:flatlaf:2.2'
+    implementation 'com.formdev:flatlaf-extras:2.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
     implementation 'ch.qos.logback:logback-classic:1.2.10'
     implementation 'com.miglayout:miglayout-core:11.0'
     implementation 'com.miglayout:miglayout-swing:11.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.22'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     
     testImplementation 'junit:junit:4.13.2'
 }

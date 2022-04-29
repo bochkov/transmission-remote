@@ -21,7 +21,8 @@ public final class NameElem implements Element {
 
     public String sizedName() {
         if (name.length() > MAX_LENGTH) {
-            if (name.substring(name.lastIndexOf('.')).length() == 4) {
+            int dotIdx = name.lastIndexOf('.');
+            if (dotIdx > 0 && name.substring(dotIdx).length() == 4) {
                 return name.substring(0, MAX_LENGTH - 4) + "..." + name.substring(name.lastIndexOf('.') + 1);
             }
             return name.substring(0, MAX_LENGTH) + "...";
