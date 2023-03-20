@@ -17,19 +17,19 @@ repositories() {
 }
 
 dependencies {
-    implementation 'cordelia:cordelia:2.0.2.RELEASE'
-    implementation 'com.formdev:flatlaf:2.6'
-    implementation 'com.formdev:flatlaf-extras:2.6'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
-    implementation 'ch.qos.logback:logback-classic:1.4.4'
+    implementation 'cordelia:cordelia:2.0.3.RELEASE'
+    implementation 'com.formdev:flatlaf:3.0'
+    implementation 'com.formdev:flatlaf-extras:3.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'ch.qos.logback:logback-classic:1.4.6'
     implementation 'com.miglayout:miglayout-core:11.0'
     implementation 'com.miglayout:miglayout-swing:11.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.24'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     
     testImplementation 'junit:junit:4.13.2'
 }

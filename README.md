@@ -1,1 +1,1 @@
-# Transmission Remote
+# Transmission Remote for MacOS
