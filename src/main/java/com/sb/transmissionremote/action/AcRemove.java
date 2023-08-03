@@ -1,20 +1,20 @@
 package com.sb.transmissionremote.action;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import com.sb.transmissionremote.TransmissionRemote;
-import cordelia.client.Client;
-import cordelia.client.TrResponse;
-import cordelia.rpc.TorrentRemove;
+import cordelia.client.TrClient;
+import cordelia.rpc.RqTorrentRemove;
 
 public final class AcRemove extends AcError {
 
-    private final AtomicReference<Client> client;
-    private final Supplier<Object[]> supplier;
+    private final AtomicReference<TrClient> client;
+    private final Supplier<List<Object>> supplier;
 
-    public AcRemove(AtomicReference<Client> client, Supplier<Object[]> supplier) {
+    public AcRemove(AtomicReference<TrClient> client, Supplier<List<Object>> supplier) {
         super("Remove", TransmissionRemote.ICON_TRASH);
         this.client = client;
         this.supplier = supplier;
@@ -22,6 +22,6 @@ public final class AcRemove extends AcError {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        client.get().post(new TorrentRemove(false, supplier.get()), TrResponse.class);
+        client.get().execute(new RqTorrentRemove(supplier.get()));
     }
 }

@@ -3,35 +3,42 @@ package com.sb.transmissionremote.model.elems;
 import java.awt.*;
 import javax.swing.*;
 
-import com.sb.transmissionremote.model.HumanSize;
-import com.sb.transmissionremote.model.HumanTime;
-import com.sb.transmissionremote.model.Tor;
-import lombok.RequiredArgsConstructor;
+import cordelia.rpc.types.Status;
+import cordelia.rpc.types.Torrents;
+import sb.bdev.text.HumanSize;
+import sb.bdev.text.HumanTime;
 
-@RequiredArgsConstructor
 public final class FileElem implements Element {
 
-    private final int status;
-    private final long sizeWhenDone;
-    private final double percentDone;
-    private final double uploadRatio;
-    private final long eta;
+    private final Status status;
+    private final Long sizeWhenDone;
+    private final Double percentDone;
+    private final Double uploadRatio;
+    private final Long eta;
+
+    public FileElem(Torrents torrents) {
+        this.status = torrents.getStatus();
+        this.sizeWhenDone = torrents.getSizeWhenDone();
+        this.percentDone = torrents.getPercentDone();
+        this.uploadRatio = torrents.getUploadRatio();
+        this.eta = torrents.getEta();
+    }
 
     @Override
     public JComponent graphic() {
         var fileLabel = new JLabel();
         fileLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
         fileLabel.setForeground(Color.GRAY);
-        var total = new HumanSize(sizeWhenDone * percentDone);
+        var total = new HumanSize(sizeWhenDone * percentDone, HumanSize.US, 2);
         switch (status) {
-            case Tor.STATUS_DOWNLOAD -> fileLabel.setText(
-                    String.format("%s of %s — %s remaining", total, new HumanSize(sizeWhenDone), new HumanTime(eta))
+            case DOWNLOADING -> fileLabel.setText(
+                    String.format("%s of %s — %s remaining", total, new HumanSize(sizeWhenDone, HumanSize.US, 2), new HumanTime(eta))
             );
-            case Tor.STATUS_UPLOAD -> fileLabel.setText(
-                    String.format("%s, uploaded %s (Ratio %.2f)", total, new HumanSize(sizeWhenDone * uploadRatio), uploadRatio)
+            case SEEDING -> fileLabel.setText(
+                    String.format("%s, uploaded %s (Ratio %.2f)", total, new HumanSize(sizeWhenDone * uploadRatio, HumanSize.US, 2), uploadRatio)
             );
-            case Tor.STATUS_CHECKED -> fileLabel.setText(
-                    String.format("%s of %s", total, new HumanSize(sizeWhenDone))
+            case VERIFYING -> fileLabel.setText(
+                    String.format("%s of %s", total, new HumanSize(sizeWhenDone, HumanSize.US, 2))
             );
             default -> {
                 // do nothing

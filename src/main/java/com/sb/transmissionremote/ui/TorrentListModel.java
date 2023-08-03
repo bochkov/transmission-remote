@@ -5,13 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.*;
 
-import com.sb.transmissionremote.model.Tor;
+import cordelia.rpc.types.Torrents;
 
-public final class TorrentListModel extends AbstractListModel<Tor> {
+public final class TorrentListModel extends AbstractListModel<Torrents> {
 
-    private final List<Tor> torrents = new ArrayList<>();
+    private final List<Torrents> torrents = new ArrayList<>();
 
-    public List<Tor> getAll() {
+    public List<Torrents> getAll() {
         return new ArrayList<>(torrents);
     }
 
@@ -21,7 +21,7 @@ public final class TorrentListModel extends AbstractListModel<Tor> {
     }
 
     @Override
-    public Tor getElementAt(int index) {
+    public Torrents getElementAt(int index) {
         return torrents.get(index);
     }
 
@@ -31,8 +31,8 @@ public final class TorrentListModel extends AbstractListModel<Tor> {
         fireContentsChanged(this, 0, size);
     }
 
-    public void addAll(Collection<Tor> newtor) {
-        torrents.addAll(newtor);
+    public void addAll(Collection<Torrents> newTor) {
+        torrents.addAll(newTor);
         fireContentsChanged(this, 0, getSize());
     }
 }

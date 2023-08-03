@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import cordelia.client.Client;
+import cordelia.client.TrClient;
 
 public interface TrSource extends Serializable {
 
-    void add(Client client) throws IOException;
+    void add(TrClient client) throws IOException;
 
     List<File> files();
 

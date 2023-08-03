@@ -58,9 +58,10 @@ public final class TransmissionRemote {
     public static final FlatSVGIcon ICON_ENVELOPE_O = new FlatSVGIcon("svg/envelope-open.svg", 12, 12);
     public static final FlatSVGIcon ICON_LINK = new FlatSVGIcon("svg/link.svg", 12, 12);
 
-    public static final AppProperties PROPS = AppProperties.get();
+    public static final AppProps PROPS = AppProps.get();
 
     private static void run() {
+        PROPS.load();
         JFrame mainFrame = new FrmMain();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -70,17 +71,22 @@ public final class TransmissionRemote {
                 quitProcedures(frm);
             }
         });
-        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE))
+        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE)) {
             Taskbar.getTaskbar().setIconImage(TransmissionRemote.LOGO.getImage());
-        Desktop.getDesktop().setAboutHandler(new AcAbout(mainFrame));
-        Desktop.getDesktop().setQuitHandler(new Quit(mainFrame));
+        }
+        if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
+            Desktop.getDesktop().setAboutHandler(new AcAbout(mainFrame));
+        }
+        if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
+            Desktop.getDesktop().setQuitHandler(new Quit(mainFrame));
+        }
 
         mainFrame.setVisible(true);
     }
 
     private static void quitProcedures(Window window) {
-        PROPS.setWidth(window.getWidth());
-        PROPS.setHeight(window.getHeight());
+        AppProps.putVal(AppProps.WINDOW_HEIGHT, String.valueOf(window.getHeight()));
+        AppProps.putVal(AppProps.WINDOW_WIDTH, String.valueOf(window.getWidth()));
         PROPS.store();
     }
 

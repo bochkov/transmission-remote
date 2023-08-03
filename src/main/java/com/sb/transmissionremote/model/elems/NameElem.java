@@ -3,14 +3,17 @@ package com.sb.transmissionremote.model.elems;
 import java.awt.*;
 import javax.swing.*;
 
-import lombok.RequiredArgsConstructor;
+import cordelia.rpc.types.Torrents;
 
-@RequiredArgsConstructor
 public final class NameElem implements Element {
 
     private static final int MAX_LENGTH = 60;
 
     private final String name;
+
+    public NameElem(Torrents t) {
+        this.name = t.getName();
+    }
 
     @Override
     public JComponent graphic() {

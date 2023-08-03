@@ -7,23 +7,27 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 
-import com.sb.transmissionremote.AppProperties;
+import com.sb.transmissionremote.AppProps;
 import com.sb.transmissionremote.TransmissionRemote;
-import com.sb.transmissionremote.model.*;
+import com.sb.transmissionremote.model.TrSource;
+import com.sb.transmissionremote.model.TrSourceFile;
+import com.sb.transmissionremote.model.TrSourceTrash;
+import com.sb.transmissionremote.model.TrSourceUrl;
 import com.sb.transmissionremote.util.AbstractDocListener;
-import cordelia.client.Client;
-import cordelia.client.TrResponse;
-import cordelia.rpc.FreeSpace;
+import cordelia.client.TrClient;
+import cordelia.client.TypedResponse;
+import cordelia.rpc.RqFreeSpace;
+import cordelia.rpc.RsFreeSpace;
 import net.miginfocom.swing.MigLayout;
+import sb.bdev.text.HumanSize;
 
 public final class FrmAdd extends JDialog {
 
-    private final AtomicReference<Client> client;
+    private final AtomicReference<TrClient> client;
     private final JLabel filesLabel = new JLabel("Files not selected");
     private final JLabel destinationLabel = new JLabel();
     private final JTextField urlField = new JTextField();
@@ -31,7 +35,7 @@ public final class FrmAdd extends JDialog {
 
     private final List<File> files = new ArrayList<>();
 
-    public FrmAdd(Frame owner, AtomicReference<Client> client) {
+    public FrmAdd(Frame owner, AtomicReference<TrClient> client) {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.client = client;
 
@@ -65,7 +69,7 @@ public final class FrmAdd extends JDialog {
 
     private void updateFields() {
         destinationField.requestFocus();
-        destinationField.setText(AppProperties.get().lastDestination());
+        destinationField.setText(AppProps.get(AppProps.LAST_DESTINATION));
         destinationLabel.setText(printFS());
         destinationField.getDocument().addDocumentListener(new AbstractDocListener() {
             @Override
@@ -76,12 +80,11 @@ public final class FrmAdd extends JDialog {
     }
 
     private String printFS() {
-        Double bytes = (Double) client.get()
-                .post(new FreeSpace(destinationField.getText()), TrResponse.class)
-                .get("size-bytes");
+        TypedResponse<RsFreeSpace> res = client.get().execute(new RqFreeSpace(destinationField.getText()));
+        Long bytes = res.getArgs().getSizeBytes();
         return bytes == null || bytes < 0 ?
                 "no such directory" :
-                String.format("%s free", new HumanSize(bytes));
+                String.format("%s free", new HumanSize(bytes, HumanSize.US, 2));
     }
 
     private static final FilenameFilter TORRENT_FILTER = (dir, name) -> name.toLowerCase().endsWith(".torrent");
@@ -95,14 +98,13 @@ public final class FrmAdd extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!destinationField.getText().isEmpty()) {
-                AppProperties.get().setLastDestination(destinationField.getText());
-                Map<String, Object> args = Map.of("download-dir", destinationField.getText());
+                AppProps.putVal(AppProps.LAST_DESTINATION, destinationField.getText());
                 SwingUtilities.invokeLater(() -> {
                     TrSource source = null;
                     if (!files.isEmpty())
-                        source = new TrSourceFile(files, args);
+                        source = new TrSourceFile(files, destinationField.getText());
                     if (!urlField.getText().isEmpty())
-                        source = new TrSourceUrl(urlField.getText(), args);
+                        source = new TrSourceUrl(urlField.getText(), destinationField.getText());
                     try {
                         if (source != null)
                             new TrSourceTrash(source).add(client.get());
@@ -144,9 +146,9 @@ public final class FrmAdd extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             files.clear();
-            File dest = !new File(AppProperties.get().lastOpenPath()).exists() ?
+            File dest = !new File(AppProps.get(AppProps.LAST_DESTINATION)).exists() ?
                     new File(System.getProperty("user.home")) :
-                    new File(AppProperties.get().lastOpenPath());
+                    new File(AppProps.get(AppProps.LAST_DESTINATION));
             var chooser = new FileDialog(FrmAdd.this, "Open a torrent file", FileDialog.LOAD);
             chooser.setDirectory(dest.getAbsolutePath());
             chooser.setMultipleMode(true);
@@ -158,7 +160,7 @@ public final class FrmAdd extends JDialog {
                 filesLabel.setText(files.size() == 1 ?
                         fitToWidth(files.get(0).getName()) :
                         String.format("selected %d files", files.size()));
-                AppProperties.get().setLastOpenPath(files.get(0).getParent());
+                AppProps.putVal(AppProps.LAST_OPEN_PATH, files.get(0).getParent());
             }
         }
     }

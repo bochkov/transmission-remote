@@ -1,7 +1,7 @@
 package com.sb.transmissionremote.model.elems;
 
-import com.sb.transmissionremote.model.HumanSpeed;
 import lombok.RequiredArgsConstructor;
+import sb.bdev.text.HumanSpeed;
 
 @RequiredArgsConstructor
 public final class PeersLabel {

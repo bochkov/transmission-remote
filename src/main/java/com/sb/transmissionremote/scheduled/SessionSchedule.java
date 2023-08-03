@@ -1,27 +1,28 @@
 package com.sb.transmissionremote.scheduled;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import cordelia.client.Client;
-import cordelia.client.TrResponse;
-import cordelia.rpc.SessionGet;
-import cordelia.rpc.SessionStats;
+import cordelia.client.TrClient;
+import cordelia.client.TypedResponse;
+import cordelia.rpc.RqSessionGet;
+import cordelia.rpc.RqSessionStats;
+import cordelia.rpc.RsSessionGet;
+import cordelia.rpc.RsSessionStats;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public final class SessionSchedule implements Runnable {
 
-    private final AtomicReference<Client> client;
-    private final Consumer<Map<String, Object>> consumer;
+    private final AtomicReference<TrClient> client;
+    private final Consumer<RsSessionGet> sessionConsumer;
+    private final Consumer<RsSessionStats> sessionStatsConsumer;
 
     @Override
     public void run() {
-        Map<String, Object> map = new HashMap<>();
-        map.putAll(client.get().post(new SessionGet(), TrResponse.class).arguments());
-        map.putAll(client.get().post(new SessionStats(), TrResponse.class).arguments());
-        consumer.accept(map);
+        TypedResponse<RsSessionGet> rs1 = client.get().execute(new RqSessionGet());
+        sessionConsumer.accept(rs1.getArgs());
+        TypedResponse<RsSessionStats> rs2 = client.get().execute(new RqSessionStats());
+        sessionStatsConsumer.accept(rs2.getArgs());
     }
 }

@@ -4,12 +4,15 @@ import java.net.URL;
 import javax.swing.*;
 
 import com.sb.transmissionremote.TransmissionRemote;
-import lombok.RequiredArgsConstructor;
+import cordelia.rpc.types.Torrents;
 
-@RequiredArgsConstructor
 public final class ImageElem implements Element {
 
     private final String filename;
+
+    public ImageElem(Torrents t) {
+        this.filename = t.getName();
+    }
 
     @Override
     public JComponent graphic() {

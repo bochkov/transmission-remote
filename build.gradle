@@ -1,13 +1,16 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.ben-manes.versions' version '0.47.0'
 }
 
 group = 'com.sergeybochkov'
 version = '3.0'
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories() {
     mavenCentral()
@@ -17,21 +20,25 @@ repositories() {
 }
 
 dependencies {
-    implementation 'cordelia:cordelia:2.0.3.RELEASE'
-    implementation 'com.formdev:flatlaf:3.0'
-    implementation 'com.formdev:flatlaf-extras:3.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-    implementation 'ch.qos.logback:logback-classic:1.4.6'
-    implementation 'com.miglayout:miglayout-core:11.0'
-    implementation 'com.miglayout:miglayout-swing:11.0'
+    implementation 'com.sb:bdev-rt:1.0.4.RELEASE'
+    implementation 'cordelia:cordelia:5.4.0.RELEASE'
+    implementation 'com.formdev:flatlaf:3.1.1'
+    implementation 'com.formdev:flatlaf-extras:3.1.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.8'
+    implementation 'com.miglayout:miglayout-swing:11.1'
 
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testCompileOnly 'org.projectlombok:lombok:1.18.28'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
-    
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 application {

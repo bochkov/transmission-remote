@@ -4,14 +4,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
-import com.sb.transmissionremote.AppProperties;
+import com.sb.transmissionremote.AppProps;
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.util.Callback;
 import net.miginfocom.swing.MigLayout;
 
 public final class FrmSession extends JDialog {
 
-    private final transient AppProperties props = AppProperties.get();
     private final transient Callback callback;
 
     private final JTextField serverField = new JTextField();
@@ -26,17 +25,19 @@ public final class FrmSession extends JDialog {
 
         add(new JLabel("URL"));
         add(serverField);
-        serverField.setText(props.url());
+        serverField.setText(AppProps.get(AppProps.TRANSMISSION_URL));
         add(new JLabel());
         add(authField, "shrink");
         add(new JLabel("Username"));
         add(userField);
-        userField.setText(props.username());
-        userField.setEnabled(!props.username().isEmpty());
+        String username = AppProps.get(AppProps.TRANSMISSION_USER);
+        userField.setText(username);
+        userField.setEnabled(username != null && !username.isEmpty());
         add(new JLabel("Password"));
         add(passField);
-        passField.setText(props.password());
-        passField.setEnabled(!props.password().isEmpty());
+        String password = AppProps.get(AppProps.TRANSMISSION_PASS);
+        passField.setText(password);
+        passField.setEnabled(password != null && !password.isEmpty());
         authField.setSelected(userField.isEnabled() || passField.isEnabled());
         authField.addActionListener(e -> {
             JCheckBox src = (JCheckBox) e.getSource();
@@ -63,10 +64,11 @@ public final class FrmSession extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (authField.isSelected())
-                props.setUrl(serverField.getText(), userField.getText(), passField.getText());
-            else
-                props.setUrl(serverField.getText(), "", "");
+            AppProps.putVal(AppProps.TRANSMISSION_URL, serverField.getText());
+            if (authField.isSelected()) {
+                AppProps.putVal(AppProps.TRANSMISSION_USER, userField.getText());
+                AppProps.putVal(AppProps.TRANSMISSION_PASS, passField.getText());
+            }
             FrmSession.this.dispose();
             callback.call();
         }

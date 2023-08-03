@@ -5,8 +5,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -16,35 +17,39 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.sb.transmissionremote.AppProperties;
+import com.sb.transmissionremote.AppProps;
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.action.*;
-import com.sb.transmissionremote.model.HumanSize;
-import com.sb.transmissionremote.model.HumanSpeed;
-import com.sb.transmissionremote.model.Tor;
-import com.sb.transmissionremote.model.TorRender;
+import com.sb.transmissionremote.model.TorrentsRender;
 import com.sb.transmissionremote.scheduled.FreeSpaceSchedule;
 import com.sb.transmissionremote.scheduled.SessionSchedule;
 import com.sb.transmissionremote.scheduled.TorrentSchedule;
 import com.sb.transmissionremote.util.Drop;
-import cordelia.client.Client;
 import cordelia.client.TrClient;
-import cordelia.client.TrResponse;
-import cordelia.rpc.SessionGet;
+import cordelia.client.TypedResponse;
+import cordelia.rpc.RqSessionGet;
+import cordelia.rpc.RsFreeSpace;
+import cordelia.rpc.RsSessionGet;
+import cordelia.rpc.RsSessionStats;
+import cordelia.rpc.types.Torrents;
 import lombok.extern.slf4j.Slf4j;
 import net.miginfocom.swing.MigLayout;
+import sb.bdev.text.HumanSize;
+import sb.bdev.text.HumanSpeed;
+import sb.bdev.ui.swing.HMenu;
+import sb.bdev.ui.swing.HMenuBar;
+import sb.bdev.ui.swing.HMenuItem;
 
 @Slf4j
 public final class FrmMain extends JFrame implements ListSelectionListener {
 
     private static final ScheduledExecutorService SCHEDULE = Executors.newScheduledThreadPool(5);
 
-    private final AppProperties props = AppProperties.get();
-    private final Map<String, Object> session = new HashMap<>();
-    private final AtomicReference<Client> trclient = new AtomicReference<>();
+    private final AtomicReference<TrClient> trclient = new AtomicReference<>();
+    private final AtomicReference<RsSessionGet> session = new AtomicReference<>();
 
     private final TorrentListModel torrents = new TorrentListModel();
-    private final JList<Tor> torList = new JList<>(torrents);
+    private final JList<Torrents> torList = new JList<>(torrents);
 
     private final Action acStartAll = new AcStartAll(trclient, this::allIds);
     private final Action acStopAll = new AcStopAll(trclient, this::allIds);
@@ -68,32 +73,32 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         setIconImage(TransmissionRemote.LOGO.getImage());
         setLayout(new MigLayout("wrap 1, insets 10, gap 7, fillx", "center", "[][fill,grow][]"));
 
-        int metaKey = props.isMacOs() ?
+        int metaKey = AppProps.isMacOs() ?
                 InputEvent.META_DOWN_MASK :
                 InputEvent.CTRL_DOWN_MASK;
         setJMenuBar(
-                new TMenuBar(
-                        new TMenu("File",
-                                new TMenuItem(new AcChangeSession(this, this::restart), KeyStroke.getKeyStroke(KeyEvent.VK_N, metaKey)),
-                                new TMenuItem(new AcAddTorrent(this, trclient), KeyStroke.getKeyStroke(KeyEvent.VK_D, metaKey)),
-                                new TMenuItem("---"),
-                                new TMenuItem(new AcExit(this))
+                new HMenuBar(
+                        new HMenu("File",
+                                new HMenuItem(new AcChangeSession(this, this::restart), KeyStroke.getKeyStroke(KeyEvent.VK_N, metaKey)),
+                                new HMenuItem(new AcAddTorrent(this, trclient), KeyStroke.getKeyStroke(KeyEvent.VK_D, metaKey)),
+                                new HMenuItem(HMenu.SEPARATOR),
+                                new HMenuItem(new AcExit(this))
                         ),
-                        new TMenu("Edit",
-                                new TMenuItem(acStartAll),
-                                new TMenuItem(acStopAll),
-                                new TMenuItem("---"),
-                                new TMenuItem(acStartOne),
-                                new TMenuItem(acStartOne),
-                                new TMenuItem("---"),
-                                new TMenuItem(acInfo),
-                                new TMenuItem(acReannounce),
-                                new TMenuItem("---"),
-                                new TMenuItem(acTrash),
-                                new TMenuItem(acDelete)
+                        new HMenu("Edit",
+                                new HMenuItem(acStartAll),
+                                new HMenuItem(acStopAll),
+                                new HMenuItem(HMenu.SEPARATOR),
+                                new HMenuItem(acStartOne),
+                                new HMenuItem(acStartOne),
+                                new HMenuItem(HMenu.SEPARATOR),
+                                new HMenuItem(acInfo),
+                                new HMenuItem(acReannounce),
+                                new HMenuItem(HMenu.SEPARATOR),
+                                new HMenuItem(acTrash),
+                                new HMenuItem(acDelete)
                         ),
-                        new TMenu("Help",
-                                new TMenuItem(new AcAbout(this))
+                        new HMenu("Help",
+                                new HMenuItem(new AcAbout(this))
                         )
                 )
         );
@@ -119,7 +124,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         });
         torList.setDropMode(DropMode.ON);
         torList.setTransferHandler(new Drop(trclient));
-        torList.setCellRenderer(new TorRender());
+        torList.setCellRenderer(new TorrentsRender());
         torList.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         var sc = new JScrollPane(torList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         add(sc, "grow");
@@ -158,7 +163,9 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         add(infoPanel);
 
         setMinimumSize(new Dimension(TransmissionRemote.MIN_WIDTH, TransmissionRemote.MIN_HEIGHT));
-        setPreferredSize(new Dimension(props.width(), props.height()));
+        int height = AppProps.getInt(AppProps.WINDOW_HEIGHT, TransmissionRemote.MIN_HEIGHT);
+        int width = AppProps.getInt(AppProps.WINDOW_WIDTH, TransmissionRemote.MIN_HEIGHT);
+        setPreferredSize(new Dimension(width, height));
         pack();
         setLocationRelativeTo(null);
     }
@@ -168,15 +175,23 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         super.setVisible(visible);
         if (visible) {
             start();
+        } else {
+            trclient.get().shutdown();
         }
     }
 
     private void start() {
-        trclient.set(new TrClient(props.uri()));
-        // первоначальный запрос установок сессии, значения отсюда будут использованы ниже
-        session.putAll(
-                trclient.get().post(new SessionGet(), TrResponse.class).arguments()
+        trclient.set(
+                new TrClient(
+                        AppProps.get(AppProps.TRANSMISSION_URL),
+                        AppProps.get(AppProps.TRANSMISSION_USER),
+                        AppProps.get(AppProps.TRANSMISSION_PASS)
+                )
         );
+        // первоначальный запрос установок сессии, значения отсюда будут использованы ниже
+        TypedResponse<RsSessionGet> rsSession = trclient.get().execute(new RqSessionGet());
+        this.session.set(rsSession.getArgs());
+
         tasks.add(
                 SCHEDULE.scheduleAtFixedRate(
                         new TorrentSchedule(trclient, this::updateTorrents),
@@ -187,7 +202,7 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         );
         tasks.add(
                 SCHEDULE.scheduleAtFixedRate(
-                        new SessionSchedule(trclient, this::updateSession),
+                        new SessionSchedule(trclient, this::updateSession, this::updateSessionStats),
                         0L,
                         TransmissionRemote.SESSION_INTERVAL,
                         TimeUnit.MILLISECONDS
@@ -204,36 +219,38 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         torList.removeSelectionInterval(0, torrents.getSize());
     }
 
-    private void updateTorrents(List<Tor> newtors) {
-        for (Tor tor : newtors) {
-            LOG.debug("{}", tor.name());
+    private void updateTorrents(List<Torrents> tors) {
+        for (Torrents tor : tors) {
+            LOG.debug("{}", tor.getName());
         }
         int[] selected = torList.getSelectedIndices();
         torrents.clear();
-        newtors.sort(Comparator.comparing(Tor::id));
-        torrents.addAll(newtors);
+        tors.sort(Comparator.comparing(Torrents::getId));
+        torrents.addAll(tors);
         for (int idx : selected) {
             torList.getSelectionModel().addSelectionInterval(idx, idx);
         }
-        long completed = torrents.getAll().stream().filter(Tor::completed).count();
+        long completed = torrents.getAll().stream().filter(t -> t.getPercentDone() >= 1.0).count();
         LOG.debug("completed={}", completed);
-        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_BADGE_NUMBER))
-            Taskbar.getTaskbar().setIconBadge(
-                    completed > 0 ? String.valueOf(completed) : null
-            );
+        if (completed > 0 && Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_BADGE_NUMBER)) {
+            Taskbar.getTaskbar().setIconBadge(String.valueOf(completed));
+        }
     }
 
-    private void updateSession(Map<String, Object> map) {
-        setTitle(String.format("%s - [%s] - %s", TransmissionRemote.APP_NAME, props.server(), map.get("version")));
-        upSpeedLabel.setText(new HumanSpeed((Double) map.get("uploadSpeed")).toString());
-        downSpeedLabel.setText(new HumanSpeed((Double) map.get("downloadSpeed")).toString());
-        speedLimitButton.setSelected((Boolean) map.get("alt-speed-enabled"));
+    private void updateSession(RsSessionGet session) {
+        setTitle(String.format("%s - [%s] - %s", TransmissionRemote.APP_NAME, AppProps.serverUrl(), session.getVersion()));
+        speedLimitButton.setSelected(session.getAltSpeedEnabled());
         speedLimitButton.setIcon(speedLimitButton.isSelected() ? TransmissionRemote.ICON_ANCHOR : TransmissionRemote.ICON_ROCKET);
         speedLimitButton.setToolTipText(String.format("Now speed limit is %S", speedLimitButton.isSelected() ? "on" : "off"));
     }
 
-    private void updateFreeSpace(HumanSize size) {
-        freeSpaceLabel.setText(size.toString());
+    private void updateSessionStats(RsSessionStats stats) {
+        upSpeedLabel.setText(new HumanSpeed(stats.getUploadSpeed(), HumanSpeed.US, 2).toString());
+        downSpeedLabel.setText(new HumanSpeed(stats.getDownloadSpeed(), HumanSpeed.US, 2).toString());
+    }
+
+    private void updateFreeSpace(RsFreeSpace freeSpace) {
+        freeSpaceLabel.setText(new HumanSize(freeSpace.getSizeBytes(), HumanSize.US, 2).toString());
     }
 
     private void restart() {
@@ -246,18 +263,18 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         start();
     }
 
-    private Object[] allIds() {
+    private List<Object> allIds() {
         return torrents.getAll()
                 .stream()
-                .map(Tor::id)
-                .toArray();
+                .map(t -> (Object) t.getId())
+                .toList();
     }
 
-    private Object[] selectedIds() {
+    private List<Object> selectedIds() {
         return torList.getSelectedValuesList()
                 .stream()
-                .map(Tor::id)
-                .toArray();
+                .map(t -> (Object) t.getId())
+                .toList();
     }
 
     private void setActionsEnabled(boolean on) {

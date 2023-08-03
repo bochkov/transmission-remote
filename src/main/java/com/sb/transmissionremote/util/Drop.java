@@ -4,20 +4,19 @@ import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.*;
 
 import com.sb.transmissionremote.model.TrSourceFile;
 import com.sb.transmissionremote.model.TrSourceTrash;
-import cordelia.client.Client;
+import cordelia.client.TrClient;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @RequiredArgsConstructor
 public final class Drop extends TransferHandler {
 
-    private final AtomicReference<Client> client;
+    private final AtomicReference<TrClient> client;
 
     @SneakyThrows
     @Override
@@ -40,7 +39,9 @@ public final class Drop extends TransferHandler {
         if (files.isEmpty())
             return false;
 
-        new TrSourceTrash(new TrSourceFile(files, Map.of())).add(client.get());
+        new TrSourceTrash(
+                new TrSourceFile(files, null)
+        ).add(client.get());
         return true;
     }
 }

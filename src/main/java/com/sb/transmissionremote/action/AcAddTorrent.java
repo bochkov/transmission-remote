@@ -7,14 +7,14 @@ import javax.swing.*;
 
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.ui.FrmAdd;
-import cordelia.client.Client;
+import cordelia.client.TrClient;
 
 public final class AcAddTorrent extends AbstractAction {
 
     private final Frame owner;
-    private final AtomicReference<Client> client;
+    private final AtomicReference<TrClient> client;
 
-    public AcAddTorrent(Frame owner, AtomicReference<Client> client) {
+    public AcAddTorrent(Frame owner, AtomicReference<TrClient> client) {
         super("Add torrent", TransmissionRemote.ICON_FOLDER_OPEN_O);
         this.owner = owner;
         this.client = client;

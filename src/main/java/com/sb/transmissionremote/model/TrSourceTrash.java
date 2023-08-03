@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cordelia.client.Client;
+import cordelia.client.TrClient;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public final class TrSourceTrash implements TrSource {
     private final TrSource origin;
 
     @Override
-    public void add(Client client) throws IOException {
+    public void add(TrClient client) throws IOException {
         this.origin.add(client);
         for (File file : files())
             if (file.exists())
