@@ -82,6 +82,10 @@ public final class AppProps extends Properties {
         return instance.getProperty(key);
     }
 
+    public static String get(String key, String def) {
+        return instance.getProperty(key, def);
+    }
+
     public static void putVal(String key, Object value) {
         instance.put(key, value);
     }

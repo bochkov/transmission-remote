@@ -39,23 +39,28 @@ public final class FrmAdd extends JDialog {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.client = client;
 
-        setLayout(new MigLayout("fillx, insets 10, wrap 3", "[right][fill, grow][]", "[][][][]push[]"));
+        setLayout(new MigLayout("fillx, insets 3, wrap", "", "[]push[]"));
 
-        add(new JLabel("Select torrent file(s)"), "span 2, left");
-        add(new JButton(new OpenAction()), "right");
-        add(filesLabel, "span 3, left");
+        JPanel fields = new JPanel(new MigLayout("fillx, wrap 3", "[right][fill, grow][]"));
+        fields.add(new JLabel("Open torrent file(s)"), "span 2, left");
+        fields.add(new JButton(new OpenAction()));
+
+        fields.add(filesLabel, "span 3, left");
         filesLabel.setForeground(Color.DARK_GRAY);
         filesLabel.setVisible(false);
 
-        add(new JLabel("Or enter an URL"));
-        add(urlField, "span 2");
+        fields.add(new JLabel("or enter an URL"));
+        fields.add(urlField, "span 2");
 
-        add(new JLabel("Destination"));
-        add(destinationField);
+        fields.add(new JLabel("Destination"));
+        fields.add(destinationField, "span 2");
+
+        fields.add(destinationLabel, "span 3, right");
         destinationLabel.setForeground(Color.GRAY);
-        add(destinationLabel);
 
-        var cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
+        add(fields, "grow");
+
+        JPanel cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
         cmdPanel.add(new JButton(new OkAction()));
         cmdPanel.add(new JButton(new CancelAction()));
         add(cmdPanel, "span, center");
@@ -146,12 +151,14 @@ public final class FrmAdd extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             files.clear();
-            File dest = !new File(AppProps.get(AppProps.LAST_DESTINATION)).exists() ?
-                    new File(System.getProperty("user.home")) :
-                    new File(AppProps.get(AppProps.LAST_DESTINATION));
-            var chooser = new FileDialog(FrmAdd.this, "Open a torrent file", FileDialog.LOAD);
+            String lastPath = AppProps.get(AppProps.LAST_OPEN_PATH, System.getProperty("user.home"));
+            File dest = new File(lastPath).exists() ?
+                    new File(lastPath) :
+                    new File(System.getProperty("user.home"));
+            FileDialog chooser = new FileDialog(FrmAdd.this, "Open torrent file(s)", FileDialog.LOAD);
             chooser.setDirectory(dest.getAbsolutePath());
             chooser.setMultipleMode(true);
+            chooser.setFile("*.torrent");
             chooser.setFilenameFilter(TORRENT_FILTER);
             chooser.setVisible(true);
             for (File file : chooser.getFiles()) {
