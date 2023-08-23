@@ -5,9 +5,11 @@ import javax.swing.*;
 
 import cordelia.rpc.types.Status;
 import cordelia.rpc.types.Torrents;
+import lombok.extern.slf4j.Slf4j;
 import sb.bdev.text.HumanSize;
 import sb.bdev.text.HumanTime;
 
+@Slf4j
 public final class FileElem implements Element {
 
     private final Status status;
@@ -26,13 +28,14 @@ public final class FileElem implements Element {
 
     @Override
     public JComponent graphic() {
+        LOG.info("eta=" + eta);
         var fileLabel = new JLabel();
         fileLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
         fileLabel.setForeground(Color.GRAY);
         var total = new HumanSize(sizeWhenDone * percentDone, HumanSize.US, 2);
         switch (status) {
             case DOWNLOADING -> fileLabel.setText(
-                    String.format("%s of %s — %s remaining", total, new HumanSize(sizeWhenDone, HumanSize.US, 2), new HumanTime(eta))
+                    String.format("%s of %s — %s remaining", total, new HumanSize(sizeWhenDone, HumanSize.US, 2), new HumanTime(eta * 1000))
             );
             case SEEDING -> fileLabel.setText(
                     String.format("%s, uploaded %s (Ratio %.2f)", total, new HumanSize(sizeWhenDone * uploadRatio, HumanSize.US, 2), uploadRatio)
