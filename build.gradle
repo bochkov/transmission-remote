@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.sergeybochkov'
-version = '3.0'
+version = '3.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -22,9 +22,9 @@ repositories() {
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.4.RELEASE'
     implementation 'cordelia:cordelia:5.4.0.RELEASE'
-    implementation 'com.formdev:flatlaf:3.1.1'
-    implementation 'com.formdev:flatlaf-extras:3.1.1'
-    implementation 'ch.qos.logback:logback-classic:1.4.8'
+    implementation 'com.formdev:flatlaf:3.2'
+    implementation 'com.formdev:flatlaf-extras:3.2'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation 'com.miglayout:miglayout-swing:11.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.28'

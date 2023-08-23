@@ -232,8 +232,8 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         }
         long completed = torrents.getAll().stream().filter(t -> t.getPercentDone() >= 1.0).count();
         LOG.debug("completed={}", completed);
-        if (completed > 0 && Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_BADGE_NUMBER)) {
-            Taskbar.getTaskbar().setIconBadge(String.valueOf(completed));
+        if (Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_BADGE_NUMBER)) {
+            Taskbar.getTaskbar().setIconBadge(completed == 0 ? null : String.valueOf(completed));
         }
     }
 
