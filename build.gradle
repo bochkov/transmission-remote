@@ -43,9 +43,9 @@ tasks.named('test') {
 
 application {
     mainClass = "com.sb.transmissionremote.TransmissionRemote"
-    applicationDefaultJvmArgs = [
-            '-Xdock:name=Transmission Remote'
-    ]
+    // applicationDefaultJvmArgs = [
+    //         '-Xdock:name=Transmission Remote'
+    // ]
 }
 
 task("macApp", dependsOn: 'build') {

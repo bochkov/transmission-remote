@@ -20,7 +20,7 @@ public final class AppProps extends Properties {
     public static final String TRANSMISSION_USER = "app.transmission.user";
     public static final String TRANSMISSION_PASS = "app.transmission.password";
 
-    private static final File SETTING_DIR = new File(System.getProperty("user.home"), ".transmission-remote");
+    private static final File SETTING_DIR = new File(System.getProperty("user.home"), ".config/transmission-remote");
     private static final String SETTING_FILE = "settings.properties";
     private static final Pattern SHORT_URL = Pattern.compile("(?<protocol>https?://)(?<host>.*?):(?<port>\\d+)/(?<path>.*)");
 
