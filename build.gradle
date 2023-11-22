@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.ben-manes.versions' version '0.47.0'
+    id 'com.github.ben-manes.versions' version '0.50.0'
 }
 
 group = 'com.sergeybochkov'
@@ -22,17 +22,17 @@ repositories() {
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.4.RELEASE'
     implementation 'cordelia:cordelia:5.4.0.RELEASE'
-    implementation 'com.formdev:flatlaf:3.2'
-    implementation 'com.formdev:flatlaf-extras:3.2'
+    implementation 'com.formdev:flatlaf:3.2.5'
+    implementation 'com.formdev:flatlaf-extras:3.2.5'
     implementation 'ch.qos.logback:logback-classic:1.4.11'
-    implementation 'com.miglayout:miglayout-swing:11.1'
+    implementation 'com.miglayout:miglayout-swing:11.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
-    testCompileOnly 'org.projectlombok:lombok:1.18.28'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testImplementation 'org.assertj:assertj-core:3.24.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
