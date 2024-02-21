@@ -9,8 +9,10 @@ import java.awt.event.WindowEvent;
 import java.util.Objects;
 import javax.swing.*;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import com.sb.transmissionremote.action.AcAbout;
 import com.sb.transmissionremote.ui.FrmMain;
 import com.sb.transmissionremote.util.FlatSvgFlip;
@@ -105,6 +107,12 @@ public final class TransmissionRemote {
     @SneakyThrows
     public static void main(String[] args) {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("apple.awt.application.name", APP_NAME);
+        System.setProperty("apple.awt.application.appearance", "system");
+        FlatInterFont.install();
+        FlatLaf.setPreferredFontFamily(FlatInterFont.FAMILY);
+        FlatLaf.setPreferredLightFontFamily(FlatInterFont.FAMILY_LIGHT);
+        FlatLaf.setPreferredSemiboldFontFamily(FlatInterFont.FAMILY_SEMIBOLD);
         FlatLightLaf.setup();
         TransmissionRemote.run();
     }
