@@ -18,8 +18,8 @@ public final class TorrentsRender implements ListCellRenderer<Torrents> {
     }
 
     public static JComponent graphic(Torrents t) {
-        var panel = new JPanel(new MigLayout("fillx, debug, wrap 1, insets 3 10 3 10, gap 2", "fill, grow"));
-        panel.add(new ImageElem(t).graphic(), "dock west");
+        var panel = new JPanel(new MigLayout("fillx, wrap 1, insets 3 10 3 10, gap 2", "fill, grow"));
+        panel.add(new ImageElem(t).graphic(), "dock west, gap 10");
         panel.add(new NameElem(t).graphic());
         panel.add(new PeersSpeedElem(t).graphic());
         panel.add(new ProgressElem(t).graphic());

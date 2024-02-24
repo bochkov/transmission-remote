@@ -18,7 +18,7 @@ public final class NameElem implements Element {
     @Override
     public JComponent graphic() {
         var nameLabel = new JLabel(sizedName());
-        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
         return nameLabel;
     }
 

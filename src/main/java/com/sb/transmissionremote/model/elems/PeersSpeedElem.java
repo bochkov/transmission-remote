@@ -45,7 +45,7 @@ public final class PeersSpeedElem implements Element {
                 }
             }
         }
-        peersAndSpeed.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        peersAndSpeed.setFont(peersAndSpeed.getFont().deriveFont(11.0f));
         return peersAndSpeed;
     }
 }

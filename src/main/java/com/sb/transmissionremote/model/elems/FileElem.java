@@ -30,7 +30,7 @@ public final class FileElem implements Element {
     public JComponent graphic() {
         LOG.info("eta=" + eta);
         var fileLabel = new JLabel();
-        fileLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        fileLabel.setFont(fileLabel.getFont().deriveFont(11.0f));
         fileLabel.setForeground(Color.GRAY);
         var total = new HumanSize(sizeWhenDone * percentDone, HumanSize.US, 2);
         switch (status) {
