@@ -1,11 +1,14 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id 'java'
     id 'application'
+    id 'edu.sc.seis.launch4j' version '3.0.6'
     id 'com.github.ben-manes.versions' version '0.51.0'
 }
 
 group = 'com.sergeybochkov'
-version = '3.0.2'
+version = '3.0.3'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -20,21 +23,22 @@ repositories() {
 }
 
 dependencies {
-    implementation 'com.sb:bdev-rt:1.0.5.RELEASE'
+    implementation 'com.sb:bdev-rt:1.0.7.RELEASE'
     implementation 'cordelia:cordelia:5.4.0.RELEASE'
-    implementation 'com.formdev:flatlaf:3.4'
-    implementation 'com.formdev:flatlaf-extras:3.4'
+    implementation 'com.formdev:flatlaf:3.5.2'
+    implementation 'com.formdev:flatlaf-extras:3.5.2'
     implementation 'com.formdev:flatlaf-fonts-inter:4.0'
-    implementation 'ch.qos.logback:logback-classic:1.5.0'
-    implementation 'com.miglayout:miglayout-swing:11.3'
+    implementation 'org.slf4j:slf4j-api:2.0.15'
+    implementation 'ch.qos.logback:logback-classic:1.5.12'
+    implementation 'com.miglayout:miglayout-swing:11.4.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
-    testImplementation 'org.assertj:assertj-core:3.25.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -44,9 +48,11 @@ tasks.named('test') {
 
 application {
     mainClass = "com.sb.transmissionremote.TransmissionRemote"
-    // applicationDefaultJvmArgs = [
-    //         '-Xdock:name=Transmission Remote'
-    // ]
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        applicationDefaultJvmArgs = [
+                '-Xdock:name=Transmission Remote'
+        ]
+    }
 }
 
 task("macApp", dependsOn: 'build') {
@@ -73,4 +79,9 @@ task("macApp", dependsOn: 'build') {
             into "$appDir/Contents"
         }
     }
+}
+
+launch4j {
+    mainClassName = 'com.sb.transmissionremote.TransmissionRemote'
+    icon = "${projectDir}/src/main/resources/style/transmission-remote.ico"
 }
