@@ -1,66 +1,64 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-
 plugins {
     id 'java'
     id 'application'
     id 'edu.sc.seis.launch4j' version '3.0.6'
-    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'com.github.ben-manes.versions' version '0.52.0'
+}
+
+ext {
+    outDir = project.layout.buildDirectory.dir("macApp").get().asFile
+    appDir = "$outDir/Transmission Remote.app" as File
 }
 
 group = 'com.sergeybochkov'
-version = '3.0.3'
+version = '3.0.4'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
 
 repositories() {
     mavenCentral()
     maven {
-        url "https://maven.sergeybochkov.com/releases"
+        url = "https://maven.sergeybochkov.com/releases"
     }
 }
 
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.7.RELEASE'
     implementation 'cordelia:cordelia:5.4.0.RELEASE'
-    implementation 'com.formdev:flatlaf:3.5.2'
-    implementation 'com.formdev:flatlaf-extras:3.5.2'
-    implementation 'com.formdev:flatlaf-fonts-inter:4.0'
-    implementation 'org.slf4j:slf4j-api:2.0.15'
-    implementation 'ch.qos.logback:logback-classic:1.5.12'
+    implementation 'com.formdev:flatlaf:3.6'
+    implementation 'com.formdev:flatlaf-extras:3.6'
+    implementation 'com.formdev:flatlaf-fonts-inter:4.1'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'ch.qos.logback:logback-classic:1.5.18'
     implementation 'com.miglayout:miglayout-swing:11.4.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
-    testCompileOnly 'org.projectlombok:lombok:1.18.34'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testCompileOnly 'org.projectlombok:lombok:1.18.38'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
-    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
 
 application {
     mainClass = "com.sb.transmissionremote.TransmissionRemote"
-    if (Os.isFamily(Os.FAMILY_MAC)) {
+    if (System.getProperty("os.name").contains("Mac OS")) {
         applicationDefaultJvmArgs = [
                 '-Xdock:name=Transmission Remote'
         ]
     }
 }
 
-task("macApp", dependsOn: 'build') {
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('macApp') {
+    dependsOn 'build'
     doLast {
-        def outDir = "$buildDir/macApp" as File
-        def appDir = "$outDir/Transmission Remote.app" as File
         delete outDir
-        project.file(appDir).mkdirs()
+        file(appDir).mkdirs()
         copy {
             from tarTree(distTar.archiveFile)
             into "$appDir/Contents/MacOS"
@@ -84,4 +82,12 @@ task("macApp", dependsOn: 'build') {
 launch4j {
     mainClassName = 'com.sb.transmissionremote.TransmissionRemote'
     icon = "${projectDir}/src/main/resources/style/transmission-remote.ico"
+}
+
+tasks.named('dependencyUpdates').configure {
+    rejectVersionIf {
+        return  ['.*-alpha\\d+', '.*-m\\d+$', '.*-rc\\d+'].any { part ->
+            it.candidate.version.toLowerCase().matches(part)
+        }
+    }
 }
