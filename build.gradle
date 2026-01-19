@@ -1,8 +1,8 @@
 plugins {
     id 'java'
     id 'application'
-    id 'edu.sc.seis.launch4j' version '3.0.6'
-    id 'com.github.ben-manes.versions' version '0.52.0'
+    id 'com.github.ben-manes.versions' version '0.53.0'
+    id 'com.sb.jini' version '0.4'
 }
 
 ext {
@@ -11,8 +11,7 @@ ext {
 }
 
 group = 'com.sergeybochkov'
-version = '3.0.4'
-
+version = '3.0.5'
 
 repositories() {
     mavenCentral()
@@ -24,21 +23,22 @@ repositories() {
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.7.RELEASE'
     implementation 'cordelia:cordelia:5.4.0.RELEASE'
-    implementation 'com.formdev:flatlaf:3.6'
-    implementation 'com.formdev:flatlaf-extras:3.6'
+    implementation 'com.formdev:flatlaf:3.7'
+    implementation 'com.formdev:flatlaf-extras:3.7'
     implementation 'com.formdev:flatlaf-fonts-inter:4.1'
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation 'ch.qos.logback:logback-classic:1.5.18'
+    implementation 'ch.qos.logback:logback-classic:1.5.25'
     implementation 'com.miglayout:miglayout-swing:11.4.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.38'
-    annotationProcessor 'org.projectlombok:lombok:1.18.38'
-    testCompileOnly 'org.projectlombok:lombok:1.18.38'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testCompileOnly 'org.projectlombok:lombok:1.18.42'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
-    testImplementation 'org.assertj:assertj-core:3.27.3'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation(platform('org.junit:junit-bom:6.0.2'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+    testImplementation 'org.assertj:assertj-core:3.27.6'
 }
 
 application {
@@ -79,9 +79,17 @@ tasks.register('macApp') {
     }
 }
 
-launch4j {
+tasks.named('jini').configure {
     mainClassName = 'com.sb.transmissionremote.TransmissionRemote'
+    exeFilename = 'transmission-remote.exe'
+    vmArgs = ['-Xmx64m']
     icon = "${projectDir}/src/main/resources/style/transmission-remote.ico"
+    fileVersion = "1.0.0.959"
+    productVersion = "1.0.0.959"
+    comments = "Transmission Remote GUI"
+    fileDescription = "Transmission Remote GUI"
+    productName = "Transmission Remote GUI"
+    copyright = "Bochkov Sergey"
 }
 
 tasks.named('dependencyUpdates').configure {
