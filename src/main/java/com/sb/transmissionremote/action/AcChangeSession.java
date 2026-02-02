@@ -1,12 +1,12 @@
 package com.sb.transmissionremote.action;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import javax.swing.*;
-
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.ui.FrmSession;
 import com.sb.transmissionremote.util.Callback;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public final class AcChangeSession extends AbstractAction {
 

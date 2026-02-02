@@ -1,13 +1,13 @@
 package com.sb.transmissionremote.ui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import javax.swing.*;
-
 import com.sb.transmissionremote.AppProps;
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.util.Callback;
 import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public final class FrmSession extends JDialog {
 
@@ -21,7 +21,7 @@ public final class FrmSession extends JDialog {
     public FrmSession(Frame owner, Callback callback) {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.callback = callback;
-        setLayout(new MigLayout("fillx, wrap 2, insets 10", "[right][fill, grow]"));
+        setLayout(new MigLayout("fillX, wrap 2, insets 10", "[right][fill, grow]"));
 
         add(new JLabel("URL"));
         add(serverField);

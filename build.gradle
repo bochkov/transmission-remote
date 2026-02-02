@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.ben-manes.versions' version '0.53.0'
-    id 'com.sb.jini' version '0.4'
+    id 'com.sb.jini' version '0.5.0'
 }
 
 ext {
@@ -11,7 +11,7 @@ ext {
 }
 
 group = 'com.sergeybochkov'
-version = '3.0.5'
+version = '3.0.6'
 
 repositories() {
     mavenCentral()
@@ -22,12 +22,13 @@ repositories() {
 
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.7.RELEASE'
-    implementation 'cordelia:cordelia:5.4.0.RELEASE'
+    implementation 'cordelia:cordelia:6.0.0.RELEASE'
+
     implementation 'com.formdev:flatlaf:3.7'
     implementation 'com.formdev:flatlaf-extras:3.7'
     implementation 'com.formdev:flatlaf-fonts-inter:4.1'
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation 'ch.qos.logback:logback-classic:1.5.25'
+    implementation 'ch.qos.logback:logback-classic:1.5.27'
     implementation 'com.miglayout:miglayout-swing:11.4.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.42'
@@ -38,7 +39,7 @@ dependencies {
     testImplementation(platform('org.junit:junit-bom:6.0.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
-    testImplementation 'org.assertj:assertj-core:3.27.6'
+    testImplementation 'org.assertj:assertj-core:3.27.7'
 }
 
 application {
@@ -84,8 +85,8 @@ tasks.named('jini').configure {
     exeFilename = 'transmission-remote.exe'
     vmArgs = ['-Xmx64m']
     icon = "${projectDir}/src/main/resources/style/transmission-remote.ico"
-    fileVersion = "1.0.0.959"
-    productVersion = "1.0.0.959"
+    fileVersion = "1.0.0.306"
+    productVersion = "1.0.0.306"
     comments = "Transmission Remote GUI"
     fileDescription = "Transmission Remote GUI"
     productName = "Transmission Remote GUI"

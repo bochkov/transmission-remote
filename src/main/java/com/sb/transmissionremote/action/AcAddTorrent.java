@@ -1,13 +1,13 @@
 package com.sb.transmissionremote.action;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.*;
-
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.ui.FrmAdd;
 import cordelia.client.TrClient;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class AcAddTorrent extends AbstractAction {
 

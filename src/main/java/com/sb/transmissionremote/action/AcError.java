@@ -1,9 +1,9 @@
 package com.sb.transmissionremote.action;
 
-import javax.swing.*;
-
 import com.sb.transmissionremote.TransmissionRemote;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.*;
 
 @Slf4j
 public abstract class AcError extends AbstractAction {

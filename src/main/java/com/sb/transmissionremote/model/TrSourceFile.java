@@ -1,14 +1,14 @@
 package com.sb.transmissionremote.model;
 
+import com.sb.transmissionremote.TransmissionRemote;
+import cordelia.client.TrClient;
+import cordelia.jsonrpc.req.RqTorrentAdd;
+import lombok.RequiredArgsConstructor;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Base64;
 import java.util.List;
-
-import cordelia.client.TrClient;
-import cordelia.rpc.RqTorrentAdd;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public final class TrSourceFile implements TrSource {
@@ -19,11 +19,12 @@ public final class TrSourceFile implements TrSource {
     @Override
     public void add(TrClient client) throws IOException {
         for (File file : files) {
-            RqTorrentAdd rq = RqTorrentAdd.builder()
-                    .metainfo(Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath())))
+            RqTorrentAdd.Params params = RqTorrentAdd.Params.builder()
+                    .metainfo(Files.readAllBytes(file.toPath()))
                     .downloadDir(downloadDir)
                     .build();
-            client.execute(rq);
+            RqTorrentAdd req = new RqTorrentAdd(TransmissionRemote.TAG, params);
+            client.execute(req);
         }
     }
 

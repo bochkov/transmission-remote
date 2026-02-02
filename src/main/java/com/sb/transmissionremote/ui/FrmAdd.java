@@ -1,16 +1,5 @@
 package com.sb.transmissionremote.ui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-
 import com.sb.transmissionremote.AppProps;
 import com.sb.transmissionremote.TransmissionRemote;
 import com.sb.transmissionremote.model.TrSource;
@@ -19,11 +8,21 @@ import com.sb.transmissionremote.model.TrSourceTrash;
 import com.sb.transmissionremote.model.TrSourceUrl;
 import com.sb.transmissionremote.util.AbstractDocListener;
 import cordelia.client.TrClient;
-import cordelia.client.TypedResponse;
-import cordelia.rpc.RqFreeSpace;
-import cordelia.rpc.RsFreeSpace;
+import cordelia.jsonrpc.req.RqFreeSpace;
+import cordelia.jsonrpc.res.RsFreeSpace;
 import net.miginfocom.swing.MigLayout;
 import sb.bdev.text.HumanSize;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class FrmAdd extends JDialog {
 
@@ -39,9 +38,9 @@ public final class FrmAdd extends JDialog {
         super(owner, TransmissionRemote.APP_NAME, true);
         this.client = client;
 
-        setLayout(new MigLayout("fillx, insets 3, wrap", "", "[]push[]"));
+        setLayout(new MigLayout("fillX, insets 3, wrap", "", "[]push[]"));
 
-        JPanel fields = new JPanel(new MigLayout("fillx, wrap 3", "[right][fill, grow][]"));
+        JPanel fields = new JPanel(new MigLayout("fillX, wrap 3", "[right][fill, grow][]"));
         fields.add(new JLabel("Open torrent file(s)"), "span 2, left");
         fields.add(new JButton(new OpenAction()));
 
@@ -60,7 +59,7 @@ public final class FrmAdd extends JDialog {
 
         add(fields, "grow");
 
-        JPanel cmdPanel = new JPanel(new MigLayout("insets 5, fillx, nogrid"));
+        JPanel cmdPanel = new JPanel(new MigLayout("insets 5, fillX, noGrid"));
         cmdPanel.add(new JButton(new OkAction()));
         cmdPanel.add(new JButton(new CancelAction()));
         add(cmdPanel, "span, center");
@@ -85,8 +84,11 @@ public final class FrmAdd extends JDialog {
     }
 
     private String printFS() {
-        TypedResponse<RsFreeSpace> res = client.get().execute(new RqFreeSpace(destinationField.getText()));
-        Long bytes = res.getArgs().getSizeBytes();
+        RqFreeSpace.Params params = RqFreeSpace.Params.builder()
+                .path(destinationField.getText())
+                .build();
+        RsFreeSpace res = client.get().execute(new RqFreeSpace(TransmissionRemote.TAG, params));
+        Long bytes = res.getResult().getSizeBytes();
         return bytes == null || bytes < 0 ?
                 "no such directory" :
                 String.format("%s free", new HumanSize(bytes, HumanSize.US, 2));
@@ -152,11 +154,11 @@ public final class FrmAdd extends JDialog {
         public void actionPerformed(ActionEvent e) {
             files.clear();
             String lastPath = AppProps.get(AppProps.LAST_OPEN_PATH, System.getProperty("user.home"));
-            File dest = new File(lastPath).exists() ?
+            File destination = new File(lastPath).exists() ?
                     new File(lastPath) :
                     new File(System.getProperty("user.home"));
             FileDialog chooser = new FileDialog(FrmAdd.this, "Open torrent file(s)", FileDialog.LOAD);
-            chooser.setDirectory(dest.getAbsolutePath());
+            chooser.setDirectory(destination.getAbsolutePath());
             chooser.setMultipleMode(true);
             chooser.setFile("*.torrent");
             chooser.setFilenameFilter(TORRENT_FILTER);
@@ -165,9 +167,9 @@ public final class FrmAdd extends JDialog {
                 files.add(file);
                 filesLabel.setVisible(true);
                 filesLabel.setText(files.size() == 1 ?
-                        fitToWidth(files.get(0).getName()) :
+                        fitToWidth(files.getFirst().getName()) :
                         String.format("selected %d files", files.size()));
-                AppProps.putVal(AppProps.LAST_OPEN_PATH, files.get(0).getParent());
+                AppProps.putVal(AppProps.LAST_OPEN_PATH, files.getFirst().getParent());
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.sb.transmissionremote.util;
 
-import java.awt.*;
-
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+
+import java.awt.*;
 
 public final class FlatSvgFlip extends FlatSVGIcon {
 

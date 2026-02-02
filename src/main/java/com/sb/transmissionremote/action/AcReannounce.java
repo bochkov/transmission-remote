@@ -1,14 +1,15 @@
 package com.sb.transmissionremote.action;
 
+import com.sb.transmissionremote.TransmissionRemote;
+import cordelia.client.TrClient;
+import cordelia.jsonrpc.req.RqTorrent;
+import cordelia.jsonrpc.req.RqTorrentReannounce;
+import cordelia.jsonrpc.req.types.Ids;
+
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-
-import com.sb.transmissionremote.TransmissionRemote;
-import cordelia.client.TrClient;
-import cordelia.rpc.RqTorrent;
-import cordelia.rpc.types.TorrentAction;
 
 public final class AcReannounce extends AcError {
 
@@ -23,6 +24,10 @@ public final class AcReannounce extends AcError {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        client.get().execute(new RqTorrent(TorrentAction.REANNOUNCE, supplier.get()));
+        RqTorrent.Params params = RqTorrent.Params.builder()
+                .ids(Ids.any(supplier.get()))
+                .build();
+        RqTorrentReannounce req = new RqTorrentReannounce(TransmissionRemote.TAG, params);
+        client.get().execute(req);
     }
 }

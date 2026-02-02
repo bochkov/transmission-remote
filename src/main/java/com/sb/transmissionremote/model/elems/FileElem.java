@@ -1,24 +1,21 @@
 package com.sb.transmissionremote.model.elems;
 
-import java.awt.*;
-import javax.swing.*;
-
-import cordelia.rpc.types.Status;
-import cordelia.rpc.types.Torrents;
-import lombok.extern.slf4j.Slf4j;
+import cordelia.jsonrpc.res.RsTorrentGet;
 import sb.bdev.text.HumanSize;
 import sb.bdev.text.HumanTime;
 
-@Slf4j
+import javax.swing.*;
+import java.awt.*;
+
 public final class FileElem implements Element {
 
-    private final Status status;
+    private final RsTorrentGet.Status status;
     private final Long sizeWhenDone;
     private final Double percentDone;
     private final Double uploadRatio;
     private final Long eta;
 
-    public FileElem(Torrents torrents) {
+    public FileElem(RsTorrentGet.Torrents torrents) {
         this.status = torrents.getStatus();
         this.sizeWhenDone = torrents.getSizeWhenDone();
         this.percentDone = torrents.getPercentDone();
@@ -28,7 +25,6 @@ public final class FileElem implements Element {
 
     @Override
     public JComponent graphic() {
-        LOG.info("eta=" + eta);
         var fileLabel = new JLabel();
         fileLabel.setFont(fileLabel.getFont().deriveFont(11.0f));
         fileLabel.setForeground(Color.GRAY);

@@ -1,14 +1,5 @@
 package com.sb.transmissionremote;
 
-import java.awt.*;
-import java.awt.desktop.QuitEvent;
-import java.awt.desktop.QuitHandler;
-import java.awt.desktop.QuitResponse;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Objects;
-import javax.swing.*;
-
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -20,6 +11,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.desktop.QuitEvent;
+import java.awt.desktop.QuitHandler;
+import java.awt.desktop.QuitResponse;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Objects;
+import java.util.Random;
+
 @Slf4j
 public final class TransmissionRemote {
 
@@ -27,6 +28,7 @@ public final class TransmissionRemote {
     public static final ImageIcon LOGO = new ImageIcon(
             Objects.requireNonNull(TransmissionRemote.class.getResource("/style/transmission-remote.png"))
     );
+    public static final long TAG = new Random().nextInt();
 
     public static final int MIN_HEIGHT = 650;
     public static final int MIN_WIDTH = 500;

@@ -1,27 +1,29 @@
 package com.sb.transmissionremote.scheduled;
 
-import java.util.function.Consumer;
-
+import com.sb.transmissionremote.TransmissionRemote;
 import cordelia.client.TrClient;
-import cordelia.client.TypedResponse;
-import cordelia.rpc.RqTorrentGet;
-import cordelia.rpc.RsTorrentGet;
-import cordelia.rpc.types.Fields;
+import cordelia.jsonrpc.req.RqTorrentGet;
+import cordelia.jsonrpc.res.RsTorrentGet;
+import cordelia.jsonrpc.types.FKey;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 public final class InfoSchedule implements Runnable {
 
     private final TrClient client;
     private final Long tag;
-    private final Consumer<RsTorrentGet> consumer;
+    private final Consumer<RsTorrentGet.Result> consumer;
 
     @Override
     public void run() {
-        TypedResponse<RsTorrentGet> rs = client.execute(
-                new RqTorrentGet(Fields.PEERS, Fields.FILES, Fields.FILE_STATS),
-                tag
-        );
-        consumer.accept(rs.getArgs());
+        RqTorrentGet.Params params = RqTorrentGet.Params.builder()
+                .fields(List.of(FKey.PEERS, FKey.FILES, FKey.FILE_STATS))
+                .build();
+        RqTorrentGet req = new RqTorrentGet(TransmissionRemote.TAG, params);
+        RsTorrentGet res = client.execute(req);
+        consumer.accept(res.getResult());
     }
 }

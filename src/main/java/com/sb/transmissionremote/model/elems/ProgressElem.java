@@ -1,18 +1,17 @@
 package com.sb.transmissionremote.model.elems;
 
-import java.awt.*;
-import javax.swing.*;
+import cordelia.jsonrpc.res.RsTorrentGet;
 
-import cordelia.rpc.types.Status;
-import cordelia.rpc.types.Torrents;
+import javax.swing.*;
+import java.awt.*;
 
 public final class ProgressElem implements Element {
 
     private final Long error;
-    private final Status status;
+    private final RsTorrentGet.Status status;
     private final Double percentDone;
 
-    public ProgressElem(Torrents t) {
+    public ProgressElem(RsTorrentGet.Torrents t) {
         this.error = t.getError();
         this.status = t.getStatus();
         this.percentDone = t.getPercentDone();

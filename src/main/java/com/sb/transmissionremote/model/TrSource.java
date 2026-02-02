@@ -1,11 +1,11 @@
 package com.sb.transmissionremote.model;
 
+import cordelia.client.TrClient;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-
-import cordelia.client.TrClient;
 
 public interface TrSource extends Serializable {
 

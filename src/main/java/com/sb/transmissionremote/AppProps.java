@@ -1,13 +1,13 @@
 package com.sb.transmissionremote;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.regex.Pattern;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public final class AppProps extends Properties {

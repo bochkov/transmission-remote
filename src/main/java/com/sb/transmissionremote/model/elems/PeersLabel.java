@@ -17,8 +17,8 @@ public final class PeersLabel {
                 "Downloading from %d of %d peers — ↓ %s ↑ %s",
                 peersSendingToUs,
                 peersConnected,
-                new HumanSpeed(rateDownload),
-                new HumanSpeed(rateUpload)
+                new HumanSpeed(rateDownload, HumanSpeed.US, 2),
+                new HumanSpeed(rateUpload, HumanSpeed.US, 2)
         );
     }
 
@@ -27,7 +27,7 @@ public final class PeersLabel {
                 "Seeding to %d of %d peers — ↑ %s",
                 peersGettingFromUs,
                 peersConnected,
-                new HumanSpeed(rateUpload)
+                new HumanSpeed(rateUpload, HumanSpeed.US, 2)
         );
     }
 

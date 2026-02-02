@@ -1,13 +1,13 @@
 package com.sb.transmissionremote.action;
 
+import com.sb.transmissionremote.TransmissionRemote;
+import com.sb.transmissionremote.ui.FrmAbout;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.desktop.AboutEvent;
 import java.awt.desktop.AboutHandler;
 import java.awt.event.ActionEvent;
-import javax.swing.*;
-
-import com.sb.transmissionremote.TransmissionRemote;
-import com.sb.transmissionremote.ui.FrmAbout;
 
 public final class AcAbout extends AbstractAction implements AboutHandler {
 

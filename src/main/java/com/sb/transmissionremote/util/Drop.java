@@ -1,17 +1,17 @@
 package com.sb.transmissionremote.util;
 
-import java.awt.datatransfer.DataFlavor;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.*;
-
 import com.sb.transmissionremote.model.TrSourceFile;
 import com.sb.transmissionremote.model.TrSourceTrash;
 import cordelia.client.TrClient;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
+import javax.swing.*;
+import java.awt.datatransfer.DataFlavor;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RequiredArgsConstructor
 public final class Drop extends TransferHandler {

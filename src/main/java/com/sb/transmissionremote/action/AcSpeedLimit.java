@@ -1,12 +1,12 @@
 package com.sb.transmissionremote.action;
 
-import java.awt.event.ActionEvent;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.*;
-
 import com.sb.transmissionremote.TransmissionRemote;
 import cordelia.client.TrClient;
-import cordelia.rpc.RqSessionSet;
+import cordelia.jsonrpc.req.RqSessionSet;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class AcSpeedLimit extends AcError {
 
@@ -20,9 +20,10 @@ public final class AcSpeedLimit extends AcError {
     @Override
     public void actionPerformed(ActionEvent e) {
         JToggleButton btn = (JToggleButton) e.getSource();
-        RqSessionSet rq = RqSessionSet.builder()
+        RqSessionSet.Params params = RqSessionSet.Params.builder()
                 .altSpeedEnabled(btn.isSelected())
                 .build();
-        client.get().execute(rq);
+        RqSessionSet req = new RqSessionSet(TransmissionRemote.TAG, params);
+        client.get().execute(req);
     }
 }

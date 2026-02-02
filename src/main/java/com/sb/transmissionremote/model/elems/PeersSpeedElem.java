@@ -1,19 +1,18 @@
 package com.sb.transmissionremote.model.elems;
 
-import java.awt.*;
-import javax.swing.*;
+import cordelia.jsonrpc.res.RsTorrentGet;
 
-import cordelia.rpc.types.Status;
-import cordelia.rpc.types.Torrents;
+import javax.swing.*;
+import java.awt.*;
 
 public final class PeersSpeedElem implements Element {
 
     private final Long error;
     private final String errorString;
-    private final Status status;
+    private final RsTorrentGet.Status status;
     private final PeersLabel peers;
 
-    public PeersSpeedElem(Torrents t) {
+    public PeersSpeedElem(RsTorrentGet.Torrents t) {
         this.error = t.getError();
         this.errorString = t.getErrorString();
         this.status = t.getStatus();

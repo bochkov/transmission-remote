@@ -1,9 +1,9 @@
 package com.sb.transmissionremote.model.elems;
 
-import java.awt.*;
-import javax.swing.*;
+import cordelia.jsonrpc.res.RsTorrentGet;
 
-import cordelia.rpc.types.Torrents;
+import javax.swing.*;
+import java.awt.*;
 
 public final class NameElem implements Element {
 
@@ -11,7 +11,7 @@ public final class NameElem implements Element {
 
     private final String name;
 
-    public NameElem(Torrents t) {
+    public NameElem(RsTorrentGet.Torrents t) {
         this.name = t.getName();
     }
 

@@ -1,16 +1,16 @@
 package com.sb.transmissionremote.model.elems;
 
-import java.net.URL;
-import javax.swing.*;
-
 import com.sb.transmissionremote.TransmissionRemote;
-import cordelia.rpc.types.Torrents;
+import cordelia.jsonrpc.res.RsTorrentGet;
+
+import javax.swing.*;
+import java.net.URL;
 
 public final class ImageElem implements Element {
 
     private final String filename;
 
-    public ImageElem(Torrents t) {
+    public ImageElem(RsTorrentGet.Torrents t) {
         this.filename = t.getName();
     }
 

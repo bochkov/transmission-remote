@@ -1,17 +1,17 @@
 package com.sb.transmissionremote.ui;
 
+import cordelia.jsonrpc.res.RsTorrentGet;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.*;
 
-import cordelia.rpc.types.Torrents;
+public final class TorrentListModel extends AbstractListModel<RsTorrentGet.Torrents> {
 
-public final class TorrentListModel extends AbstractListModel<Torrents> {
+    private final List<RsTorrentGet.Torrents> torrents = new ArrayList<>();
 
-    private final List<Torrents> torrents = new ArrayList<>();
-
-    public List<Torrents> getAll() {
+    public List<RsTorrentGet.Torrents> getAll() {
         return new ArrayList<>(torrents);
     }
 
@@ -21,7 +21,7 @@ public final class TorrentListModel extends AbstractListModel<Torrents> {
     }
 
     @Override
-    public Torrents getElementAt(int index) {
+    public RsTorrentGet.Torrents getElementAt(int index) {
         return torrents.get(index);
     }
 
@@ -31,8 +31,8 @@ public final class TorrentListModel extends AbstractListModel<Torrents> {
         fireContentsChanged(this, 0, size);
     }
 
-    public void addAll(Collection<Torrents> newTor) {
-        torrents.addAll(newTor);
+    public void addAll(Collection<RsTorrentGet.Torrents> tor) {
+        torrents.addAll(tor);
         fireContentsChanged(this, 0, getSize());
     }
 }

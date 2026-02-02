@@ -1,14 +1,14 @@
 package com.sb.transmissionremote.ui;
 
+import com.sb.transmissionremote.TransmissionRemote;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.Calendar;
-import javax.swing.*;
-
-import com.sb.transmissionremote.TransmissionRemote;
-import net.miginfocom.swing.MigLayout;
 
 public final class FrmAbout extends JDialog {
 
@@ -19,7 +19,7 @@ public final class FrmAbout extends JDialog {
     public FrmAbout(Frame owner) {
         super(owner, "О программе", true);
         setResizable(false);
-        setLayout(new MigLayout("fillx, wrap 1, insets 30 10 10 10", "center"));
+        setLayout(new MigLayout("fillX, wrap 1, insets 30 10 10 10", "center"));
 
         add(new JLabel(TransmissionRemote.LOGO), "span");
         add(new JLabel(String.format(DESC, TransmissionRemote.APP_NAME, years())));
