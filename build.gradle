@@ -22,13 +22,13 @@ repositories() {
 
 dependencies {
     implementation 'com.sb:bdev-rt:1.0.7.RELEASE'
-    implementation 'cordelia:cordelia:6.0.0.RELEASE'
+    implementation 'cordelia:cordelia:6.0.1.RELEASE'
 
     implementation 'com.formdev:flatlaf:3.7'
     implementation 'com.formdev:flatlaf-extras:3.7'
     implementation 'com.formdev:flatlaf-fonts-inter:4.1'
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation 'ch.qos.logback:logback-classic:1.5.27'
+    implementation 'ch.qos.logback:logback-classic:1.5.28'
     implementation 'com.miglayout:miglayout-swing:11.4.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.42'
