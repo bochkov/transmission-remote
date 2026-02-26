@@ -28,15 +28,15 @@ dependencies {
     implementation 'com.formdev:flatlaf-extras:3.7'
     implementation 'com.formdev:flatlaf-fonts-inter:4.1'
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation 'ch.qos.logback:logback-classic:1.5.28'
-    implementation 'com.miglayout:miglayout-swing:11.4.2'
+    implementation 'ch.qos.logback:logback-classic:1.5.32'
+    implementation 'com.miglayout:miglayout-swing:11.4.3'
 
     compileOnly 'org.projectlombok:lombok:1.18.42'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
     testCompileOnly 'org.projectlombok:lombok:1.18.42'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-    testImplementation(platform('org.junit:junit-bom:6.0.2'))
+    testImplementation(platform('org.junit:junit-bom:6.0.3'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
     testImplementation 'org.assertj:assertj-core:3.27.7'
@@ -46,7 +46,8 @@ application {
     mainClass = "com.sb.transmissionremote.TransmissionRemote"
     if (System.getProperty("os.name").contains("Mac OS")) {
         applicationDefaultJvmArgs = [
-                '-Xdock:name=Transmission Remote'
+                '-Xdock:name=Transmission Remote',
+                '--enable-native-access=ALL-UNNAMED'
         ]
     }
 }
