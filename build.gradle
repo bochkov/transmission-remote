@@ -11,7 +11,7 @@ ext {
 }
 
 group = 'com.sergeybochkov'
-version = '3.0.6'
+version = '3.0.7'
 
 repositories() {
     mavenCentral()
@@ -86,8 +86,8 @@ tasks.named('jini').configure {
     exeFilename = 'transmission-remote.exe'
     vmArgs = ['-Xmx64m', '--enable-native-access=ALL-UNNAMED']
     icon = "${projectDir}/src/main/resources/style/transmission-remote.ico"
-    fileVersion = "1.0.0.306"
-    productVersion = "1.0.0.306"
+    fileVersion = "1.0.0." + project.version.replace('.', '')
+    productVersion = "1.0.0." + project.version.replace('.', '')
     comments = "Transmission Remote GUI"
     fileDescription = "Transmission Remote GUI"
     productName = "Transmission Remote GUI"
