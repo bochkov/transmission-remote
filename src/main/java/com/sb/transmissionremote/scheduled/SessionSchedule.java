@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 public final class SessionSchedule implements Runnable {
 
     private final AtomicReference<TrClient> client;
-    private final Consumer<RsSessionGet.Result> sessionConsumer;
-    private final Consumer<RsSessionStats.Result> sessionStatsConsumer;
+    private final Consumer<RsSessionGet> sessionConsumer;
+    private final Consumer<RsSessionStats> sessionStatsConsumer;
 
     @Override
     public void run() {
@@ -31,13 +31,13 @@ public final class SessionSchedule implements Runnable {
         RqSessionGet req = new RqSessionGet(TransmissionRemote.TAG, params);
         RsSessionGet res = client.get().execute(req);
         LOG.debug("{}", res);
-        sessionConsumer.accept(res.getResult());
+        sessionConsumer.accept(res);
     }
 
     private void getSessionStats() {
         RqSessionStats req = new RqSessionStats(TransmissionRemote.TAG);
         RsSessionStats res = client.get().execute(req);
         LOG.debug("{}", res);
-        sessionStatsConsumer.accept(res.getResult());
+        sessionStatsConsumer.accept(res);
     }
 }

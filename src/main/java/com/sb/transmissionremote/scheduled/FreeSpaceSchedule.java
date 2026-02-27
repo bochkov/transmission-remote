@@ -17,7 +17,7 @@ public final class FreeSpaceSchedule implements Runnable {
 
     private final AtomicReference<TrClient> client;
     private final AtomicReference<RsSessionGet.Result> session;
-    private final Consumer<RsFreeSpace.Result> consumer;
+    private final Consumer<RsFreeSpace> consumer;
 
     @Override
     public void run() {
@@ -28,6 +28,6 @@ public final class FreeSpaceSchedule implements Runnable {
         RqFreeSpace req = new RqFreeSpace(TransmissionRemote.TAG, params);
         RsFreeSpace res = client.get().execute(req);
         LOG.debug("{}", res);
-        consumer.accept(res.getResult());
+        consumer.accept(res);
     }
 }

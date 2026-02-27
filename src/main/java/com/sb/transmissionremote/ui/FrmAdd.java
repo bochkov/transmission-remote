@@ -88,10 +88,9 @@ public final class FrmAdd extends JDialog {
                 .path(destinationField.getText())
                 .build();
         RsFreeSpace res = client.get().execute(new RqFreeSpace(TransmissionRemote.TAG, params));
-        RsFreeSpace.Result result = res.getResult();
-        return result == null
-                ? "no such directory"
-                : String.format("%s free", new HumanSize(result.getSizeBytes(), HumanSize.US, 2));
+        return res.isError()
+                ? res.getError().getData().getErrorString()
+                : String.format("%s free", new HumanSize(res.getResult().getSizeBytes(), HumanSize.US, 2));
     }
 
     private static final FilenameFilter TORRENT_FILTER = (dir, name) -> name.toLowerCase().endsWith(".torrent");

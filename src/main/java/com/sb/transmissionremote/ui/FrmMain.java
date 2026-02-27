@@ -191,6 +191,12 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         RqSessionGet.Params params = RqSessionGet.Params.builder().build();
         RqSessionGet req = new RqSessionGet(TransmissionRemote.TAG, params);
         RsSessionGet res = tr.get().execute(req);
+        if (res.isError()) {
+            JOptionPane.showMessageDialog(this,
+                    String.format("%s: %s", res.getError().getCode(), res.getError().getData().getErrorString()),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         this.session.set(res.getResult());
 
         tasks.add(
@@ -220,8 +226,12 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         torList.removeSelectionInterval(0, torrents.getSize());
     }
 
-    private void updateTorrents(RsTorrentGet.Result res) {
-        List<RsTorrentGet.Torrents> tors = res.getTorrents();
+    private void updateTorrents(RsTorrentGet res) {
+        if (res.isError()) {
+            LOG.error(res.getError().getData().getErrorString());
+            return;
+        }
+        List<RsTorrentGet.Torrents> tors = res.getResult().getTorrents();
         int[] selected = torList.getSelectedIndices();
         torrents.clear();
         tors.sort(Comparator.comparing(RsTorrentGet.Torrents::getId));
@@ -235,19 +245,34 @@ public final class FrmMain extends JFrame implements ListSelectionListener {
         }
     }
 
-    private void updateSession(RsSessionGet.Result session) {
+    private void updateSession(RsSessionGet res) {
+        if (res.isError()) {
+            LOG.error(res.getError().getData().getErrorString());
+            return;
+        }
+        RsSessionGet.Result session = res.getResult();
         setTitle(String.format("%s - [%s] - %s", TransmissionRemote.APP_NAME, AppProps.serverUrl(), session.getVersion()));
         speedLimitButton.setSelected(session.getAltSpeedEnabled());
         speedLimitButton.setIcon(speedLimitButton.isSelected() ? TransmissionRemote.ICON_ANCHOR : TransmissionRemote.ICON_ROCKET);
         speedLimitButton.setToolTipText(String.format("Now speed limit is %S", speedLimitButton.isSelected() ? "on" : "off"));
     }
 
-    private void updateSessionStats(RsSessionStats.Result stats) {
+    private void updateSessionStats(RsSessionStats res) {
+        if (res.isError()) {
+            LOG.error(res.getError().getData().getErrorString());
+            return;
+        }
+        RsSessionStats.Result stats = res.getResult();
         upSpeedLabel.setText(new HumanSpeed(stats.getUploadSpeed(), HumanSpeed.US, 2).toString());
         downSpeedLabel.setText(new HumanSpeed(stats.getDownloadSpeed(), HumanSpeed.US, 2).toString());
     }
 
-    private void updateFreeSpace(RsFreeSpace.Result freeSpace) {
+    private void updateFreeSpace(RsFreeSpace res) {
+        if (res.isError()) {
+            LOG.error(res.getError().getData().getErrorString());
+            return;
+        }
+        RsFreeSpace.Result freeSpace = res.getResult();
         freeSpaceLabel.setText(new HumanSize(freeSpace.getSizeBytes(), HumanSize.US, 2).toString());
     }
 

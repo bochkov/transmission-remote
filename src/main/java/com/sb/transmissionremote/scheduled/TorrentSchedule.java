@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public final class TorrentSchedule implements Runnable {
 
     private final AtomicReference<TrClient> client;
-    private final Consumer<RsTorrentGet.Result> consumer;
+    private final Consumer<RsTorrentGet> consumer;
 
     @Override
     public void run() {
@@ -42,6 +42,6 @@ public final class TorrentSchedule implements Runnable {
         RqTorrentGet req = new RqTorrentGet(TransmissionRemote.TAG, params);
         RsTorrentGet res = client.get().execute(req);
         LOG.debug("{}", res);
-        consumer.accept(res.getResult());
+        consumer.accept(res);
     }
 }
